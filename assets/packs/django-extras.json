@@ -108,7 +108,7 @@
     {
       "title": "Database constraints",
       "body": "class Meta:\n    constraints = [\n        models.UniqueConstraint(fields=[\"tenant\", \"slug\"], name=\"uniq_slug_per_tenant\"),\n        models.CheckConstraint(condition=models.Q(price__gte=0), name=\"price_non_negative\"),\n    ]\n    indexes = [models.Index(fields=[\"created_at\"])]",
-      "description": "Enforce rules in the database, not only in forms.",
+      "description": "Enforce rules in the database (CheckConstraint uses condition= in Django 5.1+, check= before).",
       "type": "snippet",
       "language": "python",
       "tags": [

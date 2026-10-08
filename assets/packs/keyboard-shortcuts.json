@@ -1,0 +1,150 @@
+{
+  "name": "Keyboard shortcuts",
+  "category": "Reference",
+  "version": "1",
+  "items": [
+    {
+      "title": "Windows: everyday shortcuts",
+      "body": "Win+D          show desktop           Win+E        File Explorer\nWin+L          lock screen            Win+R        Run dialog\nWin+I          Settings               Win+X        power-user menu\nWin+V          clipboard history      Win+.        emoji panel\nWin+Shift+S    screenshot (snip)      PrtScn       full screenshot\nCtrl+Shift+Esc Task Manager           Alt+F4       close window\nAlt+Tab        switch windows         Win+Tab      task view",
+      "description": "Window and system control.",
+      "type": "snippet",
+      "tags": [
+        "windows",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Windows: window snapping and desktops",
+      "body": "Win+Left / Right     snap window to half screen\nWin+Up / Down        maximise / restore or minimise\nWin+Shift+Left/Right move window to another monitor\nWin+Ctrl+D           new virtual desktop\nWin+Ctrl+Left/Right  switch desktops\nWin+Ctrl+F4          close current desktop\nWin+P                projection / display mode",
+      "description": "Arrange windows and virtual desktops.",
+      "type": "snippet",
+      "tags": [
+        "windows",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Windows: text editing",
+      "body": "Ctrl+C / X / V   copy / cut / paste        Ctrl+Z / Y    undo / redo\nCtrl+A           select all                Ctrl+F        find\nCtrl+Left/Right  move by word              Ctrl+Backspace  delete previous word\nHome / End       start / end of line       Ctrl+Home/End   start / end of document\nShift+arrows     extend selection          Ctrl+Shift+arrows  select by word",
+      "description": "Works in most apps.",
+      "type": "snippet",
+      "tags": [
+        "windows",
+        "shortcuts",
+        "editing"
+      ]
+    },
+    {
+      "title": "Windows: File Explorer",
+      "body": "F2 rename     F5 refresh      Alt+Up  parent folder    Alt+Left/Right  back/forward\nCtrl+Shift+N new folder      Shift+Delete delete permanently\nCtrl+E search box   Alt+D address bar   Alt+Enter properties\nShift+right-click: more options (e.g. open PowerShell here)",
+      "description": "Files and folders.",
+      "type": "snippet",
+      "tags": [
+        "windows",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Browser shortcuts",
+      "body": "Ctrl+T new tab         Ctrl+W close tab        Ctrl+Shift+T reopen closed tab\nCtrl+Tab next tab      Ctrl+1..8 go to tab n   Ctrl+L focus address bar\nCtrl+R / F5 reload     Ctrl+Shift+R hard reload (ignore cache)\nF12 or Ctrl+Shift+I developer tools   Ctrl+Shift+J console (Chrome)\nCtrl+D bookmark        Ctrl+H history          Ctrl+Shift+Delete clear data\nCtrl+Shift+N / P incognito / private window",
+      "description": "Chrome, Edge and Firefox (Windows/Linux).",
+      "type": "snippet",
+      "tags": [
+        "browser",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Windows Terminal / PowerShell",
+      "body": "Ctrl+C          stop the running command (copy if text selected)\nCtrl+Shift+C/V  copy / paste in Windows Terminal\nUp / Down       command history      F7  history list (cmd)\nTab             autocomplete         Ctrl+L / cls  clear screen\nCtrl+Shift+T    new tab              Alt+Shift+D  duplicate pane\nCtrl+Shift+P    command palette",
+      "description": "Console shortcuts.",
+      "type": "snippet",
+      "tags": [
+        "windows",
+        "terminal",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Linux terminal (bash) shortcuts",
+      "body": "Ctrl+C  interrupt        Ctrl+Z  suspend (fg to resume)    Ctrl+D  end input / logout\nCtrl+L  clear screen     Ctrl+R  reverse history search\nCtrl+A / E  start / end of line     Alt+B / F  back / forward a word\nCtrl+U  delete to start  Ctrl+K  delete to end   Ctrl+W  delete previous word\nCtrl+Y  paste what was deleted      !!  repeat last command    !$  last argument",
+      "description": "Line editing and process control.",
+      "type": "snippet",
+      "tags": [
+        "linux",
+        "terminal",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Android: buttons and gestures",
+      "body": "Screenshot:       Power + Volume Down\nPower menu:       hold Power (some phones: Power + Volume Up)\nNotifications:    swipe down from the top; swipe down again for Quick Settings\nBack:             swipe in from the left or right edge (gesture navigation)\nHome:             swipe up from the bottom\nRecent apps:      swipe up and hold; swipe sideways to switch apps\nQuick app switch: swipe along the bottom edge\nForce restart:    hold Power (about 10-30 s) until the phone restarts",
+      "description": "Details vary by manufacturer and Android version.",
+      "type": "snippet",
+      "tags": [
+        "android",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Android: text and system tips",
+      "body": "Select a word: double-tap       Select all / Copy / Paste: long-press in a text field\nDictation: microphone key on the keyboard\nSplit screen: from Recents, tap the app icon > Split screen (varies)\nScreen pinning: Settings > Security > App pinning\nDeveloper options: tap Build number 7 times in About phone",
+      "description": "Useful touch shortcuts.",
+      "type": "snippet",
+      "tags": [
+        "android",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Android with a hardware keyboard",
+      "body": "Ctrl+C / X / V / A / Z   copy, cut, paste, select all, undo\nAlt+Tab                  switch between recent apps\nTab / Shift+Tab          move focus between controls\nEnter or Space           activate the focused control\nCtrl+Space               switch input language (when several are enabled)",
+      "description": "Basics that work with Bluetooth or USB keyboards (support varies by app and device).",
+      "type": "snippet",
+      "tags": [
+        "android",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "macOS equivalents",
+      "body": "Cmd+C/X/V copy, cut, paste    Cmd+Z undo    Cmd+Shift+Z redo\nCmd+Tab switch apps          Cmd+Space Spotlight   Cmd+Q quit app\nCmd+Shift+4 area screenshot  Cmd+Shift+3 full screenshot\nCmd+Option+Esc force quit    Ctrl+Cmd+Q lock screen",
+      "description": "Cmd replaces Ctrl for most shortcuts.",
+      "type": "snippet",
+      "tags": [
+        "mac",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Excel and Google Sheets shortcuts",
+      "body": "Ctrl+Arrow jump to data edge      Ctrl+Shift+Arrow select to edge\nCtrl+; insert today's date        Ctrl+Shift+; insert time\nF4 repeat last action / toggle $ in a reference ($A$1)\nCtrl+D fill down                  Ctrl+R fill right\nAlt+= AutoSum                     Ctrl+Space / Shift+Space select column / row",
+      "description": "Spreadsheet speed-ups.",
+      "type": "snippet",
+      "tags": [
+        "office",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "VS Code essentials (recap)",
+      "body": "Ctrl+P open file      Ctrl+Shift+P commands     Ctrl+D next match\nCtrl+/ comment         Alt+Up/Down move line     Ctrl+` terminal\nCtrl+B sidebar         F12 definition            F2 rename symbol",
+      "description": "The shortcuts worth memorising first.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcuts"
+      ]
+    },
+    {
+      "title": "Screenshots on different systems",
+      "body": "Windows:  Win+Shift+S (region), PrtScn (full), Alt+PrtScn (active window)\nmacOS:    Cmd+Shift+3 (full), Cmd+Shift+4 (region), Cmd+Shift+5 (options)\nLinux:    PrtScn (full), Shift+PrtScn (region) on most desktops\nAndroid:  Power + Volume Down\nChrome DevTools: Ctrl+Shift+P then \"Capture full size screenshot\"",
+      "description": "Capture the screen or a region.",
+      "type": "snippet",
+      "tags": [
+        "shortcuts",
+        "screenshot"
+      ]
+    }
+  ]
+}

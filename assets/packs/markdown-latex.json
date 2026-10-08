@@ -1,0 +1,223 @@
+{
+  "name": "Markdown & LaTeX",
+  "category": "Reference",
+  "version": "1",
+  "items": [
+    {
+      "title": "Markdown: headings and emphasis",
+      "body": "# Heading 1\n## Heading 2\n### Heading 3\n\n**bold**  *italic*  ~~strikethrough~~  `inline code`\n\n> Blockquote\n\n---   (horizontal rule)",
+      "description": "Text structure.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "Markdown: lists",
+      "body": "- Item\n- Item\n  - Nested item (indent 2 spaces)\n\n1. First\n2. Second\n3. Third",
+      "description": "Ordered, unordered and nested.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "Markdown: task lists",
+      "body": "- [x] Done\n- [ ] To do\n- [ ] Another task",
+      "description": "Checkboxes (GitHub and many editors).",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "Markdown: links and images",
+      "body": "[link text](https://example.com)\n[link with title](https://example.com \"Title\")\n![alt text](path/to/image.png)\n[ref link][id]\n\n[id]: https://example.com\n<https://auto-link.example.com>",
+      "description": "Inline and reference style.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "Markdown: code blocks",
+      "body": "```python\ndef hello():\n    print(\"hi\")\n```\n\nInline: use `code` in a sentence.\nIndent four spaces for an indented block.",
+      "description": "Fenced block with a language for highlighting.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "Markdown: tables",
+      "body": "| Name  | Qty | Price |\n|:------|:---:|------:|\n| Apple |  3  |  1.20 |\n| Pear  | 10  |  0.80 |",
+      "description": "Pipes and dashes; colons set alignment.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "Markdown: footnotes, collapsible, line breaks",
+      "body": "Text with a footnote.[^1]\n\n[^1]: The footnote text.\n\n<details>\n<summary>Click to expand</summary>\n\nHidden content here.\n\n</details>\n\nEnd a line with two spaces or a backslash for a line break.",
+      "description": "Extras supported by GitHub-flavoured Markdown.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "Markdown: escaping characters",
+      "body": "\\*not italic\\*   \\# not a heading   1\\. not a list   \\[not a link\\]\nUse backticks to show Markdown syntax literally: `**bold**`",
+      "description": "Show literal symbols.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "md",
+        "markdown"
+      ]
+    },
+    {
+      "title": "LaTeX: document skeleton",
+      "body": "\\documentclass[11pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amsmath, amssymbol}\n\\usepackage{graphicx}\n\\usepackage{hyperref}\n\n\\title{Title}\n\\author{Your Name}\n\\date{\\today}\n\n\\begin{document}\n\\maketitle\n\\tableofcontents\n\n\\section{Introduction}\nText here.\n\n\\subsection{Details}\nMore text.\n\n\\end{document}",
+      "description": "Minimal article that compiles with pdflatex.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex"
+      ]
+    },
+    {
+      "title": "LaTeX: text formatting and lists",
+      "body": "\\textbf{bold}  \\textit{italic}  \\emph{emphasis}  \\texttt{monospace}\n\n\\begin{itemize}\n  \\item First\n  \\item Second\n\\end{itemize}\n\n\\begin{enumerate}\n  \\item One\n  \\item Two\n\\end{enumerate}",
+      "description": "Bold, italic, itemize and enumerate.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex"
+      ]
+    },
+    {
+      "title": "LaTeX: special characters",
+      "body": "\\%  \\&  \\_  \\#  \\$  \\{  \\}\nQuotes: ``double''  `single'\nDashes: - (hyphen)  -- (range 1--5)  --- (sentence dash)\nNon-breaking space: Figure~1",
+      "description": "Escape these in normal text.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex"
+      ]
+    },
+    {
+      "title": "LaTeX: inline and display math",
+      "body": "Inline: $E = mc^2$\n\nDisplay:\n\\[ x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a} \\]\n\nNumbered equation:\n\\begin{equation}\n  a^2 + b^2 = c^2\n\\end{equation}",
+      "description": "Dollar signs for inline, environments for display.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex",
+        "math"
+      ]
+    },
+    {
+      "title": "LaTeX math: fractions, powers, roots, sums",
+      "body": "\\frac{a}{b}   x^{2}   x_{i}   x_{i}^{2}   \\sqrt{x}   \\sqrt[3]{x}\n\\sum_{i=1}^{n} i      \\prod_{i=1}^{n} x_i\n\\int_{0}^{1} f(x)\\,dx      \\lim_{x \\to 0} \\frac{\\sin x}{x}\n\\frac{d}{dx}              \\frac{\\partial f}{\\partial x}",
+      "description": "Most-used constructs.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex",
+        "math"
+      ]
+    },
+    {
+      "title": "LaTeX math: Greek letters and symbols",
+      "body": "\\alpha \\beta \\gamma \\delta \\epsilon \\theta \\lambda \\mu \\pi \\sigma \\phi \\omega\n\\Gamma \\Delta \\Sigma \\Omega\n\\leq \\geq \\neq \\approx \\equiv \\propto\n\\times \\cdot \\pm \\infty \\in \\subset \\cup \\cap \\forall \\exists\n\\rightarrow \\Rightarrow \\leftrightarrow \\mapsto",
+      "description": "Common symbols.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex",
+        "math"
+      ]
+    },
+    {
+      "title": "LaTeX math: matrices and cases",
+      "body": "\\begin{bmatrix}\n  a & b \\\\\n  c & d\n\\end{bmatrix}\n\nf(x) = \\begin{cases}\n  x^2 & \\text{if } x \\ge 0 \\\\\n  -x  & \\text{otherwise}\n\\end{cases}",
+      "description": "Brackets and piecewise definitions.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex",
+        "math"
+      ]
+    },
+    {
+      "title": "LaTeX math: aligned equations",
+      "body": "\\begin{align}\n  y &= mx + c \\\\\n    &= 2x + 1\n\\end{align}",
+      "description": "Multi-line derivations aligned at &.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex",
+        "math"
+      ]
+    },
+    {
+      "title": "LaTeX math: statistics notation",
+      "body": "P(A \\mid B)    \\mathbb{E}[X]    \\operatorname{Var}(X)    \\bar{x}    \\hat{y}\n\\mu    \\sigma^2    \\mathcal{N}(\\mu, \\sigma^2)    \\binom{n}{k}\n\\arg\\max_{\\theta} L(\\theta)",
+      "description": "Common probability and statistics symbols.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex",
+        "math",
+        "statistics"
+      ]
+    },
+    {
+      "title": "LaTeX: figure and table",
+      "body": "\\begin{figure}[htbp]\n  \\centering\n  \\includegraphics[width=0.8\\textwidth]{figure.png}\n  \\caption{A caption.}\n  \\label{fig:example}\n\\end{figure}\n\n\\begin{table}[htbp]\n  \\centering\n  \\begin{tabular}{lcr}\n    \\hline\n    Left & Centre & Right \\\\\n    \\hline\n    a & b & c \\\\\n    \\hline\n  \\end{tabular}\n  \\caption{A table.}\n  \\label{tab:example}\n\\end{table}\n\nSee Figure~\\ref{fig:example} and Table~\\ref{tab:example}.",
+      "description": "Floats with captions and labels.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex"
+      ]
+    },
+    {
+      "title": "LaTeX: citations with BibTeX",
+      "body": "% in the .tex file\nAs shown by \\cite{knuth1984}. ...\n\\bibliographystyle{plain}\n\\bibliography{references}\n\n% references.bib\n@book{knuth1984,\n  author    = {Donald E. Knuth},\n  title     = {The {TeX}book},\n  publisher = {Addison-Wesley},\n  year      = {1984}\n}",
+      "description": "Bibliography workflow.",
+      "type": "snippet",
+      "language": "latex",
+      "tags": [
+        "latex",
+        "bibtex"
+      ]
+    },
+    {
+      "title": "Compile a LaTeX document",
+      "body": "pdflatex main.tex\nbibtex main\npdflatex main.tex && pdflatex main.tex\nlatexmk -pdf main.tex        # does all of the above",
+      "description": "Run twice for references; latexmk automates it.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "latex"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "name": "Networking & subnetting",
+  "category": "Infrastructure",
+  "version": "1",
+  "items": [
+    {
+      "title": "CIDR cheat table",
+      "body": "/8   255.0.0.0          16,777,214 hosts\n/16  255.255.0.0        65,534\n/20  255.255.240.0      4,094\n/24  255.255.255.0      254\n/25  255.255.255.128    126\n/26  255.255.255.192    62\n/27  255.255.255.224    30\n/28  255.255.255.240    14\n/29  255.255.255.248    6\n/30  255.255.255.252    2\n/31  255.255.255.254    2 (point-to-point links, RFC 3021)\n/32  255.255.255.255    1 (a single host)",
+      "description": "Prefix, subnet mask and usable hosts (2^(32-prefix) minus 2).",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "cidr"
+      ]
+    },
+    {
+      "title": "Subnet calculation method",
+      "body": "1. Block size = 256 - (interesting octet of the mask)   e.g. /27 -> 256 - 224 = 32\n2. Network = largest multiple of the block size <= the address octet\n3. Broadcast = network + block size - 1\n4. Hosts = network + 1 ... broadcast - 1",
+      "description": "Find network, broadcast and host range for any address.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "subnetting"
+      ]
+    },
+    {
+      "title": "Worked example: 192.168.5.77/27",
+      "body": "Mask: 255.255.255.224   Block size: 32\nNetwork:   192.168.5.64     (64 is the largest multiple of 32 that is <= 77)\nBroadcast: 192.168.5.95\nUsable:    192.168.5.65 - 192.168.5.94   (30 hosts)",
+      "description": "Block size 32.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "subnetting"
+      ]
+    },
+    {
+      "title": "Worked example: split a /24 into four /26",
+      "body": "192.168.10.0/26    hosts .1   - .62    broadcast .63\n192.168.10.64/26   hosts .65  - .126   broadcast .127\n192.168.10.128/26  hosts .129 - .190   broadcast .191\n192.168.10.192/26  hosts .193 - .254   broadcast .255\n(Each extra bit borrowed from the host part doubles the subnets and halves the hosts.)",
+      "description": "192.168.10.0/24 into four equal subnets.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "subnetting"
+      ]
+    },
+    {
+      "title": "How many subnets and hosts",
+      "body": "Subnets created by borrowing n bits: 2^n\nHosts per subnet with h host bits:   2^h - 2\nTotal addresses in a /p block:       2^(32 - p)\nExample: /22 has 2^10 = 1024 addresses (10.0.0.0/22 = 10.0.0.0 - 10.0.3.255)",
+      "description": "Formulas.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "subnetting"
+      ]
+    },
+    {
+      "title": "Private and special IPv4 ranges",
+      "body": "10.0.0.0/8          10.0.0.0    - 10.255.255.255\n172.16.0.0/12       172.16.0.0  - 172.31.255.255\n192.168.0.0/16      192.168.0.0 - 192.168.255.255\n127.0.0.0/8         loopback (localhost)\n169.254.0.0/16      link-local (APIPA, no DHCP answer)\n100.64.0.0/10       carrier-grade NAT\n0.0.0.0             \"any address\" / default route",
+      "description": "Not routable on the public internet.",
+      "type": "snippet",
+      "tags": [
+        "networking"
+      ]
+    },
+    {
+      "title": "Common ports",
+      "body": "20/21 FTP        22 SSH         23 Telnet      25 SMTP\n53 DNS          67/68 DHCP     80 HTTP        110 POP3\n123 NTP         143 IMAP       161 SNMP       389 LDAP\n443 HTTPS       445 SMB        587 SMTP submission\n993 IMAPS       995 POP3S      3306 MySQL     3389 RDP\n5432 PostgreSQL 6379 Redis     8080 alt HTTP  27017 MongoDB",
+      "description": "Well-known TCP/UDP ports.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "ports"
+      ]
+    },
+    {
+      "title": "OSI model layers",
+      "body": "7 Application   HTTP, DNS, SMTP, SSH\n6 Presentation  TLS, encoding, compression\n5 Session       sessions, RPC\n4 Transport     TCP, UDP (ports)\n3 Network       IP, ICMP, routing (routers)\n2 Data link     Ethernet, Wi-Fi, MAC addresses (switches)\n1 Physical      cables, radio, bits\nMnemonic (7 to 1): All People Seem To Need Data Processing",
+      "description": "Seven layers with typical protocols.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "osi"
+      ]
+    },
+    {
+      "title": "TCP vs UDP",
+      "body": "TCP: connection-oriented, reliable, ordered, congestion control (web, SSH, email, databases)\nUDP: connectionless, no delivery guarantee, low latency (DNS, VoIP, video, games)\nTCP handshake: SYN -> SYN-ACK -> ACK",
+      "description": "Choosing a transport.",
+      "type": "snippet",
+      "tags": [
+        "networking"
+      ]
+    },
+    {
+      "title": "DNS record types",
+      "body": "A      name -> IPv4 address            AAAA   name -> IPv6 address\nCNAME  alias -> another name           MX     mail servers (with priority)\nTXT    free text (SPF, verification)   NS     authoritative name servers\nPTR    IP -> name (reverse lookup)     SOA    zone authority information\nSRV    service host and port",
+      "description": "What each record does.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "dns"
+      ]
+    },
+    {
+      "title": "ip: addresses, links and routes",
+      "body": "ip a\nip -br a                    # brief\nip link\nip route\nip route get 8.8.8.8        # which route/interface is used",
+      "description": "Modern replacement for ifconfig and route.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "networking",
+        "ip"
+      ]
+    },
+    {
+      "title": "ip: change addresses (temporary)",
+      "body": "sudo ip addr add 192.168.1.50/24 dev eth0\nsudo ip link set eth0 up\nsudo ip route add default via 192.168.1.1",
+      "description": "Not persistent across reboots.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "networking",
+        "ip"
+      ]
+    },
+    {
+      "title": "ss: sockets and listening ports",
+      "body": "ss -tulpn            # listening TCP/UDP with process (needs sudo for others' processes)\nss -tn state established\nss -s                # summary\nss -tn dst :443",
+      "description": "Replacement for netstat.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "networking",
+        "ss"
+      ]
+    },
+    {
+      "title": "dig: DNS queries",
+      "body": "dig example.com\ndig +short example.com A\ndig example.com MX\ndig example.com TXT\ndig @8.8.8.8 example.com        # ask a specific resolver\ndig -x 8.8.8.8                  # reverse lookup\ndig +trace example.com",
+      "description": "Look up records and test resolvers.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "networking",
+        "dns"
+      ]
+    },
+    {
+      "title": "traceroute and mtr",
+      "body": "traceroute example.com\ntraceroute -n example.com       # no reverse DNS, faster\nmtr -rw example.com             # report mode, wide",
+      "description": "See the path packets take and where latency or loss starts.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "networking",
+        "traceroute"
+      ]
+    },
+    {
+      "title": "ping and port checks",
+      "body": "ping -c 4 example.com\nnc -zv example.com 443          # is the port open?\ncurl -v telnet://example.com:25 --connect-timeout 5",
+      "description": "Reachability, then a specific TCP port.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "networking",
+        "ping"
+      ]
+    },
+    {
+      "title": "tcpdump basics",
+      "body": "sudo tcpdump -i eth0 port 80\nsudo tcpdump -i any host 192.168.1.10 -nn\nsudo tcpdump -i eth0 -w capture.pcap       # open in Wireshark",
+      "description": "Capture traffic (needs root; use responsibly on your own network).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "networking",
+        "tcpdump"
+      ]
+    },
+    {
+      "title": "Subnet mask to prefix quick table",
+      "body": "128 = /1   192 = /2   224 = /3   240 = /4\n248 = /5   252 = /6   254 = /7   255 = /8\nSo 255.255.255.224 = 24 + 3 = /27",
+      "description": "Binary view of the mask octet.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "subnetting"
+      ]
+    },
+    {
+      "title": "Routing table basics",
+      "body": "1. Match the destination against the routing table (longest prefix wins).\n2. Directly connected network -> deliver on the local link (ARP for the MAC).\n3. Otherwise send to the default gateway (0.0.0.0/0).\nCheck with:  ip route    and    ip route get <destination>",
+      "description": "How a host decides where to send a packet.",
+      "type": "snippet",
+      "tags": [
+        "networking",
+        "routing"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "name": "ML evaluation checklist",
+  "category": "Data & ML",
+  "version": "1",
+  "items": [
+    {
+      "title": "Data leakage checks",
+      "body": "[ ] Split the data BEFORE any fitting, scaling, imputing or feature selection\n[ ] Fit transformers on the training set only (use a Pipeline)\n[ ] No feature derived from the target or from the future (e.g. \"refund issued\" when predicting churn)\n[ ] No ID, timestamp or ordering column that encodes the label\n[ ] Duplicates and near-duplicates do not appear in both train and test\n[ ] Rows from the same person/session/patient stay in the same fold (group split)\n[ ] Time-ordered data uses a time-based split, not a random one\n[ ] Target encoding and resampling (SMOTE) happen inside cross-validation folds\n[ ] Test set used once, for the final number only\n[ ] Suspiciously perfect scores trigger a leakage investigation",
+      "description": "Make sure the model cannot see the answer.",
+      "type": "checklist",
+      "tags": [
+        "ml",
+        "leakage"
+      ]
+    },
+    {
+      "title": "Class imbalance checks",
+      "body": "[ ] Report class proportions in train and test\n[ ] Use stratified splits\n[ ] Do not use accuracy alone; report precision, recall, F1, PR-AUC\n[ ] Compare against a majority-class baseline\n[ ] Try class weights, resampling (training data only) or threshold tuning\n[ ] Choose the decision threshold using the cost of false positives vs false negatives\n[ ] Show the confusion matrix",
+      "description": "When one class is rare.",
+      "type": "checklist",
+      "tags": [
+        "ml",
+        "imbalance"
+      ]
+    },
+    {
+      "title": "What to report in a project write-up",
+      "body": "[ ] Problem statement and why it matters; success criteria\n[ ] Dataset: source, size, features, target, time span, licence\n[ ] Data cleaning: missing values, outliers, what was removed and why\n[ ] Exploratory analysis: key distributions, correlations, class balance\n[ ] Split strategy and random seed\n[ ] Baseline and models compared, with hyperparameter search method\n[ ] Metrics chosen and why, with mean and spread across folds or seeds\n[ ] Final test-set result (once) with confusion matrix / key plots\n[ ] Error analysis: where and why the model fails\n[ ] Limitations, bias and ethical considerations\n[ ] Reproducibility: environment, code link, how to rerun\n[ ] Conclusion and future work",
+      "description": "Sections reviewers expect.",
+      "type": "checklist",
+      "tags": [
+        "ml",
+        "report"
+      ]
+    },
+    {
+      "title": "Reproducibility checklist",
+      "body": "[ ] Random seeds fixed (numpy, python, framework, train_test_split)\n[ ] Library versions recorded (pip freeze > requirements.txt)\n[ ] Data version or snapshot date recorded; raw data never edited in place\n[ ] One command or notebook order reproduces all results\n[ ] Configuration (hyperparameters, paths) stored in a file, not scattered in code\n[ ] Trained model and metrics saved with a timestamp",
+      "description": "Someone else can rerun and get the same numbers.",
+      "type": "checklist",
+      "tags": [
+        "ml",
+        "reproducibility"
+      ]
+    },
+    {
+      "title": "Overfitting checks",
+      "body": "[ ] Training score far above validation score\n[ ] Validation curve or learning curve plotted\n[ ] Simpler model or stronger regularisation tried\n[ ] More data, augmentation, early stopping, dropout where relevant\n[ ] Feature count reasonable for the number of rows\n[ ] Cross-validation score variance is small\n[ ] Hyperparameters tuned on validation folds, not the test set",
+      "description": "Signs and remedies.",
+      "type": "checklist",
+      "tags": [
+        "ml",
+        "overfitting"
+      ]
+    },
+    {
+      "title": "Results table template",
+      "body": "| Model                | Accuracy | Precision | Recall | F1    | ROC-AUC |\n|----------------------|----------|-----------|--------|-------|---------|\n| Baseline (majority)  | 0.00     | 0.00      | 0.00   | 0.00  | 0.50    |\n| Logistic regression  | 0.00     | 0.00      | 0.00   | 0.00  | 0.00    |\n| Random forest        | 0.00     | 0.00      | 0.00   | 0.00  | 0.00    |\nValues are mean over 5-fold stratified CV on the training set; final model evaluated once on the held-out test set.",
+      "description": "Compare models with the same metrics and folds.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "ml",
+        "report"
+      ]
+    },
+    {
+      "title": "Dataset description template",
+      "body": "The dataset comes from {{source}} ({{licence}}). It contains {{rows}} rows and {{columns}} columns covering {{period}}.\nThe target variable is {{target}} ({{target_type}}); {{percent}}% of rows belong to the positive class.\nFeatures include {{numeric_features}} (numeric) and {{categorical_features}} (categorical).\nMissing values were {{missing_handling}}. {{removed}} rows were removed because {{reason}}.",
+      "description": "Short, complete data section.",
+      "type": "snippet",
+      "tags": [
+        "ml",
+        "report"
+      ]
+    },
+    {
+      "title": "Model card (minimal)",
+      "body": "Model: {{name}} v{{version}}    Date: {{date}}\nIntended use: {{intended_use}}        Out of scope: {{out_of_scope}}\nTraining data: {{data}}\nMetrics (test set): {{metrics}}\nKnown limitations / failure cases: {{limitations}}\nFairness checks: {{fairness}}\nContact: {{owner}}",
+      "description": "One-page description of a trained model.",
+      "type": "snippet",
+      "tags": [
+        "ml",
+        "report"
+      ]
+    },
+    {
+      "title": "Limitations paragraph template",
+      "body": "This study has several limitations. First, {{data_limitation}}, so results may not generalise to {{other_population}}. Second, {{method_limitation}}. Third, {{metric_limitation}}. Future work could {{improvement}}.",
+      "description": "Honest limitations section.",
+      "type": "snippet",
+      "tags": [
+        "ml",
+        "report"
+      ]
+    },
+    {
+      "title": "Error analysis prompts",
+      "body": "- Which classes or groups have the lowest recall/precision?\n- What do the 20 worst predictions have in common?\n- Are errors concentrated in certain feature ranges or time periods?\n- Are false positives or false negatives more costly here?\n- Does performance differ across subgroups (age, region, device)?",
+      "description": "Look beyond the headline metric.",
+      "type": "snippet",
+      "tags": [
+        "ml",
+        "analysis"
+      ]
+    },
+    {
+      "title": "Choosing a metric",
+      "body": "Balanced classes, equal costs        -> accuracy, F1\nRare positive class                  -> precision, recall, F1, PR-AUC\nRanking quality / threshold-free     -> ROC-AUC\nMissing a positive is very costly    -> recall (screening, fraud, safety)\nFalse alarms are very costly         -> precision (spam, automated actions)\nRegression, outliers matter          -> RMSE;  robust to outliers -> MAE;  relative fit -> R-squared",
+      "description": "Match the metric to the problem.",
+      "type": "snippet",
+      "tags": [
+        "ml",
+        "metrics"
+      ]
+    },
+    {
+      "title": "Train / validation / test roles",
+      "body": "Train:       fit model parameters\nValidation:  choose model type and hyperparameters (or use cross-validation)\nTest:        final unbiased estimate, used once\nTypical split: 60/20/20 or 80/20 with cross-validation on the 80.",
+      "description": "Keep the three sets separate.",
+      "type": "snippet",
+      "tags": [
+        "ml",
+        "split"
+      ]
+    },
+    {
+      "title": "Statistical significance reminders",
+      "body": "- Report mean +/- standard deviation over several folds or seeds\n- A 0.5% difference with overlapping spreads is not evidence one model is better\n- For paired comparisons use a paired test across the same folds\n- State confidence intervals where possible (bootstrap the test set)",
+      "description": "Do not over-claim small differences.",
+      "type": "snippet",
+      "tags": [
+        "ml",
+        "stats"
+      ]
+    }
+  ]
+}

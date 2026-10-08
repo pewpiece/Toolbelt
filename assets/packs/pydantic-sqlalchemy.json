@@ -26,7 +26,7 @@
     },
     {
       "title": "Pydantic model validator",
-      "body": "from pydantic import BaseModel, model_validator\n\n\nclass DateRange(BaseModel):\n    start: date\n    end: date\n\n    @model_validator(mode=\"after\")\n    def check_order(self):\n        if self.end < self.start:\n            raise ValueError(\"end must not be before start\")\n        return self",
+      "body": "from datetime import date\n\nfrom pydantic import BaseModel, model_validator\n\n\nclass DateRange(BaseModel):\n    start: date\n    end: date\n\n    @model_validator(mode=\"after\")\n    def check_order(self):\n        if self.end < self.start:\n            raise ValueError(\"end must not be before start\")\n        return self",
       "description": "Cross-field rule.",
       "type": "snippet",
       "language": "python",
@@ -47,7 +47,7 @@
     },
     {
       "title": "Pydantic from ORM objects",
-      "body": "class UserOut(BaseModel):\n    model_config = ConfigDict(from_attributes=True)\n    id: int\n    name: str\n\nUserOut.model_validate(orm_user)",
+      "body": "from pydantic import BaseModel, ConfigDict\n\n\nclass UserOut(BaseModel):\n    model_config = ConfigDict(from_attributes=True)\n    id: int\n    name: str\n\nUserOut.model_validate(orm_user)",
       "description": "Read attributes from SQLAlchemy/Django instances.",
       "type": "snippet",
       "language": "python",

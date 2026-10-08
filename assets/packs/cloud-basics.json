@@ -1,0 +1,211 @@
+{
+  "name": "Cloud basics",
+  "category": "Infrastructure",
+  "version": "1",
+  "items": [
+    {
+      "title": "AWS CLI: configure and verify",
+      "body": "aws configure\naws configure --profile {{profile}}\naws sts get-caller-identity\naws configure list",
+      "description": "Set credentials and check who you are.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "aws",
+        "cli"
+      ]
+    },
+    {
+      "title": "AWS CLI: use profile and region",
+      "body": "aws s3 ls --profile {{profile}} --region eu-west-1\nexport AWS_PROFILE={{profile}}\nexport AWS_REGION=eu-west-1",
+      "description": "Override defaults per command or session.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "aws",
+        "cli",
+        "regions"
+      ]
+    },
+    {
+      "title": "AWS CLI: S3",
+      "body": "aws s3 ls\naws s3 mb s3://{{bucket}}\naws s3 cp file.txt s3://{{bucket}}/path/\naws s3 sync ./site s3://{{bucket}} --delete\naws s3 rm s3://{{bucket}}/path/ --recursive",
+      "description": "Buckets and objects.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "aws",
+        "s3"
+      ]
+    },
+    {
+      "title": "AWS CLI: EC2",
+      "body": "aws ec2 describe-instances --query \"Reservations[].Instances[].[InstanceId,State.Name,InstanceType]\" --output table\naws ec2 start-instances --instance-ids {{instance_id}}\naws ec2 stop-instances --instance-ids {{instance_id}}\naws ec2 describe-regions --query \"Regions[].RegionName\" --output text",
+      "description": "List, start and stop instances.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "aws",
+        "ec2"
+      ]
+    },
+    {
+      "title": "AWS CLI: IAM and logs",
+      "body": "aws iam list-users\naws iam list-attached-user-policies --user-name {{user}}\naws logs tail /aws/lambda/{{function}} --follow",
+      "description": "Inspect identities and tail Lambda logs.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "aws",
+        "iam",
+        "logs"
+      ]
+    },
+    {
+      "title": "AWS services in one line",
+      "body": "EC2: virtual machines            Lambda: run code without servers\nECS/EKS: containers / Kubernetes  S3: object storage\nEBS: block disks for EC2          EFS: shared file system\nRDS: managed SQL databases        DynamoDB: managed NoSQL key-value\nVPC: your private network         Route 53: DNS\nCloudFront: CDN                   ELB: load balancers",
+      "description": "Compute, storage, database and networking.",
+      "type": "snippet",
+      "tags": [
+        "aws",
+        "services"
+      ]
+    },
+    {
+      "title": "AWS services in one line (platform)",
+      "body": "IAM: users, roles and permissions     KMS: encryption keys\nSecrets Manager: store secrets         CloudWatch: metrics, logs, alarms\nSQS: message queue                     SNS: pub/sub notifications\nCloudFormation / CDK: infrastructure as code\nECR: container image registry          CloudTrail: audit log of API calls",
+      "description": "Security, messaging and operations.",
+      "type": "snippet",
+      "tags": [
+        "aws",
+        "services"
+      ]
+    },
+    {
+      "title": "IAM least-privilege principles",
+      "body": "- Never use the root account for daily work; enable MFA on it\n- Prefer roles (temporary credentials) over long-lived access keys\n- Grant specific actions on specific resources, not \"*\"\n- Use groups/roles for people, separate roles for applications\n- Review unused permissions (IAM Access Analyzer, last-used data)\n- Rotate or delete old access keys; never commit keys to git",
+      "description": "Give only the access that is needed.",
+      "type": "snippet",
+      "tags": [
+        "aws",
+        "iam",
+        "security"
+      ]
+    },
+    {
+      "title": "IAM policy: read-only on one S3 bucket",
+      "body": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"s3:ListBucket\"],\n      \"Resource\": \"arn:aws:s3:::my-bucket\"\n    },\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"s3:GetObject\"],\n      \"Resource\": \"arn:aws:s3:::my-bucket/*\"\n    }\n  ]\n}",
+      "description": "Example of a scoped policy.",
+      "type": "snippet",
+      "language": "json",
+      "tags": [
+        "aws",
+        "iam"
+      ]
+    },
+    {
+      "title": "Regions and Availability Zones",
+      "body": "Region: a geographic area (eu-west-1 Ireland, us-east-1 N. Virginia); data stays there unless you move it.\nAvailability Zone (AZ): one or more data centres inside a region (eu-west-1a, 1b, 1c).\nDesign for high availability: spread across at least two AZs.\nPick a region by latency to users, legal/data-residency rules, service availability and price.",
+      "description": "How AWS geography works.",
+      "type": "snippet",
+      "tags": [
+        "aws",
+        "regions"
+      ]
+    },
+    {
+      "title": "Cloud cost-safety checklist",
+      "body": "[ ] Set a monthly budget with email alerts (AWS Budgets) and enable billing alarms\n[ ] Enable MFA on the root account and do not create root access keys\n[ ] Stop or terminate instances you are not using\n[ ] Delete unattached EBS volumes, old snapshots and unused Elastic IPs\n[ ] Watch NAT Gateways and data transfer; they cost money while idle\n[ ] Empty and delete test S3 buckets; set lifecycle rules\n[ ] Tag resources with project and owner so you can find what to delete\n[ ] Check the free-tier limits and expiry dates\n[ ] Use smaller instance types and auto-shutdown schedules for dev\n[ ] Review Cost Explorer weekly while learning",
+      "description": "Avoid surprise bills.",
+      "type": "checklist",
+      "tags": [
+        "cloud",
+        "cost"
+      ]
+    },
+    {
+      "title": "Cloud security basics checklist",
+      "body": "[ ] No public S3 buckets unless intended (Block Public Access on)\n[ ] Security groups open only the ports you need, never 0.0.0.0/0 for SSH or databases\n[ ] Databases are in private subnets\n[ ] Secrets are in Secrets Manager or Parameter Store, not in code\n[ ] Encryption at rest and in transit is on\n[ ] CloudTrail is enabled\n[ ] Backups exist and a restore has been tested",
+      "description": "First things to lock down.",
+      "type": "checklist",
+      "tags": [
+        "cloud",
+        "security"
+      ]
+    },
+    {
+      "title": "Shared responsibility model",
+      "body": "Provider is responsible for security OF the cloud: hardware, data centres, the hypervisor, managed-service internals.\nYou are responsible for security IN the cloud: identities and permissions, data, guest OS patching (on VMs), network rules, application code, configuration.",
+      "description": "Who secures what.",
+      "type": "snippet",
+      "tags": [
+        "cloud",
+        "security"
+      ]
+    },
+    {
+      "title": "IaaS vs PaaS vs SaaS",
+      "body": "IaaS (EC2, VMs): you manage OS, runtime, app; provider manages hardware.\nPaaS (Elastic Beanstalk, App Service, Heroku): you manage the app and data.\nSaaS (Gmail, Slack): provider manages everything; you configure and use it.\nServerless (Lambda): you supply functions; pay per execution.",
+      "description": "How much you manage.",
+      "type": "snippet",
+      "tags": [
+        "cloud",
+        "concepts"
+      ]
+    },
+    {
+      "title": "Scaling terms",
+      "body": "Vertical scaling: a bigger machine (more CPU/RAM). Simple, has a ceiling.\nHorizontal scaling: more machines behind a load balancer. Needs stateless apps.\nElasticity: scale out and in automatically with demand (Auto Scaling).\nHigh availability: no single point of failure (multi-AZ).",
+      "description": "Vertical vs horizontal, and elasticity.",
+      "type": "snippet",
+      "tags": [
+        "cloud",
+        "concepts"
+      ]
+    },
+    {
+      "title": "Terraform workflow",
+      "body": "terraform init\nterraform fmt\nterraform validate\nterraform plan -out tfplan\nterraform apply tfplan\nterraform destroy          # tear down everything the config created",
+      "description": "Infrastructure as code basics.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "terraform",
+        "iac"
+      ]
+    },
+    {
+      "title": "SSH into an EC2 instance",
+      "body": "chmod 400 {{key_name}}.pem\nssh -i {{key_name}}.pem ec2-user@{{public_ip}}      # Amazon Linux; Ubuntu AMIs use ubuntu@",
+      "description": "Key file permissions must be restrictive.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "aws",
+        "ec2",
+        "ssh"
+      ]
+    },
+    {
+      "title": "Docker image to a registry (ECR)",
+      "body": "aws ecr get-login-password --region {{region}} | docker login --username AWS --password-stdin {{account_id}}.dkr.ecr.{{region}}.amazonaws.com\ndocker tag {{image}}:latest {{account_id}}.dkr.ecr.{{region}}.amazonaws.com/{{image}}:latest\ndocker push {{account_id}}.dkr.ecr.{{region}}.amazonaws.com/{{image}}:latest",
+      "description": "Log in, tag and push.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "aws",
+        "ecr",
+        "docker"
+      ]
+    },
+    {
+      "title": "Free-tier friendly learning tips",
+      "body": "- Use a separate learning account; never put real customer data in it\n- Prefer t3.micro / t2.micro instances and the smallest database sizes\n- Destroy what you create when the lab ends (terraform destroy / delete the stack)\n- Name resources with a lab prefix to find leftovers quickly",
+      "description": "Use cloud safely while studying.",
+      "type": "snippet",
+      "tags": [
+        "cloud",
+        "cost"
+      ]
+    }
+  ]
+}

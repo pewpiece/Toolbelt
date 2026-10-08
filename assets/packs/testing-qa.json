@@ -1,0 +1,208 @@
+{
+  "name": "Testing & QA",
+  "category": "QA",
+  "version": "1",
+  "items": [
+    {
+      "title": "pytest: basic test and assertions",
+      "body": "import pytest\n\ndef test_add():\n    assert 1 + 1 == 2\n\ndef test_divide_by_zero():\n    with pytest.raises(ZeroDivisionError):\n        1 / 0\n\ndef test_approx():\n    assert 0.1 + 0.2 == pytest.approx(0.3)",
+      "description": "Plain assert statements; check exceptions with raises.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pytest",
+        "testing"
+      ]
+    },
+    {
+      "title": "pytest: fixture with teardown",
+      "body": "import pytest\n\n@pytest.fixture\ndef db_connection():\n    conn = connect_test_db()\n    yield conn            # test runs here\n    conn.close()          # teardown\n\ndef test_query(db_connection):\n    assert db_connection.execute(\"select 1\") == 1",
+      "description": "Setup before the test, cleanup after the yield.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pytest",
+        "fixtures"
+      ]
+    },
+    {
+      "title": "pytest: fixture scope and conftest.py",
+      "body": "# tests/conftest.py (found automatically)\nimport pytest\n\n@pytest.fixture(scope=\"session\")      # function (default) | class | module | session\ndef api_url():\n    return \"http://localhost:8000\"\n\n@pytest.fixture(autouse=True)         # runs for every test without being requested\ndef reset_state():\n    clear_cache()",
+      "description": "Share fixtures across files; reuse expensive setup.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pytest",
+        "fixtures"
+      ]
+    },
+    {
+      "title": "pytest: parametrize",
+      "body": "@pytest.mark.parametrize(\n    \"value, expected\",\n    [(0, False), (1, True), (2, True), (-1, False)],\n)\ndef test_is_positive(value, expected):\n    assert is_positive(value) is expected",
+      "description": "Run one test with many inputs.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pytest",
+        "parametrize"
+      ]
+    },
+    {
+      "title": "pytest: markers and skipping",
+      "body": "@pytest.mark.slow\ndef test_big_export(): ...\n\n@pytest.mark.skip(reason=\"not implemented yet\")\ndef test_future(): ...\n\n@pytest.mark.skipif(sys.platform == \"win32\", reason=\"posix only\")\ndef test_posix(): ...\n\n@pytest.mark.xfail(reason=\"known bug #123\")\ndef test_known_bug(): ...\n# run: pytest -m \"not slow\"",
+      "description": "Group, skip or expect failures.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pytest"
+      ]
+    },
+    {
+      "title": "Mocking with unittest.mock",
+      "body": "from unittest.mock import patch, MagicMock\n\n@patch(\"app.service.requests.get\")\ndef test_fetch(mock_get):\n    mock_get.return_value = MagicMock(status_code=200, json=lambda: {\"ok\": True})\n    assert fetch_status(\"https://api.example.com\") == \"ok\"\n    mock_get.assert_called_once_with(\"https://api.example.com\", timeout=5)",
+      "description": "Replace a dependency and check how it was called.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "mocking",
+        "pytest"
+      ]
+    },
+    {
+      "title": "pytest monkeypatch and tmp_path",
+      "body": "def test_reads_env(monkeypatch):\n    monkeypatch.setenv(\"API_KEY\", \"test-key\")\n    assert load_key() == \"test-key\"\n\ndef test_writes_file(tmp_path):\n    p = tmp_path / \"out.txt\"\n    write_report(p)\n    assert p.read_text().startswith(\"Report\")",
+      "description": "Change env vars/attributes safely; use temporary files.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pytest",
+        "mocking"
+      ]
+    },
+    {
+      "title": "Django/pytest-django essentials",
+      "body": "import pytest\n\n@pytest.mark.django_db\ndef test_create_user(client):\n    response = client.post(\"/signup/\", {\"email\": \"a@example.com\"})\n    assert response.status_code in (200, 302)\n    assert User.objects.filter(email=\"a@example.com\").exists()",
+      "description": "Database access and the test client.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pytest",
+        "django"
+      ]
+    },
+    {
+      "title": "Jest: structure and matchers",
+      "body": "describe(\"sum\", () => {\n  beforeEach(() => { /* reset state */ });\n\n  test(\"adds numbers\", () => {\n    expect(sum(1, 2)).toBe(3);\n    expect([1, 2]).toEqual([1, 2]);\n    expect(\"hello\").toContain(\"ell\");\n    expect(() => sum(\"a\")).toThrow(\"number\");\n    expect(0.1 + 0.2).toBeCloseTo(0.3);\n  });\n});",
+      "description": "describe/test/expect basics.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "jest",
+        "testing"
+      ]
+    },
+    {
+      "title": "Jest: async tests",
+      "body": "test(\"loads user\", async () => {\n  const user = await fetchUser(1);\n  expect(user.name).toBe(\"Ada\");\n});\n\ntest(\"rejects on 404\", async () => {\n  await expect(fetchUser(999)).rejects.toThrow(\"Not found\");\n});",
+      "description": "Await promises; assert on rejections.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "jest",
+        "async"
+      ]
+    },
+    {
+      "title": "Jest: mock functions and modules",
+      "body": "const fn = jest.fn().mockReturnValue(42);\nfn(\"a\");\nexpect(fn).toHaveBeenCalledWith(\"a\");\nexpect(fn).toHaveBeenCalledTimes(1);\n\njest.mock(\"./api\");                          // auto-mock the module\napi.getUser.mockResolvedValue({ name: \"Ada\" });\napi.getUser.mockRejectedValueOnce(new Error(\"boom\"));",
+      "description": "Spy on calls and stub modules.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "jest",
+        "mocking"
+      ]
+    },
+    {
+      "title": "Jest: fake timers",
+      "body": "jest.useFakeTimers();\ntest(\"calls after 1s\", () => {\n  const cb = jest.fn();\n  setTimeout(cb, 1000);\n  jest.advanceTimersByTime(1000);\n  expect(cb).toHaveBeenCalled();\n});\nafterEach(() => jest.useRealTimers());",
+      "description": "Test debounce, timeouts and intervals without waiting.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "jest"
+      ]
+    },
+    {
+      "title": "Jest: run options",
+      "body": "npx jest\nnpx jest path/to/file.test.ts\nnpx jest -t \"adds numbers\"        # by test name\nnpx jest --watch\nnpx jest --coverage\nnpx jest --runInBand              # no parallel workers (debugging)",
+      "description": "Common CLI flags.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jest"
+      ]
+    },
+    {
+      "title": "Bug-report template",
+      "body": "**Title:** Short, specific summary (what fails, where)\n\n**Environment:** App version/build, OS + version, device/browser, test data used\n\n**Steps to reproduce:**\n1. ...\n2. ...\n3. ...\n\n**Expected result:** ...\n**Actual result:** ...\n\n**Frequency:** always / sometimes (x of y) / once\n**Severity:** blocker / critical / major / minor / trivial\n**Attachments:** screenshot, screen recording, logs, stack trace\n\n**Notes:** workaround, suspected cause, related tickets",
+      "description": "Everything a developer needs to reproduce and fix.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "qa",
+        "bug"
+      ]
+    },
+    {
+      "title": "Regression checklist",
+      "body": "[ ] Login, logout and session expiry still work\n[ ] Core user journey passes end to end (happy path)\n[ ] Recently fixed bugs have not returned (re-run their test cases)\n[ ] Areas touching the changed code are retested (impact analysis)\n[ ] Forms: validation messages, required fields, boundaries\n[ ] Data: create, read, update, delete and persistence after restart\n[ ] Search, sort, filters and pagination\n[ ] Permissions: users only see and do what their role allows\n[ ] Error states and empty states display correctly\n[ ] Works on the supported devices, browsers and screen sizes\n[ ] No new console errors or crashes in logs\n[ ] Performance feels unchanged (load time, large lists)\n[ ] Upgrade path: existing data still opens after the update",
+      "description": "Run after every significant change or before a release.",
+      "type": "checklist",
+      "tags": [
+        "qa",
+        "regression"
+      ]
+    },
+    {
+      "title": "Smoke test checklist",
+      "body": "[ ] App installs and launches without a crash\n[ ] Main screens open\n[ ] Login works with a valid account\n[ ] One create-read-update-delete cycle succeeds\n[ ] Network calls reach the right environment\n[ ] No blocker errors in logs",
+      "description": "Ten-minute check that a new build is testable at all.",
+      "type": "checklist",
+      "tags": [
+        "qa",
+        "smoke"
+      ]
+    },
+    {
+      "title": "Exploratory testing charter",
+      "body": "Charter: Explore {{area}} with {{resource_or_data}} to discover {{risk_or_information}}.\nTime box: 60 minutes\nNotes (what I tried, what I saw):\nBugs found:\nQuestions / risks:\nCoverage not reached:",
+      "description": "Time-boxed, goal-driven session notes.",
+      "type": "snippet",
+      "tags": [
+        "qa",
+        "exploratory"
+      ]
+    },
+    {
+      "title": "Severity vs priority",
+      "body": "Severity (technical impact): blocker > critical > major > minor > trivial\nPriority (business urgency): P0 fix now > P1 this release > P2 next release > P3 backlog\nExample: typo on the home page = low severity, may be high priority.\nExample: crash in a rarely used export = high severity, may be low priority.",
+      "description": "Severity is impact; priority is urgency of the fix.",
+      "type": "snippet",
+      "tags": [
+        "qa",
+        "bug"
+      ]
+    },
+    {
+      "title": "Test pyramid",
+      "body": "Many unit tests    (fast, isolated, cheap)\nSome integration   (components + database/API)\nFew end-to-end UI  (slow, brittle, but realistic)\nAvoid the ice-cream cone: lots of manual and UI tests, few unit tests.",
+      "description": "Rough balance of automated tests.",
+      "type": "snippet",
+      "tags": [
+        "qa",
+        "strategy"
+      ]
+    }
+  ]
+}

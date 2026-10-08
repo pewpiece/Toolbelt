@@ -1,0 +1,159 @@
+{
+  "name": "Test-case design",
+  "category": "QA",
+  "version": "1",
+  "items": [
+    {
+      "title": "Equivalence partitioning",
+      "body": "Rule: age 18-65 can register.\nPartitions:  invalid (<18)   valid (18-65)   invalid (>65)   invalid (non-numeric / empty)\nTest one value from each:  10,  30,  80,  \"abc\",  (blank)",
+      "description": "Split inputs into classes that should behave the same, test one from each.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "design"
+      ]
+    },
+    {
+      "title": "Boundary value analysis",
+      "body": "Rule: quantity must be 1 to 100.\nTest: 0, 1, 2, 99, 100, 101\n(Two-value version: 0, 1, 100, 101.)\nFor floats or dates, use the smallest step: 0.99, 1.00, 100.00, 100.01",
+      "description": "Test at and next to each boundary, where bugs cluster.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "design"
+      ]
+    },
+    {
+      "title": "Decision table",
+      "body": "Rule: free shipping if member AND order >= 50; 10% off if coupon.\n\nConditions        R1  R2  R3  R4\nIs member          Y   Y   N   N\nOrder >= 50        Y   N   Y   N\nHas coupon         Y   Y   N   N\nActions\nFree shipping      X       .   .\n10% discount       X   X   .   .\n(Fill every combination: 2^n columns, then merge identical outcomes.)",
+      "description": "All combinations of conditions with the expected action.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "design"
+      ]
+    },
+    {
+      "title": "State transition testing",
+      "body": "States: Draft -> Submitted -> Approved / Rejected -> (Closed)\nTest: each valid transition, each invalid one (e.g. Draft -> Approved must be refused),\nrepeated transitions, and what happens on refresh or double-click.",
+      "description": "Test every transition, including invalid ones.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "design"
+      ]
+    },
+    {
+      "title": "Pairwise (all-pairs) testing",
+      "body": "Parameters: Browser (Chrome, Firefox, Safari), OS (Win, Mac, Linux), Language (EN, DE)\nFull combinations: 3 x 3 x 2 = 18. Pairwise covers all pairs in about 9.\nTools: PICT (Microsoft), allpairspy (Python): pip install allpairspy",
+      "description": "Cover every pair of values without every combination.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "design"
+      ]
+    },
+    {
+      "title": "Test-case template",
+      "body": "ID:            TC-LOGIN-001\nTitle:         Login succeeds with valid credentials\nRequirement:   REQ-12 (traceability)\nPriority:      High\nPreconditions: User \"ada\" exists and is active\nTest data:     username = ada, password = correct-horse\nSteps:\n  1. Open the login page\n  2. Enter username and password\n  3. Press \"Log in\"\nExpected:      Dashboard opens; \"Welcome, ada\" is shown\nActual:        (filled in during execution)\nStatus:        Pass / Fail / Blocked\nNotes:",
+      "description": "Fields every written test case needs.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "template"
+      ]
+    },
+    {
+      "title": "Test-case naming convention",
+      "body": "TC-<AREA>-<NNN>        e.g. TC-LOGIN-001, TC-CART-014\nTitle pattern:         <Action> <object> <condition>  ->  \"Reject login with expired password\"\nGroup by feature, not by tester.",
+      "description": "Readable, searchable IDs.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "template"
+      ]
+    },
+    {
+      "title": "Negative input list",
+      "body": "[ ] Empty and whitespace only\n[ ] Very long string (255, 1000, 100000 characters)\n[ ] Leading and trailing spaces\n[ ] Special characters: ' \" < > & % \\ / ;\n[ ] Unicode, emoji and right-to-left text\n[ ] Script and SQL-like strings (only on systems you are allowed to test)\n[ ] Numbers where text is expected and the reverse\n[ ] Negative, zero, decimal and huge numbers\n[ ] Duplicate of an existing value\n[ ] Copy-pasted text with line breaks",
+      "description": "Inputs to try on any text field.",
+      "type": "checklist",
+      "tags": [
+        "testing",
+        "negative"
+      ]
+    },
+    {
+      "title": "Date and time test ideas",
+      "body": "[ ] Today, yesterday, tomorrow\n[ ] Leap day (29 Feb) and year end (31 Dec to 1 Jan)\n[ ] Month lengths (30, 31) and February\n[ ] Time zones and daylight saving changes\n[ ] Midnight (00:00) and 23:59\n[ ] Start date after end date\n[ ] Very old and far-future dates\n[ ] Different date formats and locales",
+      "description": "Typical sources of date bugs.",
+      "type": "checklist",
+      "tags": [
+        "testing",
+        "dates"
+      ]
+    },
+    {
+      "title": "Error guessing prompts",
+      "body": "- What happens if I do it twice, quickly (double-click / retry)?\n- What if the network drops halfway?\n- What if the data is missing, deleted or changed by someone else?\n- What if I go back, refresh or open it in two tabs?\n- What if the disk, memory or quota is full?\n- What would a malicious user try?",
+      "description": "Questions that lead to extra test ideas.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "design"
+      ]
+    },
+    {
+      "title": "Requirement traceability matrix",
+      "body": "| Requirement | Description          | Test cases           | Status |\n|-------------|----------------------|----------------------|--------|\n| REQ-01      | User can log in      | TC-LOGIN-001..004    | Pass   |\n| REQ-02      | Password reset email | TC-RESET-001..003    | Fail   |",
+      "description": "Link requirements to tests so nothing is untested.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "testing",
+        "template"
+      ]
+    },
+    {
+      "title": "Acceptance criteria (Given/When/Then)",
+      "body": "Given I am a logged-in customer with items in my cart\nWhen I press \"Checkout\" and my payment is declined\nThen I see \"Payment failed\" and my cart is unchanged",
+      "description": "Behaviour-style criteria that become test cases.",
+      "type": "snippet",
+      "language": "gherkin",
+      "tags": [
+        "testing",
+        "bdd"
+      ]
+    },
+    {
+      "title": "Test report summary",
+      "body": "Scope: {{scope}}   Build: {{build}}   Date: {{date}}\nExecuted: {{executed}} of {{planned}} test cases\nPassed: {{passed}}   Failed: {{failed}}   Blocked: {{blocked}}\nOpen defects: {{critical}} critical, {{major}} major, {{minor}} minor\nRisks / not tested: {{risks}}\nRecommendation: release / release with known issues / do not release",
+      "description": "One-paragraph outcome for stakeholders.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "report"
+      ]
+    },
+    {
+      "title": "Usability heuristics (Nielsen)",
+      "body": "1 Visibility of system status    2 Match with the real world\n3 User control and freedom       4 Consistency and standards\n5 Error prevention               6 Recognition rather than recall\n7 Flexibility and efficiency     8 Minimalist design\n9 Help users recover from errors 10 Help and documentation",
+      "description": "Ten checks for a user interface review.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "usability"
+      ]
+    },
+    {
+      "title": "Mobile test matrix ideas",
+      "body": "Android versions (oldest supported to newest) x screen sizes (small phone, large phone, tablet)\nOrientation (portrait/landscape), dark mode, font size scale, language/RTL\nInterrupts: incoming call, notification, app switch, low battery, airplane mode\nInstall, upgrade over previous version (data kept), uninstall",
+      "description": "Dimensions for Android app testing.",
+      "type": "snippet",
+      "tags": [
+        "testing",
+        "mobile"
+      ]
+    }
+  ]
+}
