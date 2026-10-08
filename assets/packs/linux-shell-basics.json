@@ -1,0 +1,238 @@
+{
+  "name": "Linux & shell basics",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "List files in detail",
+      "body": "ls -lah",
+      "description": "Long format, human sizes, including hidden files.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Copy, move, remove",
+      "body": "cp -r src/ dest/\nmv old.txt new.txt\nrm file.txt\nrm -rf dir/",
+      "description": "Everyday file operations (rm -rf is permanent).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Make nested directories",
+      "body": "mkdir -p {{path}}",
+      "description": "Create parents as needed without errors if they exist.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Symbolic link",
+      "body": "ln -s {{target}} {{link_name}}",
+      "description": "Create a link at link_name pointing to target.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Disk usage",
+      "body": "df -h\ndu -sh * | sort -h",
+      "description": "Free space per filesystem and the biggest items in a folder.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "disk"
+      ]
+    },
+    {
+      "title": "chmod: set permissions",
+      "body": "chmod 644 file      # rw-r--r--\nchmod 755 script    # rwxr-xr-x\nchmod +x script.sh  # add execute\nchmod -R u+rwX,go-w dir/",
+      "description": "Numeric and symbolic modes.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "permissions"
+      ]
+    },
+    {
+      "title": "Permission numbers",
+      "body": "r = 4, w = 2, x = 1; add them per class (user, group, other)\n7 = rwx   6 = rw-   5 = r-x   4 = r--   0 = ---\n644 = user rw, others read     755 = user rwx, others rx\n600 = private file             700 = private directory",
+      "description": "How to read mode digits.",
+      "type": "snippet",
+      "tags": [
+        "linux",
+        "permissions"
+      ]
+    },
+    {
+      "title": "chown: change owner",
+      "body": "sudo chown {{user}}:{{group}} file\nsudo chown -R {{user}}:{{group}} dir/",
+      "description": "Set user and group, recursively if needed.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "permissions"
+      ]
+    },
+    {
+      "title": "grep: search text",
+      "body": "grep -rniI \"{{pattern}}\" .\ngrep -v \"exclude\"   file     # invert match\ngrep -E \"foo|bar\"   file     # extended regex\ngrep -c \"word\"      file     # count matching lines\ngrep -rn --include=\"*.py\" \"TODO\" .",
+      "description": "Recursive, case-insensitive, with line numbers.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "grep"
+      ]
+    },
+    {
+      "title": "find: locate files",
+      "body": "find . -name \"*.py\" -type f\nfind . -type f -mtime -1            # modified in the last day\nfind . -size +100M                  # larger than 100 MB\nfind . -name \"*.tmp\" -exec rm {} \\;",
+      "description": "By name, type, age, size, and run a command on results.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "find"
+      ]
+    },
+    {
+      "title": "sed: substitute and print",
+      "body": "sed -i 's/old/new/g' file.txt   # replace in place (GNU sed)\nsed -n '10,20p' file.txt        # print lines 10-20\nsed '/^#/d' file.txt            # drop comment lines",
+      "description": "Stream edits.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "sed"
+      ]
+    },
+    {
+      "title": "awk: columns and sums",
+      "body": "awk '{print $1}' file            # first column\nawk -F: '{print $1}' /etc/passwd  # custom separator\nawk '{s += $3} END {print s}' f   # sum column 3\nawk 'NR > 1 && $2 > 100' file     # skip header, filter",
+      "description": "Pick fields and aggregate.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "awk"
+      ]
+    },
+    {
+      "title": "Processes: list and kill",
+      "body": "ps aux | grep {{name}}\nkill {{pid}}          # polite (SIGTERM)\nkill -9 {{pid}}       # force (SIGKILL)\npkill -f \"{{pattern}}\"\ntop                   # live view (q to quit)",
+      "description": "Find, signal and watch processes.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "process"
+      ]
+    },
+    {
+      "title": "Who is using a port",
+      "body": "lsof -i :{{port}}\nss -tulpn | grep :{{port}}",
+      "description": "Find the process listening on a port.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "network",
+        "process"
+      ]
+    },
+    {
+      "title": "ssh: connect and keys",
+      "body": "ssh {{user}}@{{host}}\nssh -p {{port}} {{user}}@{{host}}\nssh-keygen -t ed25519 -C \"{{email}}\"\nssh-copy-id {{user}}@{{host}}",
+      "description": "Log in, make an ed25519 key and install it on a server.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "ssh"
+      ]
+    },
+    {
+      "title": "ssh: port forwarding and copying",
+      "body": "ssh -L 8080:localhost:80 {{user}}@{{host}}   # local 8080 -> remote 80\nscp file.txt {{user}}@{{host}}:/tmp/\nscp -r {{user}}@{{host}}:/var/log/app ./logs",
+      "description": "Tunnel a remote port and copy files with scp.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "ssh"
+      ]
+    },
+    {
+      "title": "tar: create and extract",
+      "body": "tar -czf archive.tar.gz dir/       # create\ntar -xzf archive.tar.gz -C dest/   # extract into dest/\ntar -tf archive.tar.gz             # list contents",
+      "description": "Archive and compress with gzip.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "tar"
+      ]
+    },
+    {
+      "title": "curl: download",
+      "body": "curl -fsSL https://example.com/file -o file\ncurl -fsSLO https://example.com/file.tar.gz   # keep remote name\ncurl -I https://example.com                   # headers only",
+      "description": "Fetch files quietly, follow redirects, fail on HTTP errors.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "curl"
+      ]
+    },
+    {
+      "title": "cron: schedule a job",
+      "body": "crontab -e\n# min  hour  day-of-month  month  day-of-week  command\n*/5 * * * * /home/me/job.sh >> /home/me/job.log 2>&1\n0 2 * * 1-5 /home/me/backup.sh   # 02:00 on weekdays\ncrontab -l                       # list",
+      "description": "Edit your crontab; five time fields then the command.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "cron"
+      ]
+    },
+    {
+      "title": "Follow and inspect text files",
+      "body": "tail -f app.log\ntail -n 100 app.log\nhead -n 20 file\nwc -l file\nless +F app.log",
+      "description": "Tail logs, view the top, count lines.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "files"
+      ]
+    },
+    {
+      "title": "Pipes and sort/uniq",
+      "body": "cut -d, -f2 data.csv | sort | uniq -c | sort -rn",
+      "description": "Combine tools: unique sorted values with counts.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "linux",
+        "pipes"
+      ]
+    }
+  ]
+}

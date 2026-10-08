@@ -1,0 +1,241 @@
+{
+  "name": "HTTP & REST",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "HTTP status code groups",
+      "body": "1xx informational   2xx success   3xx redirection\n4xx client error    5xx server error",
+      "description": "What each hundred-range means.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "status"
+      ]
+    },
+    {
+      "title": "Common 2xx and 3xx codes",
+      "body": "200 OK                 201 Created (new resource)\n202 Accepted           204 No Content (success, empty body)\n301 Moved Permanently  302 Found (temporary redirect)\n304 Not Modified (cache is still valid)\n307 / 308 redirect that keeps the HTTP method",
+      "description": "Success and redirect codes you will see most.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "status"
+      ]
+    },
+    {
+      "title": "Common 4xx codes",
+      "body": "400 Bad Request          401 Unauthorized (not authenticated)\n403 Forbidden (no permission)   404 Not Found\n405 Method Not Allowed   409 Conflict\n410 Gone                 415 Unsupported Media Type\n422 Unprocessable Content (validation failed)\n429 Too Many Requests (rate limited)",
+      "description": "Client error codes and when to use them.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "status"
+      ]
+    },
+    {
+      "title": "Common 5xx codes",
+      "body": "500 Internal Server Error   501 Not Implemented\n502 Bad Gateway (bad reply from upstream)\n503 Service Unavailable    504 Gateway Timeout",
+      "description": "Server-side failures.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "status"
+      ]
+    },
+    {
+      "title": "HTTP methods: safe and idempotent",
+      "body": "GET      read            safe, idempotent\nHEAD     headers only    safe, idempotent\nPOST     create/action   not idempotent\nPUT      replace         idempotent\nPATCH    partial update  usually not idempotent\nDELETE   remove          idempotent\nOPTIONS  capabilities / CORS preflight",
+      "description": "Which methods can be repeated or cached safely.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "methods"
+      ]
+    },
+    {
+      "title": "Important request headers",
+      "body": "Content-Type: application/json     body format\nAccept: application/json           desired response format\nAuthorization: Bearer <token>      credentials\nUser-Agent: my-app/1.0\nIf-None-Match: \"<etag>\"            conditional request",
+      "description": "Headers clients send most often.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "headers"
+      ]
+    },
+    {
+      "title": "Important response headers",
+      "body": "Content-Type: application/json; charset=utf-8\nCache-Control: max-age=3600       or: no-store\nETag: \"abc123\"\nLocation: /items/42               (after 201 or a redirect)\nRetry-After: 30                   (with 429 / 503)\nWWW-Authenticate: Bearer          (with 401)",
+      "description": "Headers servers send most often.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "headers"
+      ]
+    },
+    {
+      "title": "CORS headers",
+      "body": "Access-Control-Allow-Origin: https://app.example.com\nAccess-Control-Allow-Methods: GET, POST, PUT, DELETE\nAccess-Control-Allow-Headers: Content-Type, Authorization\nAccess-Control-Allow-Credentials: true\nAccess-Control-Max-Age: 86400",
+      "description": "What the server must return to allow a browser cross-origin call.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "cors"
+      ]
+    },
+    {
+      "title": "Auth: Bearer token",
+      "body": "curl -H \"Authorization: Bearer {{token}}\" https://api.example.com/me",
+      "description": "Send a token (JWT or OAuth access token) in the Authorization header.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "auth",
+        "curl"
+      ]
+    },
+    {
+      "title": "Auth: Basic",
+      "body": "curl -u {{username}}:{{password}} https://api.example.com/me\n# header form: Authorization: Basic base64(username:password)",
+      "description": "Username and password; curl encodes them as base64 for you.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "auth",
+        "curl"
+      ]
+    },
+    {
+      "title": "Auth: API key",
+      "body": "curl -H \"X-API-Key: {{api_key}}\" https://api.example.com/items\n# avoid ?api_key=... in URLs: they end up in logs",
+      "description": "Key in a custom header (or, less safely, a query string).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "auth",
+        "curl"
+      ]
+    },
+    {
+      "title": "curl GET with query parameters",
+      "body": "curl -G https://api.example.com/items \\\n  --data-urlencode \"q={{query}}\" \\\n  -d \"limit=10\" \\\n  -H \"Accept: application/json\"",
+      "description": "Let curl URL-encode the parameters.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "get"
+      ]
+    },
+    {
+      "title": "curl POST JSON",
+      "body": "curl -X POST https://api.example.com/items \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\": \"{{name}}\", \"price\": 9.99}'",
+      "description": "Send a JSON body.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "post"
+      ]
+    },
+    {
+      "title": "curl PUT JSON",
+      "body": "curl -X PUT https://api.example.com/items/{{id}} \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\": \"{{name}}\", \"price\": 12.50}'",
+      "description": "Replace a resource.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "put"
+      ]
+    },
+    {
+      "title": "curl PATCH JSON",
+      "body": "curl -X PATCH https://api.example.com/items/{{id}} \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"price\": 11.00}'",
+      "description": "Change only some fields.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "patch"
+      ]
+    },
+    {
+      "title": "curl DELETE",
+      "body": "curl -X DELETE https://api.example.com/items/{{id}} -i",
+      "description": "Remove a resource.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "delete"
+      ]
+    },
+    {
+      "title": "curl form and file upload",
+      "body": "curl -d \"user=ada&pass=secret\" https://example.com/login\ncurl -F \"file=@report.pdf\" -F \"title=Report\" https://example.com/upload",
+      "description": "URL-encoded form and multipart upload.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "upload"
+      ]
+    },
+    {
+      "title": "curl: show status code and timing",
+      "body": "curl -s -o /dev/null -w \"%{http_code} %{time_total}s\\n\" https://example.com",
+      "description": "Quiet request that prints only metrics.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "debug"
+      ]
+    },
+    {
+      "title": "curl: debug a request",
+      "body": "curl -v https://example.com            # verbose request/response\ncurl -L https://example.com            # follow redirects\ncurl -I https://example.com            # response headers only\ncurl --max-time 10 https://example.com",
+      "description": "See headers, follow redirects, set a timeout.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "debug"
+      ]
+    },
+    {
+      "title": "curl: cookies",
+      "body": "curl -c cookies.txt -d \"user=ada&pass=secret\" https://example.com/login\ncurl -b cookies.txt https://example.com/account",
+      "description": "Save and reuse cookies across requests.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "http",
+        "curl",
+        "cookies"
+      ]
+    },
+    {
+      "title": "REST URL design",
+      "body": "GET    /items            list (support ?page=&limit=&sort=)\nPOST   /items            create -> 201 + Location header\nGET    /items/{id}       read\nPUT    /items/{id}       replace\nPATCH  /items/{id}       partial update\nDELETE /items/{id}       delete -> 204\nUse plural nouns, no verbs in paths, and version the API (/v1/items).",
+      "description": "Conventions for resource-style APIs.",
+      "type": "snippet",
+      "tags": [
+        "http",
+        "rest"
+      ]
+    }
+  ]
+}

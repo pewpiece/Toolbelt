@@ -1,0 +1,233 @@
+{
+  "name": "Regex",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "Character classes and shorthands",
+      "body": "\\d digit      \\w word char [A-Za-z0-9_]   \\s whitespace\n\\D \\W \\S the negations\n[abc] any of a, b, c    [^abc] none of them    [a-z] range\n.  any character except newline",
+      "description": "Match sets of characters.",
+      "type": "snippet",
+      "tags": [
+        "regex",
+        "cheatsheet"
+      ]
+    },
+    {
+      "title": "Quantifiers",
+      "body": "*      0 or more        +     1 or more       ?     0 or 1\n{3}    exactly 3        {2,5} 2 to 5          {2,}  2 or more\nAdd ? for lazy:  .*?  matches as little as possible",
+      "description": "How many times to match.",
+      "type": "snippet",
+      "tags": [
+        "regex",
+        "cheatsheet"
+      ]
+    },
+    {
+      "title": "Anchors and boundaries",
+      "body": "^     start of string/line      $     end of string/line\n\\b    word boundary             \\B    not a word boundary",
+      "description": "Position matching.",
+      "type": "snippet",
+      "tags": [
+        "regex",
+        "cheatsheet"
+      ]
+    },
+    {
+      "title": "Groups and lookarounds",
+      "body": "(abc)       capture group, referenced as \\1 or $1\n(?:abc)     non-capturing group\n(?<name>x)  named group\na|b         alternation\nx(?=y)      x followed by y         x(?!y)    x not followed by y\n(?<=y)x     x preceded by y         (?<!y)x   x not preceded by y",
+      "description": "Capturing, non-capturing, named and lookaround syntax.",
+      "type": "snippet",
+      "tags": [
+        "regex",
+        "cheatsheet"
+      ]
+    },
+    {
+      "title": "Email (simple)",
+      "body": "^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$\n# matches: ada@example.com, a.b+tag@mail.co.uk\n# rejects: ada@, @example.com",
+      "description": "Practical, not RFC-perfect.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "email"
+      ]
+    },
+    {
+      "title": "URL (http/https)",
+      "body": "^https?://[\\w.-]+(:\\d+)?(/[^\\s]*)?$\n# matches: https://example.com, http://localhost:8000/a/b?x=1",
+      "description": "Scheme, host, optional port and path.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "url"
+      ]
+    },
+    {
+      "title": "IPv4 address",
+      "body": "^((25[0-5]|2[0-4]\\d|1?\\d?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1?\\d?\\d)$\n# matches: 192.168.1.1, 255.255.255.0\n# rejects: 256.1.1.1, 1.2.3",
+      "description": "Four octets, each 0-255.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "network"
+      ]
+    },
+    {
+      "title": "Date YYYY-MM-DD",
+      "body": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$\n# matches: 2024-03-05\n# rejects: 2024-13-01",
+      "description": "ISO date with plausible month and day.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "date"
+      ]
+    },
+    {
+      "title": "Time HH:MM (24 hour)",
+      "body": "^([01]\\d|2[0-3]):[0-5]\\d$\n# matches: 09:30, 23:59   rejects: 24:00",
+      "description": "Hours 00-23, minutes 00-59.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "date"
+      ]
+    },
+    {
+      "title": "Hex colour",
+      "body": "^#(?:[0-9a-fA-F]{3}){1,2}$\n# matches: #fff, #1a2B3c",
+      "description": "#RGB or #RRGGBB.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "color"
+      ]
+    },
+    {
+      "title": "UUID",
+      "body": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+      "description": "Canonical 8-4-4-4-12 hex form.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "uuid"
+      ]
+    },
+    {
+      "title": "Semantic version",
+      "body": "^(\\d+)\\.(\\d+)\\.(\\d+)(-[0-9A-Za-z.-]+)?$\n# matches: 1.2.3, 2.0.0-beta.1",
+      "description": "MAJOR.MINOR.PATCH with optional pre-release.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "semver"
+      ]
+    },
+    {
+      "title": "Slug",
+      "body": "^[a-z0-9]+(?:-[a-z0-9]+)*$\n# matches: my-first-post   rejects: My_Post, double--hyphen",
+      "description": "Lowercase words separated by single hyphens.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "slug"
+      ]
+    },
+    {
+      "title": "Password strength (lookaheads)",
+      "body": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$",
+      "description": "At least 8 chars with lower, upper and digit.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "password"
+      ]
+    },
+    {
+      "title": "Trim whitespace",
+      "body": "^\\s+|\\s+$\n# replace with an empty string",
+      "description": "Leading and trailing spaces.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "whitespace"
+      ]
+    },
+    {
+      "title": "Collapse repeated spaces",
+      "body": "\\s{2,}\n# replace with a single space",
+      "description": "Multiple spaces into one.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "whitespace"
+      ]
+    },
+    {
+      "title": "Numbers",
+      "body": "^-?\\d+(\\.\\d+)?$\n# matches: 42, -3.14   rejects: 1.2.3, abc",
+      "description": "Integer and decimal numbers, optionally signed.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex",
+        "numbers"
+      ]
+    },
+    {
+      "title": "Extract text between delimiters",
+      "body": "\"(.*?)\"       # text inside double quotes\n\\[(.*?)\\]      # text inside square brackets",
+      "description": "Lazy match inside quotes or brackets.",
+      "type": "snippet",
+      "language": "regex",
+      "tags": [
+        "regex"
+      ]
+    },
+    {
+      "title": "Python re usage",
+      "body": "import re\n\nm = re.search(r\"(\\d{4})-(\\d{2})\", \"Date: 2024-03\")\nprint(m.group(1), m.group(2))          # 2024 03\nre.findall(r\"\\d+\", \"a1b22c333\")        # ['1', '22', '333']\nre.sub(r\"(\\w+)@(\\w+)\", r\"\\2 at \\1\", \"ada@example\")",
+      "description": "Search, find all, replace with groups.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "regex",
+        "python"
+      ]
+    },
+    {
+      "title": "grep -E usage",
+      "body": "grep -E '^[0-9]{3}-[0-9]{4}$' file\ngrep -oE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}' file",
+      "description": "Extended regex and only-matching output.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "regex",
+        "grep"
+      ]
+    },
+    {
+      "title": "JavaScript regex usage",
+      "body": "/^\\d+$/.test(\"123\");                     // true\n\"a1b22\".match(/\\d+/g);                  // [\"1\", \"22\"]\nconst m = \"2024-03-05\".match(/(?<y>\\d{4})-(?<m>\\d{2})/);\nm.groups.y;                             // \"2024\"\n\"John Smith\".replace(/(\\w+) (\\w+)/, \"$2, $1\");",
+      "description": "Test, match all, named groups and replace.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "regex",
+        "javascript"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "name": "JSON & YAML",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "jq: pretty-print",
+      "body": "jq . data.json\ncurl -s https://api.example.com/items | jq .",
+      "description": "Format JSON from a file or a pipe.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: get a field",
+      "body": "jq '.user.name' data.json\njq -r '.user.name' data.json",
+      "description": "Nested access and raw (unquoted) output.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: iterate an array",
+      "body": "jq '.[]' data.json\njq '.items[].id' data.json",
+      "description": "Output each element, or a field of each.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: filter with select",
+      "body": "jq '.[] | select(.age > 30)' data.json\njq '.[] | select(.name | test(\"^a\"; \"i\"))' data.json",
+      "description": "Keep only matching elements.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: reshape objects",
+      "body": "jq '.[] | {id: .id, name: .name}' data.json\njq 'map({id, name})' data.json",
+      "description": "Build new objects from selected fields.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: sort, group, unique",
+      "body": "jq 'sort_by(.age)' data.json\njq 'group_by(.team) | map({team: .[0].team, n: length})' data.json\njq '[.[].tag] | unique' data.json",
+      "description": "Common array transforms.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: length and keys",
+      "body": "jq 'length' data.json\njq 'keys' data.json",
+      "description": "Count items and list object keys.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: pass a shell variable",
+      "body": "jq --arg name \"{{name}}\" '.[] | select(.name == $name)' data.json",
+      "description": "Use --arg instead of string interpolation.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: output CSV",
+      "body": "jq -r '([\"id\",\"name\"] | @csv), (.[] | [.id, .name] | @csv)' data.json",
+      "description": "Rows as CSV with a header line.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json",
+        "csv"
+      ]
+    },
+    {
+      "title": "jq: compact output and slurp",
+      "body": "jq -c . data.json\njq -s . a.json b.json",
+      "description": "One-line JSON; combine many JSON documents into an array.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "jq: update a value",
+      "body": "jq '.version = \"2.0\"' package.json > out.json\njq '.items |= map(select(.active))' data.json",
+      "description": "Modify and write to a new file.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jq",
+        "json"
+      ]
+    },
+    {
+      "title": "Validate JSON from the shell",
+      "body": "jq empty data.json\npython3 -m json.tool data.json > /dev/null",
+      "description": "Exit non-zero if the file is not valid JSON.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "json",
+        "validate"
+      ]
+    },
+    {
+      "title": "yq: read values",
+      "body": "yq '.services.web.image' docker-compose.yml\nyq '.items[].name' file.yaml",
+      "description": "mikefarah yq v4: query YAML like jq.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "yq",
+        "yaml"
+      ]
+    },
+    {
+      "title": "yq: edit in place",
+      "body": "yq -i '.spec.replicas = 3' deployment.yaml",
+      "description": "Change a value directly in the file.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "yq",
+        "yaml"
+      ]
+    },
+    {
+      "title": "yq: convert between YAML and JSON",
+      "body": "yq -o=json file.yaml\nyq -P file.json            # JSON to pretty YAML",
+      "description": "Format conversion both ways.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "yq",
+        "yaml",
+        "json"
+      ]
+    },
+    {
+      "title": "yq: merge two YAML files",
+      "body": "yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' base.yaml override.yaml",
+      "description": "Deep-merge, with the second file winning.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "yq",
+        "yaml"
+      ]
+    },
+    {
+      "title": "YAML pitfall: unquoted values",
+      "body": "country: \"NO\"        # unquoted NO becomes false in some parsers\nenabled: \"yes\"       # unquoted yes/on/off may become booleans\nversion: \"1.10\"      # unquoted becomes the number 1.1\nzip: \"01234\"         # unquoted leading zero may read as octal\ntime: \"12:30\"        # can parse as sexagesimal in YAML 1.1",
+      "description": "Values YAML 1.1 parsers turn into booleans or numbers; quote them.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "yaml",
+        "pitfalls"
+      ]
+    },
+    {
+      "title": "YAML pitfall: indentation and tabs",
+      "body": "# Tabs are not allowed for indentation: use 2 spaces.\nkey:\n  child: value\nmessage: \"error: something failed\"   # quote strings containing ': '\npath: 'C:\\Users\\me'                  # single quotes keep backslashes literal",
+      "description": "Only spaces; keep consistent; colons in strings need quotes.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "yaml",
+        "pitfalls"
+      ]
+    },
+    {
+      "title": "YAML multi-line strings",
+      "body": "script: |\n  line one\n  line two\ndescription: >\n  these lines are\n  folded into one line\nkeep_trailing: |+\n  keeps trailing newlines",
+      "description": "Literal (|) keeps newlines; folded (>) joins lines.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "yaml"
+      ]
+    },
+    {
+      "title": "YAML anchors and merge keys",
+      "body": "defaults: &defaults\n  restart: always\n  logging: json\n\nweb:\n  <<: *defaults\n  image: nginx",
+      "description": "Reuse a block of settings.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "yaml"
+      ]
+    },
+    {
+      "title": "JSON gotchas",
+      "body": "- Keys and strings need double quotes (no single quotes)\n- No trailing commas\n- No comments\n- No undefined, NaN or Infinity\n- Numbers cannot have leading zeros",
+      "description": "What JSON does not allow.",
+      "type": "snippet",
+      "tags": [
+        "json",
+        "pitfalls"
+      ]
+    }
+  ]
+}

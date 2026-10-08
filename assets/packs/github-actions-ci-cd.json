@@ -1,0 +1,189 @@
+{
+  "name": "GitHub Actions & CI/CD",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "Workflow skeleton (Node)",
+      "body": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n          cache: npm\n      - run: npm ci\n      - run: npm test",
+      "description": "Run lint and tests on push and pull request.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "node"
+      ]
+    },
+    {
+      "title": "Workflow skeleton (Python)",
+      "body": "name: CI\non: [push, pull_request]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.12\"\n          cache: pip\n      - run: pip install -r requirements.txt\n      - run: pytest -q",
+      "description": "Set up Python with pip caching.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "python"
+      ]
+    },
+    {
+      "title": "Matrix build",
+      "body": "jobs:\n  test:\n    runs-on: ubuntu-latest\n    strategy:\n      fail-fast: false\n      matrix:\n        node: [20, 22]\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: ${{ matrix.node }}\n      - run: npm ci && npm test",
+      "description": "Run a job across several versions.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "matrix"
+      ]
+    },
+    {
+      "title": "Cache dependencies manually",
+      "body": "- uses: actions/cache@v4\n  with:\n    path: ~/.cache/pip\n    key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}\n    restore-keys: pip-${{ runner.os }}-",
+      "description": "actions/cache with a lockfile-based key.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "cache"
+      ]
+    },
+    {
+      "title": "Use secrets and environment variables",
+      "body": "steps:\n  - run: ./deploy.sh\n    env:\n      API_TOKEN: ${{ secrets.API_TOKEN }}\n      STAGE: production",
+      "description": "Secrets are never printed; pass them via env.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "secrets"
+      ]
+    },
+    {
+      "title": "Run only on tags or the main branch",
+      "body": "if: startsWith(github.ref, 'refs/tags/v')\n# other examples:\n# if: github.ref == 'refs/heads/main'\n# if: github.event_name == 'pull_request'\n# if: failure()",
+      "description": "Conditional jobs and steps.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "conditions"
+      ]
+    },
+    {
+      "title": "Trigger on tags, schedule and manual run",
+      "body": "on:\n  push:\n    tags: [\"v*\"]\n  schedule:\n    - cron: \"0 3 * * 1\"      # Mondays 03:00 UTC\n  workflow_dispatch:\n    inputs:\n      environment:\n        description: Where to deploy\n        default: staging",
+      "description": "Different ways to start a workflow.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "triggers"
+      ]
+    },
+    {
+      "title": "Job dependencies and permissions",
+      "body": "permissions:\n  contents: read\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps: [{ run: echo build }]\n  deploy:\n    needs: build\n    runs-on: ubuntu-latest\n    permissions:\n      contents: write\n    steps: [{ run: echo deploy }]",
+      "description": "Run jobs in order and limit the token.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "permissions"
+      ]
+    },
+    {
+      "title": "Upload and download artifacts",
+      "body": "- uses: actions/upload-artifact@v4\n  with:\n    name: dist\n    path: dist/\n\n# in a later job:\n- uses: actions/download-artifact@v4\n  with:\n    name: dist",
+      "description": "Share build output between jobs or keep it.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "artifacts"
+      ]
+    },
+    {
+      "title": "Release: upload a file to a GitHub Release",
+      "body": "permissions:\n  contents: write\nsteps:\n  - uses: softprops/action-gh-release@v2\n    with:\n      files: dist/app.zip\n      generate_release_notes: true",
+      "description": "On a v* tag, attach a build output.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "release"
+      ]
+    },
+    {
+      "title": "Release with the gh CLI",
+      "body": "- run: gh release create \"$GITHUB_REF_NAME\" dist/app.zip --generate-notes\n  env:\n    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+      "description": "Alternative: create the release from a step.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "release"
+      ]
+    },
+    {
+      "title": "Set outputs and environment between steps",
+      "body": "- id: version\n  run: echo \"value=1.2.3\" >> \"$GITHUB_OUTPUT\"\n- run: echo \"Version is ${{ steps.version.outputs.value }}\"\n- run: echo \"BUILD_ID=42\" >> \"$GITHUB_ENV\"     # available in later steps",
+      "description": "Pass values within a job.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions"
+      ]
+    },
+    {
+      "title": "Job summary",
+      "body": "- run: echo \"### Build passed :rocket:\" >> \"$GITHUB_STEP_SUMMARY\"",
+      "description": "Write Markdown to the run summary page.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions"
+      ]
+    },
+    {
+      "title": "Cancel outdated runs (concurrency)",
+      "body": "concurrency:\n  group: ${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: true",
+      "description": "Only keep the latest run per branch.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "concurrency"
+      ]
+    },
+    {
+      "title": "Build and push a Docker image",
+      "body": "- uses: docker/login-action@v3\n  with:\n    registry: ghcr.io\n    username: ${{ github.actor }}\n    password: ${{ secrets.GITHUB_TOKEN }}\n- uses: docker/build-push-action@v6\n  with:\n    push: true\n    tags: ghcr.io/${{ github.repository }}:latest",
+      "description": "Log in to GHCR and push with Buildx.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "github-actions",
+        "docker"
+      ]
+    },
+    {
+      "title": "Useful contexts",
+      "body": "${{ github.sha }}            commit SHA\n${{ github.ref_name }}       branch or tag name\n${{ github.repository }}     owner/repo\n${{ github.actor }}          user who triggered the run\n${{ runner.os }}             Linux, Windows or macOS\n${{ secrets.NAME }}          a repository secret",
+      "description": "Values you can read in expressions.",
+      "type": "snippet",
+      "tags": [
+        "github-actions"
+      ]
+    },
+    {
+      "title": "CI/CD pipeline stages",
+      "body": "1. Lint + format check      2. Type check       3. Unit tests\n4. Build                    5. Integration/e2e tests\n6. Publish artifact/image   7. Deploy to staging + smoke test\n8. Manual approval          9. Deploy to production + monitor/rollback",
+      "description": "A typical order of stages and gates.",
+      "type": "snippet",
+      "tags": [
+        "ci",
+        "cd"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "name": "SQL & PostgreSQL",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "SELECT basics",
+      "body": "SELECT id, name, created_at\nFROM users\nWHERE active = true AND name ILIKE '%ada%'\nORDER BY created_at DESC\nLIMIT 20 OFFSET 0;",
+      "description": "Filter, sort and limit.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "title": "INNER JOIN",
+      "body": "SELECT o.id, c.name\nFROM orders o\nINNER JOIN customers c ON c.id = o.customer_id;",
+      "description": "Only rows with a match in both tables.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "join"
+      ]
+    },
+    {
+      "title": "LEFT JOIN with missing matches",
+      "body": "SELECT c.id, c.name\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nWHERE o.id IS NULL;     -- customers who never ordered",
+      "description": "All left rows; find those with no match.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "join"
+      ]
+    },
+    {
+      "title": "Aggregate with GROUP BY and HAVING",
+      "body": "SELECT customer_id, COUNT(*) AS orders, SUM(total) AS revenue\nFROM orders\nWHERE status = 'paid'\nGROUP BY customer_id\nHAVING SUM(total) > 1000\nORDER BY revenue DESC;",
+      "description": "WHERE filters rows; HAVING filters groups.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "aggregate"
+      ]
+    },
+    {
+      "title": "Find duplicates",
+      "body": "SELECT email, COUNT(*)\nFROM users\nGROUP BY email\nHAVING COUNT(*) > 1;",
+      "description": "Values that appear more than once.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "title": "Window function: ROW_NUMBER per group",
+      "body": "SELECT *,\n       ROW_NUMBER() OVER (PARTITION BY team ORDER BY score DESC) AS rn\nFROM players;",
+      "description": "Number rows within each partition.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "window"
+      ]
+    },
+    {
+      "title": "Top N per group",
+      "body": "SELECT * FROM (\n  SELECT *, ROW_NUMBER() OVER (PARTITION BY team ORDER BY score DESC) AS rn\n  FROM players\n) t\nWHERE rn <= 3;",
+      "description": "Keep the first N rows of each partition.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "window"
+      ]
+    },
+    {
+      "title": "Running total and LAG",
+      "body": "SELECT day, amount,\n       SUM(amount) OVER (ORDER BY day) AS running_total,\n       LAG(amount) OVER (ORDER BY day) AS previous_amount\nFROM daily_sales;",
+      "description": "Cumulative sum and previous-row value.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "window"
+      ]
+    },
+    {
+      "title": "CTE (WITH)",
+      "body": "WITH recent AS (\n  SELECT * FROM orders WHERE created_at > now() - interval '30 days'\n)\nSELECT customer_id, COUNT(*) FROM recent GROUP BY customer_id;",
+      "description": "Name a subquery to make a query readable.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "cte"
+      ]
+    },
+    {
+      "title": "CASE and COALESCE",
+      "body": "SELECT name,\n       CASE WHEN score >= 90 THEN 'A' WHEN score >= 80 THEN 'B' ELSE 'C' END AS grade,\n       COALESCE(nickname, name) AS display_name\nFROM students;",
+      "description": "Conditional values and NULL defaults.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "title": "INSERT, UPDATE, DELETE",
+      "body": "INSERT INTO users (name, email) VALUES ('Ada', 'ada@example.com');\nUPDATE users SET active = false WHERE last_login < now() - interval '1 year';\nDELETE FROM sessions WHERE expires_at < now();",
+      "description": "Write statements (always check WHERE).",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql"
+      ]
+    },
+    {
+      "title": "Upsert (ON CONFLICT)",
+      "body": "INSERT INTO settings (key, value)\nVALUES ('theme', 'dark')\nON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;",
+      "description": "Insert or update when the key already exists (PostgreSQL).",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "postgres"
+      ]
+    },
+    {
+      "title": "Create tables with keys",
+      "body": "CREATE TABLE orders (\n  id          BIGSERIAL PRIMARY KEY,\n  customer_id BIGINT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,\n  total       NUMERIC(10, 2) NOT NULL CHECK (total >= 0),\n  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()\n);",
+      "description": "Primary key, foreign key and constraints.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "ddl"
+      ]
+    },
+    {
+      "title": "Indexes",
+      "body": "CREATE INDEX idx_orders_customer ON orders (customer_id);\nCREATE UNIQUE INDEX idx_users_email ON users (email);\nCREATE INDEX idx_orders_open ON orders (created_at) WHERE status = 'open';",
+      "description": "Speed up lookups; unique and partial variants.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "index"
+      ]
+    },
+    {
+      "title": "EXPLAIN a query",
+      "body": "EXPLAIN ANALYZE\nSELECT * FROM orders WHERE customer_id = 42;",
+      "description": "Show the plan and actual timings.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "performance"
+      ]
+    },
+    {
+      "title": "Dates in PostgreSQL",
+      "body": "SELECT date_trunc('month', created_at) AS month, COUNT(*)\nFROM orders\nGROUP BY 1\nORDER BY 1;\n\nSELECT now() - interval '7 days', EXTRACT(year FROM now());",
+      "description": "Truncate, extract and interval arithmetic.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "postgres",
+        "dates"
+      ]
+    },
+    {
+      "title": "Transaction",
+      "body": "BEGIN;\nUPDATE accounts SET balance = balance - 100 WHERE id = 1;\nUPDATE accounts SET balance = balance + 100 WHERE id = 2;\nCOMMIT;      -- or ROLLBACK;",
+      "description": "All-or-nothing changes.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "transaction"
+      ]
+    },
+    {
+      "title": "JSONB access",
+      "body": "SELECT data->>'name' AS name, data->'address'->>'city' AS city\nFROM profiles\nWHERE data @> '{\"active\": true}';",
+      "description": "Read values from a jsonb column.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "sql",
+        "postgres",
+        "json"
+      ]
+    },
+    {
+      "title": "psql: connect",
+      "body": "psql -h localhost -U {{user}} -d {{database}}\npsql \"postgres://user:password@localhost:5432/dbname\"",
+      "description": "Connect with a host, user and database, or a URL.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "postgres",
+        "psql"
+      ]
+    },
+    {
+      "title": "psql meta-commands",
+      "body": "\\l            list databases\n\\c dbname     connect to a database\n\\dt           list tables\n\\d table      describe a table\n\\du           list roles\n\\dn           list schemas\n\\di           list indexes\n\\x            toggle expanded output\n\\timing       toggle query timing\n\\i file.sql   run a file\n\\q            quit",
+      "description": "Explore a database from the psql prompt.",
+      "type": "snippet",
+      "tags": [
+        "postgres",
+        "psql"
+      ]
+    },
+    {
+      "title": "Create a database and user",
+      "body": "CREATE USER app WITH PASSWORD 'change-me';\nCREATE DATABASE appdb OWNER app;\nGRANT ALL PRIVILEGES ON DATABASE appdb TO app;",
+      "description": "Typical setup for a new app.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "postgres",
+        "admin"
+      ]
+    },
+    {
+      "title": "Backup and restore",
+      "body": "pg_dump -Fc -h localhost -U {{user}} {{database}} > backup.dump\npg_restore -h localhost -U {{user}} -d {{database}} --clean backup.dump\npsql -U {{user}} -d {{database}} -f schema.sql",
+      "description": "pg_dump in custom format and pg_restore.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "postgres",
+        "backup"
+      ]
+    }
+  ]
+}

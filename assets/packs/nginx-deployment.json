@@ -1,0 +1,214 @@
+{
+  "name": "Nginx & deployment",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Reverse proxy to an app server",
+      "body": "server {\n    listen 80;\n    server_name example.com www.example.com;\n\n    location / {\n        proxy_pass http://127.0.0.1:8000;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n    }\n}",
+      "description": "Forward requests to a Django/FastAPI/Node app on port 8000.",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx",
+        "proxy"
+      ]
+    },
+    {
+      "title": "Serve static and media files",
+      "body": "location /static/ {\n    alias /srv/myapp/staticfiles/;\n    expires 30d;\n    access_log off;\n}\nlocation /media/ {\n    alias /srv/myapp/media/;\n}",
+      "description": "Let nginx serve files directly instead of the app.",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx",
+        "static"
+      ]
+    },
+    {
+      "title": "WebSocket proxy headers",
+      "body": "location /ws/ {\n    proxy_pass http://127.0.0.1:8000;\n    proxy_http_version 1.1;\n    proxy_set_header Upgrade $http_upgrade;\n    proxy_set_header Connection \"upgrade\";\n    proxy_set_header Host $host;\n}",
+      "description": "Needed for websockets and server-sent events.",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx",
+        "websocket"
+      ]
+    },
+    {
+      "title": "HTTPS server block with redirect",
+      "body": "server {\n    listen 80;\n    server_name example.com;\n    return 301 https://$host$request_uri;\n}\n\nserver {\n    listen 443 ssl;\n    server_name example.com;\n    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;\n    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;\n    # location blocks ...\n}",
+      "description": "Redirect HTTP to HTTPS and terminate TLS (paths are certbot's defaults).",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx",
+        "https"
+      ]
+    },
+    {
+      "title": "Upload size and timeouts",
+      "body": "client_max_body_size 20m;\nproxy_read_timeout 120s;",
+      "description": "Raise limits for big uploads or slow endpoints.",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx"
+      ]
+    },
+    {
+      "title": "Gzip compression",
+      "body": "gzip on;\ngzip_types text/plain text/css application/json application/javascript image/svg+xml;\ngzip_min_length 1024;",
+      "description": "Compress text responses.",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx",
+        "performance"
+      ]
+    },
+    {
+      "title": "Basic rate limiting",
+      "body": "# in the http block:\nlimit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;\n\n# in a location:\nlimit_req zone=api burst=20 nodelay;",
+      "description": "Limit each client IP to 10 requests per second.",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx",
+        "security"
+      ]
+    },
+    {
+      "title": "Single-page app fallback",
+      "body": "location / {\n    root /var/www/app;\n    try_files $uri /index.html;\n}",
+      "description": "Serve index.html for client-side routes.",
+      "type": "snippet",
+      "language": "nginx",
+      "tags": [
+        "nginx",
+        "spa"
+      ]
+    },
+    {
+      "title": "Enable a site, test and reload",
+      "body": "sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/\nsudo nginx -t\nsudo systemctl reload nginx",
+      "description": "Debian/Ubuntu layout; always test the config first.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "nginx"
+      ]
+    },
+    {
+      "title": "Nginx logs",
+      "body": "sudo tail -f /var/log/nginx/error.log\nsudo tail -f /var/log/nginx/access.log",
+      "description": "Where to look when something returns 502 or 404.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "nginx",
+        "debug"
+      ]
+    },
+    {
+      "title": "systemd service for gunicorn (Django)",
+      "body": "[Unit]\nDescription=Gunicorn for myapp\nAfter=network.target\n\n[Service]\nUser=www-data\nGroup=www-data\nWorkingDirectory=/srv/myapp\nEnvironmentFile=/srv/myapp/.env\nExecStart=/srv/myapp/.venv/bin/gunicorn config.wsgi:application --bind 127.0.0.1:8000 --workers 3\nRestart=on-failure\n\n[Install]\nWantedBy=multi-user.target",
+      "description": "File: /etc/systemd/system/myapp.service.",
+      "type": "snippet",
+      "language": "ini",
+      "tags": [
+        "systemd",
+        "gunicorn",
+        "django"
+      ]
+    },
+    {
+      "title": "systemd service for uvicorn (FastAPI)",
+      "body": "[Unit]\nDescription=Uvicorn for myapi\nAfter=network.target\n\n[Service]\nUser=www-data\nWorkingDirectory=/srv/myapi\nEnvironmentFile=/srv/myapi/.env\nExecStart=/srv/myapi/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 2\nRestart=on-failure\n\n[Install]\nWantedBy=multi-user.target",
+      "description": "Same pattern with uvicorn workers.",
+      "type": "snippet",
+      "language": "ini",
+      "tags": [
+        "systemd",
+        "uvicorn",
+        "fastapi"
+      ]
+    },
+    {
+      "title": "Enable and manage the service",
+      "body": "sudo systemctl daemon-reload\nsudo systemctl enable --now myapp\nsudo systemctl status myapp\nsudo systemctl restart myapp\njournalctl -u myapp -f",
+      "description": "Reload systemd after editing unit files.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "systemd"
+      ]
+    },
+    {
+      "title": "Certbot: HTTPS with Let's Encrypt",
+      "body": "sudo apt install certbot python3-certbot-nginx\nsudo certbot --nginx -d example.com -d www.example.com",
+      "description": "Install the nginx plugin and get a certificate.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "certbot",
+        "https"
+      ]
+    },
+    {
+      "title": "Certbot: test renewal",
+      "body": "sudo certbot renew --dry-run\nsudo certbot certificates",
+      "description": "Certificates renew automatically; verify the process works.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "certbot",
+        "https"
+      ]
+    },
+    {
+      "title": "Open the firewall for web traffic",
+      "body": "sudo ufw allow OpenSSH\nsudo ufw allow 'Nginx Full'\nsudo ufw enable\nsudo ufw status",
+      "description": "Allow HTTP/HTTPS and SSH with ufw.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "ufw",
+        "security"
+      ]
+    },
+    {
+      "title": "Django deploy steps",
+      "body": "cd /srv/myapp && git pull\nsource .venv/bin/activate\npip install -r requirements.txt\npython manage.py migrate --noinput\npython manage.py collectstatic --noinput\nsudo systemctl restart myapp",
+      "description": "Typical update on a single server.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "deploy",
+        "django"
+      ]
+    },
+    {
+      "title": "Deployment checklist",
+      "body": "[ ] DEBUG is off and SECRET_KEY comes from the environment\n[ ] ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS set to the real domain\n[ ] HTTPS works and HTTP redirects to it\n[ ] Database backups run and a restore was tested\n[ ] Static and media files are served correctly\n[ ] Service restarts on failure and on reboot\n[ ] Logs are visible and rotated\n[ ] Firewall allows only SSH, HTTP and HTTPS\n[ ] Error reporting or monitoring is configured\n[ ] A rollback plan exists (previous release + database migration plan)",
+      "description": "Verify before going live.",
+      "type": "checklist",
+      "tags": [
+        "deploy",
+        "checklist"
+      ]
+    },
+    {
+      "title": "Troubleshoot 502 Bad Gateway",
+      "body": "sudo systemctl status myapp          # is the app running?\ncurl -I http://127.0.0.1:8000        # does it answer locally?\nsudo tail -n 50 /var/log/nginx/error.log\njournalctl -u myapp -n 50 --no-pager",
+      "description": "Nginx cannot reach the app server.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "nginx",
+        "debug"
+      ]
+    }
+  ]
+}

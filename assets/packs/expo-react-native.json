@@ -1,0 +1,239 @@
+{
+  "name": "Expo & React Native",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Create an Expo app",
+      "body": "npx create-expo-app@latest {{app_name}}\ncd {{app_name}}\nnpx expo start",
+      "description": "Scaffold, then start the dev server.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "setup"
+      ]
+    },
+    {
+      "title": "Start options",
+      "body": "npx expo start --android\nnpx expo start -c            # clear cache\nnpx expo start --tunnel",
+      "description": "Run on Android, clear the Metro cache, or use a tunnel.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo"
+      ]
+    },
+    {
+      "title": "Install compatible packages",
+      "body": "npx expo install expo-sqlite expo-clipboard",
+      "description": "expo install picks the version that matches your SDK.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "packages"
+      ]
+    },
+    {
+      "title": "Check project health",
+      "body": "npx expo-doctor\nnpx expo install --check",
+      "description": "Detect version mismatches and config problems.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "debug"
+      ]
+    },
+    {
+      "title": "Prebuild the native Android project",
+      "body": "npx expo prebuild --platform android\nnpx expo prebuild --platform android --clean     # regenerate from scratch",
+      "description": "Generate the android/ folder from app.json and plugins.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "prebuild",
+        "android"
+      ]
+    },
+    {
+      "title": "Build a release APK locally",
+      "body": "cd android\n./gradlew assembleRelease",
+      "description": "After prebuild; output lands in android/app/build/outputs/apk/release/.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "gradle",
+        "android"
+      ]
+    },
+    {
+      "title": "Build an AAB for Play Store",
+      "body": "cd android\n./gradlew bundleRelease",
+      "description": "Android App Bundle.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "gradle",
+        "android"
+      ]
+    },
+    {
+      "title": "Gradle housekeeping",
+      "body": "cd android\n./gradlew clean\n./gradlew assembleDebug --stacktrace\n./gradlew --stop              # stop daemons",
+      "description": "Clean and rebuild when the build misbehaves.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "gradle",
+        "android"
+      ]
+    },
+    {
+      "title": "Run on a connected device or emulator",
+      "body": "npx expo run:android",
+      "description": "Build a dev client and install it.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "android"
+      ]
+    },
+    {
+      "title": "EAS Build: set up and build",
+      "body": "npm install -g eas-cli\neas login\neas build:configure\neas build --platform android --profile preview",
+      "description": "Cloud builds with Expo Application Services.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "eas",
+        "build"
+      ]
+    },
+    {
+      "title": "eas.json: APK for testing",
+      "body": "{\n  \"build\": {\n    \"preview\": {\n      \"distribution\": \"internal\",\n      \"android\": { \"buildType\": \"apk\" }\n    },\n    \"production\": {}\n  }\n}",
+      "description": "A preview profile that outputs an installable APK instead of an AAB.",
+      "type": "snippet",
+      "language": "json",
+      "tags": [
+        "eas",
+        "build"
+      ]
+    },
+    {
+      "title": "EAS Update (OTA)",
+      "body": "eas update --branch production --message \"{{message}}\"",
+      "description": "Publish JavaScript-only changes to installed builds.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "eas",
+        "update"
+      ]
+    },
+    {
+      "title": "Export a JS bundle (sanity check)",
+      "body": "npx expo export --platform android",
+      "description": "Verifies the app bundles without a device.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "debug"
+      ]
+    },
+    {
+      "title": "adb: devices and install",
+      "body": "adb devices\nadb install -r app-release.apk\nadb uninstall {{package}}",
+      "description": "Talk to a phone over USB or Wi-Fi debugging.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "adb",
+        "android"
+      ]
+    },
+    {
+      "title": "adb: logs and port reverse",
+      "body": "adb logcat *:E                       # errors only\nadb logcat | grep -i ReactNative\nadb reverse tcp:8081 tcp:8081",
+      "description": "See app logs and let the phone reach Metro on your computer.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "adb",
+        "android",
+        "debug"
+      ]
+    },
+    {
+      "title": "Create a release keystore",
+      "body": "keytool -genkeypair -v -storetype PKCS12 \\\n  -keystore release.keystore -alias {{alias}} \\\n  -keyalg RSA -keysize 2048 -validity 10000",
+      "description": "Used to sign APKs; back it up safely and never commit it.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "android",
+        "signing"
+      ]
+    },
+    {
+      "title": "app.json essentials",
+      "body": "{\n  \"expo\": {\n    \"name\": \"My App\",\n    \"slug\": \"my-app\",\n    \"version\": \"1.0.0\",\n    \"android\": { \"package\": \"com.example.myapp\", \"versionCode\": 1 },\n    \"plugins\": [\"expo-router\"]\n  }\n}",
+      "description": "Name, package id and plugins.",
+      "type": "snippet",
+      "language": "json",
+      "tags": [
+        "expo",
+        "config"
+      ]
+    },
+    {
+      "title": "Expo Router file layout",
+      "body": "app/\n  _layout.tsx          root layout (Stack/Tabs)\n  index.tsx            /\n  settings.tsx         /settings\n  item/[id].tsx        /item/42   (useLocalSearchParams)\n  (tabs)/_layout.tsx   a group that does not appear in the URL",
+      "description": "File names become routes.",
+      "type": "snippet",
+      "tags": [
+        "expo",
+        "router"
+      ]
+    },
+    {
+      "title": "Navigate with Expo Router",
+      "body": "import { useRouter, useLocalSearchParams, Link } from \"expo-router\";\n\nconst router = useRouter();\nrouter.push({ pathname: \"/item/[id]\", params: { id: \"42\" } });\nrouter.replace(\"/\");\nrouter.back();\nconst { id } = useLocalSearchParams<{ id: string }>();\n<Link href=\"/settings\">Settings</Link>",
+      "description": "Push, replace, go back and read params.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "expo",
+        "router"
+      ]
+    },
+    {
+      "title": "StyleSheet and FlatList",
+      "body": "import { FlatList, StyleSheet, Text, View } from \"react-native\";\n\nexport default function List({ data }: { data: { id: string; name: string }[] }) {\n  return (\n    <FlatList\n      data={data}\n      keyExtractor={(item) => item.id}\n      renderItem={({ item }) => (\n        <View style={styles.row}><Text>{item.name}</Text></View>\n      )}\n    />\n  );\n}\n\nconst styles = StyleSheet.create({\n  row: { padding: 12, borderBottomWidth: StyleSheet.hairlineWidth },\n});",
+      "description": "Basic list screen.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react-native"
+      ]
+    },
+    {
+      "title": "Common fix: clear caches",
+      "body": "rm -rf node_modules .expo\nnpm install\nnpx expo start -c",
+      "description": "When Metro or node_modules act up.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "expo",
+        "debug"
+      ]
+    }
+  ]
+}

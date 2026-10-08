@@ -1,0 +1,215 @@
+{
+  "name": "Docker & Compose",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "Build an image",
+      "body": "docker build -t {{name}}:{{tag}} .",
+      "description": "Build from the Dockerfile in the current folder.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "build"
+      ]
+    },
+    {
+      "title": "Run a container interactively",
+      "body": "docker run --rm -it -p 8080:80 -v \"$(pwd)\":/app --name {{name}} {{image}}",
+      "description": "Remove on exit, publish a port, mount the current directory.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "run"
+      ]
+    },
+    {
+      "title": "Run detached with environment",
+      "body": "docker run -d --name {{name}} --restart unless-stopped \\\n  -e KEY=value --env-file .env \\\n  -p 8000:8000 {{image}}",
+      "description": "Background container with env vars and a restart policy.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "run"
+      ]
+    },
+    {
+      "title": "Open a shell in a running container",
+      "body": "docker exec -it {{container}} sh",
+      "description": "Use sh if bash is missing.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "exec"
+      ]
+    },
+    {
+      "title": "View logs",
+      "body": "docker logs -f --tail 100 {{container}}",
+      "description": "Follow the last 100 lines.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "logs"
+      ]
+    },
+    {
+      "title": "List containers and images",
+      "body": "docker ps\ndocker ps -a\ndocker images",
+      "description": "Running and all containers; local images.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker"
+      ]
+    },
+    {
+      "title": "Stop and remove",
+      "body": "docker stop {{container}}\ndocker rm {{container}}\ndocker rmi {{image}}",
+      "description": "Clean up containers and images.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "cleanup"
+      ]
+    },
+    {
+      "title": "Copy files in and out",
+      "body": "docker cp {{container}}:/app/log.txt ./log.txt\ndocker cp ./config.yml {{container}}:/app/config.yml",
+      "description": "Move files between host and container.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker"
+      ]
+    },
+    {
+      "title": "Inspect and stats",
+      "body": "docker inspect {{container}}\ndocker inspect -f '{{.NetworkSettings.IPAddress}}' {{container}}\ndocker stats",
+      "description": "Details, IP address and live resource use.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "debug"
+      ]
+    },
+    {
+      "title": "Cleanup: unused data",
+      "body": "docker system prune\ndocker image prune\ndocker volume prune\ndocker system df          # see what uses space",
+      "description": "Prune stopped containers, dangling images and networks.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "cleanup"
+      ]
+    },
+    {
+      "title": "Cleanup: everything unused (destructive)",
+      "body": "docker system prune -a --volumes",
+      "description": "Also removes unused images and volumes; check first.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "cleanup"
+      ]
+    },
+    {
+      "title": "Compose: up and down",
+      "body": "docker compose up -d --build\ndocker compose down\ndocker compose down -v        # also delete named volumes",
+      "description": "Start the stack, rebuild images, stop it.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "compose"
+      ]
+    },
+    {
+      "title": "Compose: logs, ps, exec",
+      "body": "docker compose ps\ndocker compose logs -f {{service}}\ndocker compose exec {{service}} sh\ndocker compose restart {{service}}",
+      "description": "Day-to-day service commands.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "compose"
+      ]
+    },
+    {
+      "title": "Compose: one-off command",
+      "body": "docker compose run --rm {{service}} {{command}}",
+      "description": "Run a throwaway container for a service.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "compose"
+      ]
+    },
+    {
+      "title": "Compose: validate and pull",
+      "body": "docker compose config\ndocker compose pull",
+      "description": "Show the merged config; update images.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "docker",
+        "compose"
+      ]
+    },
+    {
+      "title": "Dockerfile for a Python app",
+      "body": "FROM python:3.12-slim\nWORKDIR /app\nENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nEXPOSE 8000\nCMD [\"gunicorn\", \"-b\", \"0.0.0.0:8000\", \"app.wsgi:application\"]",
+      "description": "Small production-style image.",
+      "type": "snippet",
+      "language": "dockerfile",
+      "tags": [
+        "docker",
+        "dockerfile",
+        "python"
+      ]
+    },
+    {
+      "title": "Dockerfile for a Node app",
+      "body": "FROM node:20-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --omit=dev\nCOPY . .\nEXPOSE 3000\nCMD [\"node\", \"src/index.js\"]",
+      "description": "Layer caching: copy manifests before the source.",
+      "type": "snippet",
+      "language": "dockerfile",
+      "tags": [
+        "docker",
+        "dockerfile",
+        "node"
+      ]
+    },
+    {
+      "title": "compose.yaml: web + Postgres",
+      "body": "services:\n  web:\n    build: .\n    ports:\n      - \"8000:8000\"\n    environment:\n      DATABASE_URL: postgres://app:secret@db:5432/app\n    depends_on:\n      db:\n        condition: service_healthy\n  db:\n    image: postgres:16\n    environment:\n      POSTGRES_USER: app\n      POSTGRES_PASSWORD: secret\n      POSTGRES_DB: app\n    volumes:\n      - pgdata:/var/lib/postgresql/data\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U app\"]\n      interval: 5s\n      retries: 5\nvolumes:\n  pgdata:",
+      "description": "App with a database, a named volume and a healthcheck.",
+      "type": "snippet",
+      "language": "yaml",
+      "tags": [
+        "docker",
+        "compose",
+        "postgres"
+      ]
+    },
+    {
+      "title": ".dockerignore",
+      "body": "node_modules\n.git\n.env\n*.log\n__pycache__\n.venv\ndist",
+      "description": "Keep the build context small and secrets out.",
+      "type": "snippet",
+      "tags": [
+        "docker"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "name": "VS Code & terminal",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "Multi-cursor: next occurrence",
+      "body": "Ctrl+D (Cmd+D on Mac)",
+      "description": "Select the word under the cursor, then add the next match.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut",
+        "multicursor"
+      ]
+    },
+    {
+      "title": "Multi-cursor: all occurrences",
+      "body": "Ctrl+Shift+L (Cmd+Shift+L on Mac)",
+      "description": "Select every occurrence of the current selection.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut",
+        "multicursor"
+      ]
+    },
+    {
+      "title": "Multi-cursor: add cursor with mouse or keys",
+      "body": "Alt+Click                      add a cursor\nCtrl+Alt+Up / Ctrl+Alt+Down    add cursor above / below\nShift+Alt+drag                 column (box) selection",
+      "description": "Place extra cursors anywhere.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut",
+        "multicursor"
+      ]
+    },
+    {
+      "title": "Command palette",
+      "body": "Ctrl+Shift+P (F1)",
+      "description": "Run any command by name.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "Quick open file",
+      "body": "Ctrl+P",
+      "description": "Fuzzy-find a file by name.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "Go to line / symbol",
+      "body": "Ctrl+G              go to line\nCtrl+Shift+O        go to symbol in file\nCtrl+T              go to symbol in workspace",
+      "description": "Jump within a file.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "Find and replace in file",
+      "body": "Ctrl+F    find\nCtrl+H    replace\nAlt+R     toggle regex\nAlt+C     toggle match case\nAlt+W     toggle whole word",
+      "description": "Open find and replace for the current file.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut",
+        "search"
+      ]
+    },
+    {
+      "title": "Find and replace across files",
+      "body": "Ctrl+Shift+F    search in files\nCtrl+Shift+H    replace in files",
+      "description": "Search the whole workspace.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut",
+        "search"
+      ]
+    },
+    {
+      "title": "Regex replace with capture groups",
+      "body": "Find:     (\\w+)@(\\w+)\\.com\nReplace:  $2: $1",
+      "description": "Use groups in the Find box and $1, $2 in the Replace box (regex mode on).",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "search",
+        "regex"
+      ]
+    },
+    {
+      "title": "Edit lines",
+      "body": "Alt+Up / Alt+Down           move line\nShift+Alt+Up / Down         duplicate line\nCtrl+Shift+K                delete line\nCtrl+/                      toggle line comment\nShift+Alt+A                 toggle block comment",
+      "description": "Move, copy and delete lines without selecting.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut",
+        "editing"
+      ]
+    },
+    {
+      "title": "Navigate code",
+      "body": "F12              go to definition\nAlt+F12          peek definition\nShift+F12        find all references\nF2               rename symbol\nCtrl+.           quick fix",
+      "description": "Definition, references and rename.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "Format document",
+      "body": "Shift+Alt+F",
+      "description": "Run the configured formatter.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "Panels and layout",
+      "body": "Ctrl+`           toggle terminal\nCtrl+Shift+`     new terminal\nCtrl+B           toggle sidebar\nCtrl+\\           split editor\nCtrl+K Z         zen mode",
+      "description": "Toggle terminal, sidebar and splits.",
+      "type": "snippet",
+      "tags": [
+        "vscode",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "Open from the terminal",
+      "body": "code .             # open current folder\ncode -r file.txt    # reuse the open window\ncode --diff a.txt b.txt",
+      "description": "Launch VS Code from a shell.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "vscode",
+        "cli"
+      ]
+    },
+    {
+      "title": "settings.json essentials",
+      "body": "{\n  \"editor.formatOnSave\": true,\n  \"editor.tabSize\": 2,\n  \"files.autoSave\": \"onFocusChange\",\n  \"files.trimTrailingWhitespace\": true,\n  \"editor.wordWrap\": \"on\"\n}",
+      "description": "Handy workspace settings.",
+      "type": "snippet",
+      "language": "json",
+      "tags": [
+        "vscode",
+        "settings"
+      ]
+    },
+    {
+      "title": "tmux: sessions",
+      "body": "tmux new -s {{name}}\ntmux ls\ntmux attach -t {{name}}\n# detach: Ctrl+b then d\ntmux kill-session -t {{name}}",
+      "description": "Create, list, attach, detach and kill sessions.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "tmux"
+      ]
+    },
+    {
+      "title": "tmux: windows and panes",
+      "body": "c   new window         n / p   next / previous window\n,   rename window      %   split left/right\n\"   split top/bottom    arrows   move between panes\nz   zoom pane          x   close pane",
+      "description": "Default prefix is Ctrl+b; press it, release, then the key.",
+      "type": "snippet",
+      "tags": [
+        "tmux",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "tmux: scroll and copy mode",
+      "body": "Ctrl+b [     enter copy mode (q to quit)\n# in copy mode: arrows/PageUp to scroll, / to search",
+      "description": "Scroll back through output.",
+      "type": "snippet",
+      "tags": [
+        "tmux",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "tmux: minimal ~/.tmux.conf",
+      "body": "set -g mouse on\nset -g history-limit 50000\nset -g base-index 1\n\n# reload:  tmux source-file ~/.tmux.conf",
+      "description": "Enable mouse and a larger history, then reload.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "tmux",
+        "config"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "name": "React & TypeScript",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Create a Vite React TypeScript app",
+      "body": "npm create vite@latest my-app -- --template react-ts\ncd my-app && npm install && npm run dev",
+      "description": "Scaffold and run.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "react",
+        "vite"
+      ]
+    },
+    {
+      "title": "Function component with typed props",
+      "body": "import type { ReactNode } from \"react\";\n\ninterface CardProps {\n  title: string;\n  subtitle?: string;\n  children?: ReactNode;\n}\n\nexport function Card({ title, subtitle = \"\", children }: CardProps) {\n  return (\n    <section>\n      <h2>{title}</h2>\n      {subtitle && <p>{subtitle}</p>}\n      {children}\n    </section>\n  );\n}",
+      "description": "Props interface, default value and children.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "typescript",
+        "component"
+      ]
+    },
+    {
+      "title": "useState with a type",
+      "body": "const [count, setCount] = useState(0);\nconst [user, setUser] = useState<User | null>(null);\nconst [items, setItems] = useState<string[]>([]);\n\nsetCount((c) => c + 1);                       // functional update\nsetItems((prev) => [...prev, \"new\"]);",
+      "description": "Union types and arrays need an explicit generic.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "hooks"
+      ]
+    },
+    {
+      "title": "useEffect: fetch with cleanup",
+      "body": "useEffect(() => {\n  const controller = new AbortController();\n  fetch(`/api/users/${id}`, { signal: controller.signal })\n    .then((r) => {\n      if (!r.ok) throw new Error(`HTTP ${r.status}`);\n      return r.json() as Promise<User>;\n    })\n    .then(setUser)\n    .catch((e) => {\n      if (e.name !== \"AbortError\") setError(String(e));\n    });\n  return () => controller.abort();\n}, [id]);",
+      "description": "Abort the request when the component unmounts or inputs change.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "hooks",
+        "fetch"
+      ]
+    },
+    {
+      "title": "useRef for DOM and mutable values",
+      "body": "const inputRef = useRef<HTMLInputElement>(null);\nconst timer = useRef<number | undefined>(undefined);\n\nuseEffect(() => inputRef.current?.focus(), []);\nreturn <input ref={inputRef} />;",
+      "description": "Focus an input; keep a value across renders without re-rendering.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "hooks"
+      ]
+    },
+    {
+      "title": "useMemo and useCallback",
+      "body": "const total = useMemo(() => items.reduce((s, i) => s + i.price, 0), [items]);\nconst onSelect = useCallback((id: number) => setSelected(id), []);",
+      "description": "Memoise expensive values and stable callbacks.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "hooks",
+        "performance"
+      ]
+    },
+    {
+      "title": "Custom hook: useDebounce",
+      "body": "export function useDebounce<T>(value: T, delay = 300): T {\n  const [debounced, setDebounced] = useState(value);\n  useEffect(() => {\n    const t = setTimeout(() => setDebounced(value), delay);\n    return () => clearTimeout(t);\n  }, [value, delay]);\n  return debounced;\n}",
+      "description": "Delay a fast-changing value such as a search box.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "hooks"
+      ]
+    },
+    {
+      "title": "Custom hook: useLocalStorage",
+      "body": "export function useLocalStorage<T>(key: string, initial: T) {\n  const [value, setValue] = useState<T>(() => {\n    try {\n      const raw = localStorage.getItem(key);\n      return raw ? (JSON.parse(raw) as T) : initial;\n    } catch {\n      return initial;\n    }\n  });\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n  return [value, setValue] as const;\n}",
+      "description": "State that persists in the browser.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "hooks"
+      ]
+    },
+    {
+      "title": "Context: provider and hook",
+      "body": "import { createContext, useContext, useState, type ReactNode } from \"react\";\n\ninterface ThemeCtx { theme: \"light\" | \"dark\"; toggle: () => void }\nconst ThemeContext = createContext<ThemeCtx | null>(null);\n\nexport function ThemeProvider({ children }: { children: ReactNode }) {\n  const [theme, setTheme] = useState<\"light\" | \"dark\">(\"light\");\n  const toggle = () => setTheme((t) => (t === \"light\" ? \"dark\" : \"light\"));\n  return <ThemeContext.Provider value={{ theme, toggle }}>{children}</ThemeContext.Provider>;\n}\n\nexport function useTheme() {\n  const ctx = useContext(ThemeContext);\n  if (!ctx) throw new Error(\"useTheme must be used inside ThemeProvider\");\n  return ctx;\n}",
+      "description": "Share state without prop drilling; the hook guards against a missing provider.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "context"
+      ]
+    },
+    {
+      "title": "useReducer with a discriminated union",
+      "body": "type Action = { type: \"add\"; text: string } | { type: \"remove\"; id: number };\ninterface Todo { id: number; text: string }\n\nfunction reducer(state: Todo[], action: Action): Todo[] {\n  switch (action.type) {\n    case \"add\":\n      return [...state, { id: Date.now(), text: action.text }];\n    case \"remove\":\n      return state.filter((t) => t.id !== action.id);\n  }\n}\nconst [todos, dispatch] = useReducer(reducer, []);",
+      "description": "Typed actions for complex state.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "hooks",
+        "typescript"
+      ]
+    },
+    {
+      "title": "Event handler types",
+      "body": "const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);\nconst onSubmit = (e: React.FormEvent<HTMLFormElement>) => { e.preventDefault(); };\nconst onClick = (e: React.MouseEvent<HTMLButtonElement>) => {};\nconst onKey = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === \"Enter\") {} };",
+      "description": "The usual React event types.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "typescript",
+        "events"
+      ]
+    },
+    {
+      "title": "Controlled form",
+      "body": "const [form, setForm] = useState({ email: \"\", password: \"\" });\n\nconst update = (e: React.ChangeEvent<HTMLInputElement>) =>\n  setForm((f) => ({ ...f, [e.target.name]: e.target.value }));\n\n<form onSubmit={handleSubmit}>\n  <input name=\"email\" value={form.email} onChange={update} />\n  <input name=\"password\" type=\"password\" value={form.password} onChange={update} />\n</form>",
+      "description": "Single state object for several inputs.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "forms"
+      ]
+    },
+    {
+      "title": "Rendering lists",
+      "body": "<ul>\n  {items.map((item) => (\n    <li key={item.id}>{item.name}</li>\n  ))}\n</ul>\n{items.length === 0 && <p>No items.</p>}",
+      "description": "Keys must be stable and unique (not the array index when the list changes).",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react"
+      ]
+    },
+    {
+      "title": "Generic component",
+      "body": "interface ListProps<T> {\n  items: T[];\n  render: (item: T) => React.ReactNode;\n  getKey: (item: T) => string | number;\n}\n\nexport function List<T>({ items, render, getKey }: ListProps<T>) {\n  return <ul>{items.map((i) => <li key={getKey(i)}>{render(i)}</li>)}</ul>;\n}",
+      "description": "Reusable list that works for any item type.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "typescript",
+        "generics"
+      ]
+    },
+    {
+      "title": "Component props from an element",
+      "body": "type ButtonProps = React.ComponentPropsWithoutRef<\"button\"> & {\n  variant?: \"primary\" | \"ghost\";\n};\n\nexport function Button({ variant = \"primary\", ...rest }: ButtonProps) {\n  return <button data-variant={variant} {...rest} />;\n}",
+      "description": "Extend native element props.",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "typescript"
+      ]
+    },
+    {
+      "title": "Utility types",
+      "body": "Partial<User>                 // all properties optional\nRequired<User>                // all required\nPick<User, \"id\" | \"name\">     // only these keys\nOmit<User, \"password\">        // all except these keys\nRecord<string, number>        // object with string keys and number values\nReturnType<typeof fn>         // type a function returns\nAwaited<Promise<string>>      // string\nReadonly<User>",
+      "description": "Built-in helpers for deriving types.",
+      "type": "snippet",
+      "language": "typescript",
+      "tags": [
+        "typescript"
+      ]
+    },
+    {
+      "title": "type vs interface",
+      "body": "interface User { id: number; name: string }            // objects; can be extended/merged\ntype Status = \"idle\" | \"loading\" | \"error\";             // unions, tuples, primitives\ntype Admin = User & { permissions: string[] };           // intersections\nUse interface for public object shapes, type for everything else.",
+      "description": "Rule of thumb for choosing.",
+      "type": "snippet",
+      "language": "typescript",
+      "tags": [
+        "typescript"
+      ]
+    },
+    {
+      "title": "Narrowing and type guards",
+      "body": "function isString(x: unknown): x is string {\n  return typeof x === \"string\";\n}\n\ntype Result = { ok: true; data: string } | { ok: false; error: string };\nfunction show(r: Result) {\n  if (r.ok) return r.data;      // narrowed to the ok branch\n  return r.error;\n}",
+      "description": "Make unions safe.",
+      "type": "snippet",
+      "language": "typescript",
+      "tags": [
+        "typescript"
+      ]
+    },
+    {
+      "title": "Typed fetch helper",
+      "body": "export async function getJson<T>(url: string, init?: RequestInit): Promise<T> {\n  const res = await fetch(url, init);\n  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);\n  return (await res.json()) as T;\n}",
+      "description": "Return parsed JSON with a generic and throw on errors.",
+      "type": "snippet",
+      "language": "typescript",
+      "tags": [
+        "typescript",
+        "fetch"
+      ]
+    },
+    {
+      "title": "React Router basics",
+      "body": "import { BrowserRouter, Routes, Route, Link, useParams } from \"react-router-dom\";\n\n<BrowserRouter>\n  <nav><Link to=\"/\">Home</Link></nav>\n  <Routes>\n    <Route path=\"/\" element={<Home />} />\n    <Route path=\"/users/:id\" element={<User />} />\n    <Route path=\"*\" element={<NotFound />} />\n  </Routes>\n</BrowserRouter>\n\nconst { id } = useParams<{ id: string }>();",
+      "description": "Routes with a param (react-router-dom v6/v7 API).",
+      "type": "snippet",
+      "language": "tsx",
+      "tags": [
+        "react",
+        "router"
+      ]
+    }
+  ]
+}

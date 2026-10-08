@@ -25,7 +25,15 @@ describe('template variables', () => {
 
   it('checks brace balance', () => {
     expect(hasBalancedBraces('{{a}} ${{ b }}')).toBe(true);
+    expect(hasBalancedBraces('no braces at all')).toBe(true);
     expect(hasBalancedBraces('{{a}')).toBe(false);
-    expect(hasBalancedBraces('{{a}} }}')).toBe(false);
+    expect(hasBalancedBraces('{{a')).toBe(false);
+    expect(hasBalancedBraces('{{a {{b}}')).toBe(false);
+    expect(hasBalancedBraces('{{ user.name }} and {{x}')).toBe(false);
+  });
+
+  it('allows stray closing braces from nested JSON/dict literals', () => {
+    expect(hasBalancedBraces('{"a": {"b": 1}}')).toBe(true);
+    expect(hasBalancedBraces('LOGGING = {"root": {"level": "INFO"}} and {{name}}')).toBe(true);
   });
 });

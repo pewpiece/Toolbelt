@@ -29,9 +29,21 @@ export function fillTemplate(body: string, values: Record<string, string>): stri
   });
 }
 
-/** True when every `{{` has a matching `}}` (used by the pack validator). */
+/**
+ * True when every `{{` is closed by a `}}` before the next `{{`, and no identifier-style
+ * placeholder is closed with a single brace (`{{name}`). A stray `}}` is allowed because
+ * code legitimately ends nested dicts/JSON with `}}` (`{"a": {"b": 1}}`).
+ */
 export function hasBalancedBraces(text: string): boolean {
-  const open = (text.match(/\{\{/g) ?? []).length;
-  const close = (text.match(/\}\}/g) ?? []).length;
-  return open === close;
+  if (/\{\{\s*[A-Za-z_]\w*\s*\}(?!\})/.test(text)) return false;
+  let i = 0;
+  while (true) {
+    const open = text.indexOf('{{', i);
+    if (open === -1) return true;
+    const close = text.indexOf('}}', open + 2);
+    if (close === -1) return false;
+    const nextOpen = text.indexOf('{{', open + 2);
+    if (nextOpen !== -1 && nextOpen < close) return false;
+    i = close + 2;
+  }
 }
