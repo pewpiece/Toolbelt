@@ -1,0 +1,198 @@
+{
+  "name": "pandas & NumPy",
+  "category": "Data & ML",
+  "version": "1",
+  "items": [
+    {
+      "title": "Load and peek at data",
+      "body": "import pandas as pd\n\ndf = pd.read_csv(\"data.csv\")\ndf.head()\ndf.info()                 # dtypes and non-null counts\ndf.describe()             # numeric summary\ndf.shape                  # (rows, columns)",
+      "description": "Read a CSV and inspect it.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "load"
+      ]
+    },
+    {
+      "title": "Read other formats",
+      "body": "pd.read_csv(\"data.csv\", sep=\";\", encoding=\"utf-8\", na_values=[\"NA\", \"?\"], parse_dates=[\"date\"])\npd.read_excel(\"data.xlsx\", sheet_name=\"Sheet1\")\npd.read_json(\"data.json\")\npd.read_parquet(\"data.parquet\")\npd.read_sql(\"SELECT * FROM t\", connection)",
+      "description": "Excel, JSON, SQL, Parquet and options for messy CSVs.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "load"
+      ]
+    },
+    {
+      "title": "Select columns and rows",
+      "body": "df[\"age\"]                      # one column (Series)\ndf[[\"name\", \"age\"]]            # several columns (DataFrame)\ndf.loc[0:5, \"name\"]            # label-based, inclusive end\ndf.iloc[0:5, 0:2]              # position-based, exclusive end\ndf.loc[df[\"age\"] > 30, [\"name\", \"age\"]]",
+      "description": "[] for columns, loc by label, iloc by position.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "select"
+      ]
+    },
+    {
+      "title": "Filter rows",
+      "body": "df[df[\"age\"] > 30]\ndf[(df[\"age\"] > 30) & (df[\"city\"] == \"Oslo\")]       # use & | ~ with parentheses\ndf[df[\"city\"].isin([\"Oslo\", \"Rome\"])]\ndf.query(\"age > 30 and city == 'Oslo'\")\ndf[df[\"name\"].str.contains(\"ad\", case=False, na=False)]",
+      "description": "Boolean masks, isin and query.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "filter"
+      ]
+    },
+    {
+      "title": "Sort, rename, drop",
+      "body": "df.sort_values(\"age\", ascending=False)\ndf.sort_values([\"city\", \"age\"])\ndf.rename(columns={\"old\": \"new\"})\ndf.drop(columns=[\"unused\"])\ndf.drop_duplicates(subset=[\"email\"])",
+      "description": "Common reshaping.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas"
+      ]
+    },
+    {
+      "title": "Add and transform columns",
+      "body": "import numpy as np\n\ndf[\"age_next\"] = df[\"age\"] + 1\ndf[\"adult\"] = np.where(df[\"age\"] >= 18, \"yes\", \"no\")\ndf[\"name_len\"] = df[\"name\"].str.len()\ndf[\"clean\"] = df[\"name\"].str.strip().str.lower()\ndf[\"bucket\"] = pd.cut(df[\"age\"], bins=[0, 18, 65, 120], labels=[\"child\", \"adult\", \"senior\"])",
+      "description": "Vectorised operations, apply, np.where.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas"
+      ]
+    },
+    {
+      "title": "groupby and aggregate",
+      "body": "df.groupby(\"city\")[\"salary\"].mean()\ndf.groupby(\"city\").agg(avg_salary=(\"salary\", \"mean\"), people=(\"name\", \"count\"))\ndf.groupby([\"city\", \"team\"])[\"salary\"].sum().reset_index()",
+      "description": "Summaries per group.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "groupby"
+      ]
+    },
+    {
+      "title": "merge (join) DataFrames",
+      "body": "pd.merge(orders, customers, on=\"customer_id\", how=\"left\")       # inner | left | right | outer\npd.merge(a, b, left_on=\"id\", right_on=\"user_id\")\npd.concat([df1, df2], ignore_index=True)                       # stack rows\npd.concat([df1, df2], axis=1)                                  # side by side",
+      "description": "SQL-style joins on a key.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "merge"
+      ]
+    },
+    {
+      "title": "Missing values",
+      "body": "df.isna().sum()                           # missing per column\ndf.dropna()                               # drop rows with any NaN\ndf.dropna(subset=[\"age\"])\ndf[\"age\"] = df[\"age\"].fillna(df[\"age\"].median())\ndf[\"city\"] = df[\"city\"].fillna(\"unknown\")",
+      "description": "Find, fill and drop.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "missing"
+      ]
+    },
+    {
+      "title": "Types and dates",
+      "body": "df[\"age\"] = df[\"age\"].astype(int)\ndf[\"date\"] = pd.to_datetime(df[\"date\"], errors=\"coerce\")\ndf[\"year\"] = df[\"date\"].dt.year\ndf[\"weekday\"] = df[\"date\"].dt.day_name()\ndf[\"category\"] = df[\"category\"].astype(\"category\")",
+      "description": "Convert columns and use the .dt accessor.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "dates"
+      ]
+    },
+    {
+      "title": "value_counts and pivot_table",
+      "body": "df[\"city\"].value_counts()\ndf[\"city\"].value_counts(normalize=True)           # proportions\npd.pivot_table(df, values=\"salary\", index=\"city\", columns=\"team\", aggfunc=\"mean\", fill_value=0)\npd.crosstab(df[\"city\"], df[\"team\"])",
+      "description": "Frequencies and cross-tabs.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas"
+      ]
+    },
+    {
+      "title": "Save results",
+      "body": "df.to_csv(\"clean.csv\", index=False)\ndf.to_parquet(\"clean.parquet\")\ndf.to_excel(\"clean.xlsx\", index=False)",
+      "description": "Write without the index column.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "save"
+      ]
+    },
+    {
+      "title": "Correlation and outliers",
+      "body": "df.corr(numeric_only=True)\nq1, q3 = df[\"salary\"].quantile([0.25, 0.75])\niqr = q3 - q1\noutliers = df[(df[\"salary\"] < q1 - 1.5 * iqr) | (df[\"salary\"] > q3 + 1.5 * iqr)]",
+      "description": "Quick numeric exploration.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pandas",
+        "eda"
+      ]
+    },
+    {
+      "title": "NumPy: create arrays",
+      "body": "import numpy as np\n\nnp.array([1, 2, 3])\nnp.zeros((2, 3)); np.ones(4); np.eye(3)\nnp.arange(0, 10, 2)            # 0 2 4 6 8\nnp.linspace(0, 1, 5)           # 5 evenly spaced points\nrng = np.random.default_rng(42)\nrng.random((2, 2)); rng.integers(0, 10, size=5); rng.normal(0, 1, 100)",
+      "description": "Common constructors.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "numpy"
+      ]
+    },
+    {
+      "title": "NumPy: shape and reshape",
+      "body": "a = np.arange(12)\na.shape                     # (12,)\na.reshape(3, 4)\na.reshape(-1, 2)            # -1 = infer\na.T                         # transpose\na.ravel()                   # flatten",
+      "description": "Dimensions and reorganising data.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "numpy"
+      ]
+    },
+    {
+      "title": "NumPy: axis operations",
+      "body": "m = np.array([[1, 2, 3], [4, 5, 6]])\nm.sum(axis=0)       # [5 7 9]  per column\nm.mean(axis=1)      # [2. 5.]  per row\nm.max(); m.argmax(); np.std(m)",
+      "description": "axis=0 goes down the rows (per column); axis=1 goes across (per row).",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "numpy"
+      ]
+    },
+    {
+      "title": "NumPy: masks and broadcasting",
+      "body": "a = np.array([1, 5, 10, 15])\na[a > 5]                             # [10 15]\nnp.where(a > 5, \"big\", \"small\")\ncol = np.array([[1], [2], [3]])      # shape (3, 1)\nrow = np.array([10, 20, 30])         # shape (3,)\ncol + row                            # broadcasts to (3, 3)",
+      "description": "Filter without loops; combine arrays of different shapes.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "numpy"
+      ]
+    },
+    {
+      "title": "NumPy: linear algebra",
+      "body": "A = np.array([[2, 1], [1, 3]])\nb = np.array([1, 2])\nA @ A                       # matrix product\nnp.linalg.inv(A)\nnp.linalg.solve(A, b)       # preferred over inv(A) @ b\nnp.linalg.eig(A)",
+      "description": "Matrix product, inverse and solving systems.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "numpy",
+        "linalg"
+      ]
+    }
+  ]
+}

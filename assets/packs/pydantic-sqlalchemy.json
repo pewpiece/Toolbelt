@@ -1,0 +1,187 @@
+{
+  "name": "Pydantic & SQLAlchemy",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Pydantic v2 model with Field",
+      "body": "from pydantic import BaseModel, Field, EmailStr\n\n\nclass User(BaseModel):\n    name: str = Field(min_length=1, max_length=50)\n    email: EmailStr                      # needs: pip install \"pydantic[email]\"\n    age: int = Field(default=18, ge=0, le=130)\n    tags: list[str] = []",
+      "description": "Typed model with constraints and defaults.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pydantic"
+      ]
+    },
+    {
+      "title": "Pydantic field validator",
+      "body": "from pydantic import BaseModel, field_validator\n\n\nclass Signup(BaseModel):\n    username: str\n\n    @field_validator(\"username\")\n    @classmethod\n    def clean(cls, v: str) -> str:\n        v = v.strip().lower()\n        if not v.isalnum():\n            raise ValueError(\"letters and digits only\")\n        return v",
+      "description": "Normalise or reject a single field.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pydantic",
+        "validation"
+      ]
+    },
+    {
+      "title": "Pydantic model validator",
+      "body": "from datetime import date\n\nfrom pydantic import BaseModel, model_validator\n\n\nclass DateRange(BaseModel):\n    start: date\n    end: date\n\n    @model_validator(mode=\"after\")\n    def check_order(self):\n        if self.end < self.start:\n            raise ValueError(\"end must not be before start\")\n        return self",
+      "description": "Cross-field rule.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pydantic",
+        "validation"
+      ]
+    },
+    {
+      "title": "Pydantic: dump and validate",
+      "body": "user = User(name=\"Ada\", email=\"ada@example.com\")\nuser.model_dump()                    # dict\nuser.model_dump_json()               # JSON string\nuser.model_dump(exclude_none=True)\nUser.model_validate({\"name\": \"Ada\", \"email\": \"ada@example.com\"})\nUser.model_validate_json('{\"name\": \"Ada\", \"email\": \"ada@example.com\"}')",
+      "description": "Convert to and from dicts/JSON.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pydantic"
+      ]
+    },
+    {
+      "title": "Pydantic from ORM objects",
+      "body": "from pydantic import BaseModel, ConfigDict\n\n\nclass UserOut(BaseModel):\n    model_config = ConfigDict(from_attributes=True)\n    id: int\n    name: str\n\nUserOut.model_validate(orm_user)",
+      "description": "Read attributes from SQLAlchemy/Django instances.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pydantic",
+        "sqlalchemy"
+      ]
+    },
+    {
+      "title": "Pydantic: handle ValidationError",
+      "body": "from pydantic import ValidationError\n\ntry:\n    User(name=\"\", email=\"not-an-email\")\nexcept ValidationError as e:\n    print(e.errors())      # list of dicts: loc, msg, type",
+      "description": "Read structured errors.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "pydantic"
+      ]
+    },
+    {
+      "title": "SQLAlchemy 2.0 models",
+      "body": "from sqlalchemy import ForeignKey, String\nfrom sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship\n\n\nclass Base(DeclarativeBase):\n    pass\n\n\nclass User(Base):\n    __tablename__ = \"users\"\n    id: Mapped[int] = mapped_column(primary_key=True)\n    name: Mapped[str] = mapped_column(String(50))\n    posts: Mapped[list[\"Post\"]] = relationship(back_populates=\"author\")\n\n\nclass Post(Base):\n    __tablename__ = \"posts\"\n    id: Mapped[int] = mapped_column(primary_key=True)\n    title: Mapped[str]\n    author_id: Mapped[int] = mapped_column(ForeignKey(\"users.id\"))\n    author: Mapped[User] = relationship(back_populates=\"posts\")",
+      "description": "Declarative models with typed columns and a relationship.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "sqlalchemy",
+        "models"
+      ]
+    },
+    {
+      "title": "SQLAlchemy engine and sessions",
+      "body": "from sqlalchemy import create_engine\nfrom sqlalchemy.orm import Session, sessionmaker\n\nengine = create_engine(\"sqlite:///app.db\", echo=False)       # or postgresql+psycopg://user:pw@host/db\nSessionLocal = sessionmaker(engine, expire_on_commit=False)\nBase.metadata.create_all(engine)                            # dev only; use Alembic in real projects\n\nwith Session(engine) as session:\n    ...",
+      "description": "Create the engine, tables and a session.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "sqlalchemy",
+        "session"
+      ]
+    },
+    {
+      "title": "SQLAlchemy: select",
+      "body": "from sqlalchemy import select\n\nwith Session(engine) as session:\n    stmt = select(User).where(User.name == \"Ada\").order_by(User.id).limit(10)\n    users = session.scalars(stmt).all()\n    one = session.scalar(select(User).where(User.id == 1))\n    row = session.get(User, 1)           # by primary key",
+      "description": "2.0-style queries.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "sqlalchemy",
+        "query"
+      ]
+    },
+    {
+      "title": "SQLAlchemy: join and aggregate",
+      "body": "from sqlalchemy import func, select\n\nstmt = (\n    select(User.name, func.count(Post.id))\n    .join(Post, Post.author_id == User.id)\n    .group_by(User.id)\n    .having(func.count(Post.id) > 1)\n)\nrows = session.execute(stmt).all()",
+      "description": "Count posts per user.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "sqlalchemy",
+        "query"
+      ]
+    },
+    {
+      "title": "SQLAlchemy: insert, update, delete",
+      "body": "with Session(engine) as session:\n    user = User(name=\"Ada\")\n    session.add(user)\n    session.commit()\n\n    user.name = \"Ada Lovelace\"       # tracked automatically\n    session.commit()\n\n    session.delete(user)\n    session.commit()\n    # on error: session.rollback()",
+      "description": "Write with commit and rollback.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "sqlalchemy",
+        "session"
+      ]
+    },
+    {
+      "title": "SQLAlchemy: avoid N+1 with eager loading",
+      "body": "from sqlalchemy.orm import selectinload, joinedload\n\nselect(User).options(selectinload(User.posts))     # separate IN query, good for collections\nselect(Post).options(joinedload(Post.author))      # JOIN, good for many-to-one",
+      "description": "Load relationships up front.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "sqlalchemy",
+        "performance"
+      ]
+    },
+    {
+      "title": "SQLAlchemy async engine",
+      "body": "from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine\n\nengine = create_async_engine(\"postgresql+asyncpg://user:pw@localhost/db\")\nAsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)\n\nasync with AsyncSessionLocal() as session:\n    result = await session.scalars(select(User))\n    users = result.all()",
+      "description": "AsyncSession with asyncpg or aiosqlite.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "sqlalchemy",
+        "async"
+      ]
+    },
+    {
+      "title": "Alembic: set up",
+      "body": "pip install alembic\nalembic init alembic\n# alembic.ini:  sqlalchemy.url = postgresql+psycopg://user:pw@localhost/db\n# alembic/env.py:\n#   from app.models import Base\n#   target_metadata = Base.metadata",
+      "description": "Initialise migrations, then point env.py at your metadata.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "alembic"
+      ]
+    },
+    {
+      "title": "Alembic: create and apply migrations",
+      "body": "alembic revision --autogenerate -m \"{{message}}\"\nalembic upgrade head\nalembic downgrade -1",
+      "description": "Autogenerate from model changes, then upgrade.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "alembic"
+      ]
+    },
+    {
+      "title": "Alembic: inspect state",
+      "body": "alembic current\nalembic history --verbose\nalembic heads\nalembic upgrade head --sql      # print SQL instead of running it",
+      "description": "Where am I, and what is the history?",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "alembic"
+      ]
+    },
+    {
+      "title": "Alembic: manual migration body",
+      "body": "def upgrade() -> None:\n    op.add_column(\"users\", sa.Column(\"email\", sa.String(255), nullable=True))\n    op.create_index(\"ix_users_email\", \"users\", [\"email\"], unique=True)\n\n\ndef downgrade() -> None:\n    op.drop_index(\"ix_users_email\", table_name=\"users\")\n    op.drop_column(\"users\", \"email\")",
+      "description": "Review autogenerated files; they are a starting point.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "alembic"
+      ]
+    }
+  ]
+}

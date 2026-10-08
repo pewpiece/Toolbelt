@@ -1,0 +1,481 @@
+DevCheat - real command output
+Generated: 2026-10-08T14:19:48Z  on Linux 6.18.44-fc-v80
+Commit before this file: 90c788f
+
+Everything below is the unedited output of the commands shown (ANSI colours stripped).
+NOT run here (no Android SDK; dl.google.com is blocked by the sandbox network policy):
+  ./gradlew assembleRelease, apksigner signing, installing or launching the app on a device/emulator.
+
+================================================================
+$ node -v && npm -v
+================================================================
+v22.22.0
+10.9.4
+[exit code: 0]
+
+================================================================
+$ npm ci
+================================================================
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: expo-modules-core@57.0.21
+npm warn Found: react-native-worklets@0.13.0
+npm warn node_modules/react-native-worklets
+npm warn   peerOptional react-native-worklets@"*" from @expo/ui@57.0.22
+npm warn   node_modules/@expo/ui
+npm warn     @expo/ui@"^57.0.22" from expo-router@57.0.25
+npm warn     node_modules/expo-router
+npm warn   1 more (react-native-reanimated)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peerOptional react-native-worklets@"^0.7.4 || ^0.8.0 || ^0.9.0 || ^0.10.0" from expo-modules-core@57.0.21
+npm warn node_modules/expo-modules-core
+npm warn   expo-modules-core@"~57.0.21" from expo@57.0.27
+npm warn   node_modules/expo
+npm warn
+npm warn Conflicting peer dependency: react-native-worklets@0.10.4
+npm warn node_modules/react-native-worklets
+npm warn   peerOptional react-native-worklets@"^0.7.4 || ^0.8.0 || ^0.9.0 || ^0.10.0" from expo-modules-core@57.0.21
+npm warn   node_modules/expo-modules-core
+npm warn     expo-modules-core@"~57.0.21" from expo@57.0.27
+npm warn     node_modules/expo
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: react-reconciler@0.34.0
+npm warn Found: react@19.2.3
+npm warn node_modules/react
+npm warn   react@"19.2.3" from the root project
+npm warn   65 more (@expo/devtools, @expo/dom-webview, @expo/log-box, ...)
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer react@"^19.3.0" from react-reconciler@0.34.0
+npm warn node_modules/test-renderer/node_modules/react-reconciler
+npm warn   react-reconciler@"~0.34.0" from test-renderer@1.3.0
+npm warn   node_modules/test-renderer
+npm warn
+npm warn Conflicting peer dependency: react@19.3.0
+npm warn node_modules/react
+npm warn   peer react@"^19.3.0" from react-reconciler@0.34.0
+npm warn   node_modules/test-renderer/node_modules/react-reconciler
+npm warn     react-reconciler@"~0.34.0" from test-renderer@1.3.0
+npm warn     node_modules/test-renderer
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated whatwg-encoding@2.0.0: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+npm warn deprecated uuid@7.0.3: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 1101 packages, and audited 1102 packages in 30s
+
+184 packages are looking for funding
+  run `npm fund` for details
+
+64 vulnerabilities (16 moderate, 48 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[exit code: 0]
+
+================================================================
+$ npm run lint
+================================================================
+
+> devcheat@1.0.0 lint
+> eslint . --max-warnings 0
+
+[exit code: 0]
+
+================================================================
+$ npm run typecheck
+================================================================
+
+> devcheat@1.0.0 typecheck
+> tsc --noEmit
+
+[exit code: 0]
+
+================================================================
+$ npx jest --ci --verbose --no-cache
+================================================================
+PASS src/data/__tests__/itemsRepo.test.ts
+  toFtsQuery
+    ✓ builds prefix queries and strips operators (6 ms)
+    ✓ returns null for empty or punctuation-only input (1 ms)
+  items repository
+    ✓ creates, reads and trims an item with normalized tags (31 ms)
+    ✓ rejects invalid input with a ValidationError naming the field (38 ms)
+    ✓ updates an item, replaces tags, and marks pack items as user-owned (22 ms)
+    ✓ deletes items and cascades tag links (8 ms)
+    ✓ tracks pin state and copy usage without touching updated_at (15 ms)
+    ✓ lists languages and filters by language and tag (18 ms)
+    full-text search
+      ✓ matches by prefix across title, body, description and tags (18 ms)
+      ✓ stays in sync after update, tag change and delete (17 ms)
+      ✓ ranks title hits above body hits (9 ms)
+      ✓ does not throw on hostile query text (7 ms)
+      ✓ combines search with filters (19 ms)
+
+PASS src/services/packs/__tests__/service.test.ts
+  parsePackText
+    ✓ detects JSON packs and tldr pages, and rejects junk (22 ms)
+  pack service
+    ✓ imports a JSON pack from a URL (68 ms)
+    ✓ imports a tldr page (11 ms)
+    ✓ fails gracefully when offline, on HTTP errors and on bad content, installing nothing (5 ms)
+    ✓ refuses to overwrite an existing pack of the same name from a different source (8 ms)
+    ✓ update merges new content and never touches user items or pin choices (23 ms)
+    ✓ update reports "up to date" when the version has not changed (8 ms)
+    ✓ update fails cleanly offline, for built-in packs, and when the file now names another pack (13 ms)
+
+PASS src/services/__tests__/backup.test.ts
+  backup export
+    ✓ produces versioned JSON with packs, items, tags and collections (68 ms)
+  backup restore
+    ✓ round-trips into an empty database (replace) preserving pins, usage, tags and collections (51 ms)
+    ✓ replace wipes existing data (24 ms)
+    ✓ merge keeps device data and skips duplicates; importing twice adds nothing (28 ms)
+    ✓ merge never changes the pin state or usage of items already on the device (47 ms)
+    ✓ is atomic: a failure part-way leaves the database unchanged (76 ms)
+  parseBackup validation
+    ✓ rejects empty file (5 ms)
+    ✓ rejects not JSON (2 ms)
+    ✓ rejects wrong app (1 ms)
+    ✓ rejects future version (2 ms)
+    ✓ rejects missing arrays (1 ms)
+    ✓ rejects array root (1 ms)
+    ✓ rejects malformed items with a pointed message (54 ms)
+    ✓ cleans tags and tolerates missing optional fields (16 ms)
+    ✓ turns pack items whose pack is missing from the file into user items (26 ms)
+
+PASS src/data/__tests__/packsRepo.test.ts
+  packs repository
+    ✓ installs a pack with builtin items and a category (18 ms)
+    ✓ inserts items pinned when the pack is pinned (10 ms)
+    ✓ refresh updates content but never touches user items (21 ms)
+    ✓ refresh never deletes user items even when the pack drops that title (17 ms)
+    ✓ refresh removes non-user items that left the pack (18 ms)
+    ✓ refresh keeps pin state, use_count and last_used_at (an unpinned item is not re-pinned) (18 ms)
+    ✓ keeps the search index in sync through refresh (11 ms)
+    ✓ removing a pack deletes its pack items but keeps user items (14 ms)
+    ✓ rolls back the whole refresh if an entry is invalid (35 ms)
+
+PASS src/services/packs/__tests__/builtinPacks.test.ts
+  bundled starter packs
+    ✓ has pack files and the index lists every one of them (4 ms)
+    ✓ api-testing.json matches the pack schema (15 ms)
+    ✓ bash-scripting.json matches the pack schema (9 ms)
+    ✓ cloud-basics.json matches the pack schema (5 ms)
+    ✓ django-extras.json matches the pack schema (8 ms)
+    ✓ django.json matches the pack schema (6 ms)
+    ✓ docker-compose.json matches the pack schema (5 ms)
+    ✓ expo-react-native.json matches the pack schema (5 ms)
+    ✓ fastapi.json matches the pack schema (5 ms)
+    ✓ git.json matches the pack schema (6 ms)
+    ✓ github-actions-ci-cd.json matches the pack schema (7 ms)
+    ✓ http-rest.json matches the pack schema (5 ms)
+    ✓ json-yaml.json matches the pack schema (13 ms)
+    ✓ jupyter-matplotlib.json matches the pack schema (4 ms)
+    ✓ keyboard-shortcuts.json matches the pack schema (3 ms)
+    ✓ linux-administration.json matches the pack schema (6 ms)
+    ✓ linux-shell-basics.json matches the pack schema (9 ms)
+    ✓ markdown-latex.json matches the pack schema (6 ms)
+    ✓ ml-evaluation-checklist.json matches the pack schema (3 ms)
+    ✓ multi-tenant-patterns.json matches the pack schema (5 ms)
+    ✓ networking-subnetting.json matches the pack schema (5 ms)
+    ✓ nginx-deployment.json matches the pack schema (5 ms)
+    ✓ npm-node.json matches the pack schema (7 ms)
+    ✓ pandas-numpy.json matches the pack schema (5 ms)
+    ✓ pydantic-sqlalchemy.json matches the pack schema (4 ms)
+    ✓ python-virtualenv.json matches the pack schema (6 ms)
+    ✓ react-typescript.json matches the pack schema (4 ms)
+    ✓ regex.json matches the pack schema (5 ms)
+    ✓ scikit-learn-workflow.json matches the pack schema (7 ms)
+    ✓ sql-postgresql.json matches the pack schema (6 ms)
+    ✓ study-career.json matches the pack schema (17 ms)
+    ✓ tailwind-css.json matches the pack schema (6 ms)
+    ✓ test-case-design.json matches the pack schema (4 ms)
+    ✓ testing-qa.json matches the pack schema (6 ms)
+    ✓ vs-code-terminal.json matches the pack schema (4 ms)
+    ✓ has unique pack names and only Study & Career is pinned
+    ✓ covers every category (1 ms)
+    ✓ Study & Career loads with every item pinned, and an unpinned item stays unpinned after a pack update (1543 ms)
+    ✓ installs all packs and makes them searchable (1511 ms)
+
+PASS src/test/screens.packs.test.tsx (9.844 s)
+  Packs screen
+    ✓ lists installed built-in packs (6066 ms)
+    ✓ imports a pack from a URL and shows a summary (138 ms)
+    ✓ shows a readable error when the network is down and installs nothing (23 ms)
+    ✓ rejects empty input, http URLs and invalid pack content without crashing (23 ms)
+    ✓ updates an imported pack and reports "already up to date" (37 ms)
+
+PASS src/test/screens.detail.test.tsx (11.415 s)
+  formatLastUsed
+    ✓ describes recency (17 ms)
+  Item detail screen
+    ✓ shows the item, copies it, and updates the usage line (7188 ms)
+    ✓ asks for {{variables}} on Copy and copies the filled text (374 ms)
+    ✓ toggles the pin (34 ms)
+    ✓ shows a friendly message for a missing item (11 ms)
+
+PASS src/test/screens.collections-settings.test.tsx (15.799 s)
+  Collections screen
+    ✓ shows an empty state, creates collections and validates the name (5976 ms)
+  Settings screen
+    ✓ changes and persists theme and font size (38 ms)
+    ✓ exports the library through the share sheet (1558 ms)
+    ✓ reports an export failure instead of crashing (21 ms)
+    ✓ import: cancelling the picker changes nothing; a bad file shows a clear error (169 ms)
+    ✓ import: merges a valid backup after the user picks Merge (2720 ms)
+    ✓ import: Cancel in the mode dialog leaves the library untouched (1638 ms)
+
+PASS src/services/packs/__tests__/builtin.test.ts
+  seedBuiltinPacks
+    ✓ installs on first launch, is a no-op on the second, and honours removal (20 ms)
+    ✓ applies a newer bundled version without re-pinning an unpinned item (13 ms)
+    ✓ reports invalid bundled packs instead of throwing (6 ms)
+  seedBuiltinPacksAsync
+    ✓ installs every pack, reports progress after each one and yields between them (15 ms)
+    ✓ does nothing, quickly and without progress, once installed (20 ms)
+    ✓ keeps going after an invalid pack (7 ms)
+
+PASS src/features/items/__tests__/homeQuery.test.ts
+  loadHome
+    ✓ browse mode shows pinned (Study & Career by default) and most used, without duplicates (29 ms)
+    ✓ category and language filters switch to a result list (17 ms)
+    ✓ searches with prefix matching and combines with filters (20 ms)
+    ✓ is empty-safe on a fresh database (6 ms)
+
+PASS src/store/__tests__/copy.test.ts
+  copy flow
+    ✓ copies a plain item immediately and records usage (24 ms)
+    ✓ asks for variables first, then copies the filled text (9 ms)
+    ✓ cancelling copies nothing and does not count a use (6 ms)
+    ✓ does not count a use when the clipboard fails, and shows an error (5 ms)
+
+PASS src/services/packs/__tests__/tldr.test.ts
+  tldr parser
+    ✓ detects tldr pages (1 ms)
+    ✓ parses examples into command items with identifier variables (1 ms)
+    ✓ makes duplicate example titles unique (1 ms)
+    ✓ gives a stable version for identical content and a new one when it changes
+    ✓ throws on pages without examples or heading (6 ms)
+    ✓ converts odd placeholders safely
+
+PASS src/services/packs/__tests__/fetch.test.ts
+  pack fetching
+    ✓ rewrites GitHub blob URLs to raw URLs (1 ms)
+    ✓ rejects non-https and malformed URLs (32 ms)
+    ✓ returns the body on success (1 ms)
+    ✓ turns HTTP errors, network errors and oversize bodies into friendly PackFetchErrors (2 ms)
+    ✓ times out a hanging request (21 ms)
+
+PASS src/services/packs/__tests__/validate.test.ts
+  validatePack
+    ✓ accepts a valid pack and normalizes it (1 ms)
+    ✓ collects every problem (1 ms)
+    ✓ rejects: not an object (10 ms)
+    ✓ rejects: missing title (1 ms)
+    ✓ rejects: missing body
+    ✓ rejects: bad type
+    ✓ rejects: bad tags (1 ms)
+    ✓ rejects: duplicate title
+    ✓ rejects: unbalanced braces
+    ✓ rejects: bad pinned
+    ✓ rejects: empty items (1 ms)
+    ✓ requires descriptions only in strict mode (1 ms)
+
+PASS src/features/items/__tests__/ItemForm.test.tsx
+  ItemForm
+    ✓ shows a validation error next to the field and does not save (86 ms)
+    ✓ submits cleaned input including tags and type (34 ms)
+    ✓ surfaces non-validation errors at the bottom (9 ms)
+
+PASS src/test/screens.edit.test.tsx
+  Add / edit item screen
+    ✓ creates an item and navigates to its detail screen, ignoring a double tap (116 ms)
+    ✓ allows retry after a validation error (39 ms)
+    ✓ editing a pack item saves it as the user's own and explains that first (1739 ms)
+    ✓ shows a message when editing an item that no longer exists (5 ms)
+
+PASS src/services/__tests__/template.test.ts
+  template variables
+    ✓ extracts unique variables in order (1 ms)
+    ✓ ignores GitHub Actions expressions and dotted/Jinja expressions (1 ms)
+    ✓ fills values, leaving empty or missing ones visible (1 ms)
+    ✓ does not re-expand dollar signs in replacement values
+    ✓ checks brace balance (1 ms)
+    ✓ allows stray closing braces from nested JSON/dict literals
+
+PASS src/db/__tests__/schema.test.ts
+  drizzle schema matches the migrated database
+    ✓ table packs (11 ms)
+    ✓ table items (2 ms)
+    ✓ table tags (1 ms)
+    ✓ table item_tags
+    ✓ table collections (1 ms)
+    ✓ table collection_items (1 ms)
+    ✓ table settings
+    ✓ declares the foreign keys and indexes the repositories rely on (2 ms)
+
+PASS src/test/screens.home.test.tsx (8.79 s)
+  Home screen
+    ✓ shows the empty state on a fresh database (214 ms)
+    ✓ lists the pinned Study & Career items by default (1771 ms)
+    ✓ prefix-searches as you type and shows no-match feedback (1550 ms)
+    ✓ filters by category chip (1759 ms)
+    ✓ copies straight from a row and counts the use (1483 ms)
+    ✓ opens the detail screen when a row is pressed (1408 ms)
+    ✓ a row with {{variables}} opens the fill-in flow instead of copying immediately (34 ms)
+
+PASS src/services/__tests__/highlight.test.ts
+  tokenize
+    ✓ round-trips the original text (1 ms)
+    ✓ colours bash comments, strings, flags, keywords and placeholders (1 ms)
+    ✓ does not treat $# or a#b as comments
+    ✓ handles python, sql (case-insensitive) and block comments
+    ✓ does not hang on unterminated strings or comments
+    ✓ does not colour placeholders that follow a dollar sign
+
+PASS src/store/__tests__/settings.test.ts
+  settings store
+    ✓ parses stored values defensively (1 ms)
+    ✓ persists changes and restores them on hydrate (17 ms)
+    ✓ keeps working in memory if saving fails (1 ms)
+
+PASS src/data/__tests__/collectionsRepo.test.ts
+  collections repository
+    ✓ creates, lists, renames and deletes collections (31 ms)
+    ✓ adds and removes items, idempotently, and cascades on item delete (20 ms)
+
+PASS src/db/__tests__/migrations.test.ts
+  migrations
+    ✓ creates all tables, FTS table and triggers (13 ms)
+    ✓ sets user_version and is idempotent (5 ms)
+    ✓ enforces the type and source check constraints (28 ms)
+
+PASS src/features/settings/__tests__/theme.test.ts
+  buildTheme
+    ✓ follows the system scheme only in system mode (7 ms)
+    ✓ scales fonts from the base size with sane minimums
+    ✓ both palettes define every token colour (1 ms)
+
+PASS src/data/__tests__/settingsRepo.test.ts
+  ✓ stores and overwrites settings (12 ms)
+
+PASS src/test/screens.layout.test.tsx
+  Root layout bootstrap
+    ✓ first launch: shows setup progress, installs all starter packs, then renders the app (1564 ms)
+    ✓ later launches: no setup screen, nothing reinstalled (1269 ms)
+    ✓ shows a clear error screen if the database cannot be opened (3 ms)
+
+PASS src/features/items/__tests__/VariableForm.test.tsx
+  VariableForm
+    ✓ renders one field per variable and submits the entered values (1173 ms)
+    ✓ calls onCancel (5 ms)
+    ✓ renders nothing while hidden (1 ms)
+
+Test Suites: 27 passed, 27 total
+Tests:       190 passed, 190 total
+Snapshots:   0 total
+Time:        26.314 s
+Ran all test suites.
+[exit code: 0]
+
+================================================================
+$ npx expo export --platform android --output-dir /tmp/claude-0/-home-user-Toolbelt/e0d56815-b3a6-5318-8a0f-fd2486d8862e/scratchpad/export-final
+================================================================
+Starting Metro Bundler
+
+Android Bundled 12525ms node_modules/expo-router/entry.js (1502 modules)
+
+› Assets (27):
+node_modules/@expo-google-fonts/material-symbols/400Regular/MaterialSymbols_400Regular.ttf (971KB)
+node_modules/expo-router/assets/arrow_down.png (9.5KB)
+node_modules/expo-router/assets/arrow_right.xml (307B)
+node_modules/expo-router/assets/checkmark.xml (312B)
+node_modules/expo-router/assets/error.png (469B)
+node_modules/expo-router/assets/file.png (138B)
+node_modules/expo-router/assets/forward.png (188B)
+node_modules/expo-router/assets/pkg.png (364B)
+node_modules/expo-router/assets/react-navigation/elements/back-icon-mask.png (653B)
+node_modules/expo-router/assets/react-navigation/elements/back-icon.png (4 variations | 152B)
+node_modules/expo-router/assets/react-navigation/elements/clear-icon.png (4 variations | 425B)
+node_modules/expo-router/assets/react-navigation/elements/close-icon.png (4 variations | 235B)
+node_modules/expo-router/assets/react-navigation/elements/search-icon.png (4 variations | 599B)
+node_modules/expo-router/assets/sitemap.png (465B)
+node_modules/expo-router/assets/unmatched.png (4.8KB)
+
+› android bundles (1):
+_expo/static/js/android/entry-e3ad296339cfa602287dee2e80777ab1.hbc (3.5MB)
+
+› Files (1):
+metadata.json (1.9KB)
+
+Exported: /tmp/claude-0/-home-user-Toolbelt/e0d56815-b3a6-5318-8a0f-fd2486d8862e/scratchpad/export-final
+[exit code: 0]
+
+================================================================
+$ npx expo prebuild --platform android --no-install --clean && echo '--- permissions in the generated AndroidManifest.xml:' && grep -n 'uses-permission' android/app/src/main/AndroidManifest.xml; rm -rf android
+================================================================
+- Creating native directory (./android)
+✔ Created native directory
+- Updating package.json
+✔ Updated package.json | no changes
+- Running prebuild
+✔ Finished prebuild
+--- permissions in the generated AndroidManifest.xml:
+2:  <uses-permission android:name="android.permission.INTERNET"/>
+3:  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove"/>
+4:  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" tools:node="remove"/>
+5:  <uses-permission android:name="android.permission.VIBRATE" tools:node="remove"/>
+6:  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove"/>
+[exit code: 0]
+
+================================================================
+$ node -e "const fs=require('fs');const d='assets/packs';let n=0,p=0;for(const f of fs.readdirSync(d).filter(f=>f.endsWith('.json'))){const j=JSON.parse(fs.readFileSync(d+'/'+f));p++;n+=j.items.length;console.log(String(j.items.length).padStart(3),j.pinned?'[pinned]':'        ',j.category.padEnd(15),j.name)}console.log(p+' packs, '+n+' items')"
+================================================================
+ 20          QA              API testing
+ 23          Daily dev work  Bash scripting
+ 19          Infrastructure  Cloud basics
+ 17          My own stack    Django extras
+ 24          My own stack    Django
+ 19          Daily dev work  Docker & Compose
+ 21          My own stack    Expo & React Native
+ 19          My own stack    FastAPI
+ 25          Daily dev work  Git
+ 17          Daily dev work  GitHub Actions & CI/CD
+ 21          Daily dev work  HTTP & REST
+ 21          Daily dev work  JSON & YAML
+ 16          Data & ML       Jupyter & Matplotlib
+ 14          Reference       Keyboard shortcuts
+ 23          Infrastructure  Linux administration
+ 21          Daily dev work  Linux & shell basics
+ 20          Reference       Markdown & LaTeX
+ 13          Data & ML       ML evaluation checklist
+ 18          My own stack    Multi-tenant patterns
+ 19          Infrastructure  Networking & subnetting
+ 19          My own stack    Nginx & deployment
+ 20          Daily dev work  npm & Node
+ 18          Data & ML       pandas & NumPy
+ 17          My own stack    Pydantic & SQLAlchemy
+ 21          Daily dev work  Python & virtualenv
+ 20          My own stack    React & TypeScript
+ 21          Daily dev work  Regex
+ 16          Data & ML       scikit-learn workflow
+ 22          Daily dev work  SQL & PostgreSQL
+ 23 [pinned] Study & Career  Study & Career
+ 20          My own stack    Tailwind & CSS
+ 15          QA              Test-case design
+ 19          QA              Testing & QA
+ 19          Daily dev work  VS Code & terminal
+34 packs, 660 items
+[exit code: 0]

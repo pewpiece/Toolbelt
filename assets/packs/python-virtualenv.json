@@ -1,0 +1,239 @@
+{
+  "name": "Python & virtualenv",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "Create and activate a virtualenv",
+      "body": "python3 -m venv .venv\nsource .venv/bin/activate        # Windows: .venv\\Scripts\\activate\ndeactivate",
+      "description": "Isolated environment per project.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "venv"
+      ]
+    },
+    {
+      "title": "pip: install and freeze",
+      "body": "python -m pip install --upgrade pip\npip install {{package}}\npip install -r requirements.txt\npip freeze > requirements.txt",
+      "description": "Manage dependencies with requirements.txt.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "pip"
+      ]
+    },
+    {
+      "title": "pip: inspect packages",
+      "body": "pip show {{package}}\npip list\npip list --outdated",
+      "description": "Show, list and find outdated packages.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "pip"
+      ]
+    },
+    {
+      "title": "pip: editable install",
+      "body": "pip install -e .",
+      "description": "Install the current project in development mode.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "pip"
+      ]
+    },
+    {
+      "title": "Fix: externally-managed-environment",
+      "body": "python3 -m venv .venv && source .venv/bin/activate\npip install {{package}}",
+      "description": "On modern Debian/Ubuntu pip refuses system-wide installs; use a venv.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "pip",
+        "errors"
+      ]
+    },
+    {
+      "title": "Fix: ModuleNotFoundError",
+      "body": "which python\npython -c \"import sys; print(sys.executable)\"\npython -m pip install {{package}}   # install into the same interpreter",
+      "description": "Usually the wrong interpreter; check which python is running.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "errors"
+      ]
+    },
+    {
+      "title": "pytest: run tests",
+      "body": "pytest -q\npytest tests/test_api.py -x -vv\npytest tests/test_api.py::test_login\npytest -k \"login and not slow\"",
+      "description": "Whole suite, one file, one test, by keyword.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "pytest"
+      ]
+    },
+    {
+      "title": "pytest: useful flags",
+      "body": "pytest -s              # show print output\npytest --lf            # only last failed\npytest --pdb           # debugger on failure\npytest -x --maxfail=1  # stop at first failure",
+      "description": "Print output, rerun failures, drop into the debugger.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "pytest"
+      ]
+    },
+    {
+      "title": "pytest: coverage",
+      "body": "pytest --cov=src --cov-report=term-missing",
+      "description": "Needs pytest-cov installed.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "pytest"
+      ]
+    },
+    {
+      "title": "Read and write files with pathlib",
+      "body": "from pathlib import Path\n\np = Path(\"data\") / \"notes.txt\"\np.parent.mkdir(parents=True, exist_ok=True)\np.write_text(\"hello\\n\", encoding=\"utf-8\")\ntext = p.read_text(encoding=\"utf-8\")\nfor f in Path(\".\").glob(\"**/*.py\"):\n    print(f)",
+      "description": "Modern file handling.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "files"
+      ]
+    },
+    {
+      "title": "JSON load and dump",
+      "body": "import json\n\nwith open(\"data.json\", encoding=\"utf-8\") as f:\n    data = json.load(f)\n\nwith open(\"out.json\", \"w\", encoding=\"utf-8\") as f:\n    json.dump(data, f, indent=2, ensure_ascii=False)",
+      "description": "Parse and write JSON.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "json"
+      ]
+    },
+    {
+      "title": "argparse CLI skeleton",
+      "body": "import argparse\n\ndef main():\n    parser = argparse.ArgumentParser(description=\"Do a thing\")\n    parser.add_argument(\"path\", help=\"input file\")\n    parser.add_argument(\"-n\", \"--count\", type=int, default=10)\n    parser.add_argument(\"-v\", \"--verbose\", action=\"store_true\")\n    args = parser.parse_args()\n    print(args.path, args.count, args.verbose)\n\nif __name__ == \"__main__\":\n    main()",
+      "description": "Command-line arguments with help text.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "cli"
+      ]
+    },
+    {
+      "title": "CSV with DictReader",
+      "body": "import csv\n\nwith open(\"data.csv\", newline=\"\", encoding=\"utf-8\") as f:\n    for row in csv.DictReader(f):\n        print(row[\"name\"], row[\"age\"])",
+      "description": "Read rows as dictionaries.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "csv"
+      ]
+    },
+    {
+      "title": "Dates and times",
+      "body": "from datetime import datetime, timedelta, timezone\n\nnow = datetime.now(timezone.utc)\nd = datetime.strptime(\"2024-03-05\", \"%Y-%m-%d\")\nprint(d.strftime(\"%d %b %Y\"))\ntomorrow = now + timedelta(days=1)",
+      "description": "Now, parse, format and add durations.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "datetime"
+      ]
+    },
+    {
+      "title": "logging setup",
+      "body": "import logging\n\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"%(asctime)s %(levelname)s %(name)s: %(message)s\",\n)\nlog = logging.getLogger(__name__)\nlog.info(\"started\")",
+      "description": "Basic configuration with timestamps.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "logging"
+      ]
+    },
+    {
+      "title": "dataclass",
+      "body": "from dataclasses import dataclass, field\n\n@dataclass\nclass User:\n    name: str\n    age: int = 0\n    tags: list[str] = field(default_factory=list)",
+      "description": "Lightweight data container with defaults.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "dataclass"
+      ]
+    },
+    {
+      "title": "Counter and defaultdict",
+      "body": "from collections import Counter, defaultdict\n\ncounts = Counter([\"a\", \"b\", \"a\"])\nprint(counts.most_common(1))      # [('a', 2)]\n\ngroups = defaultdict(list)\nfor word in [\"apple\", \"avocado\", \"banana\"]:\n    groups[word[0]].append(word)",
+      "description": "Counting and grouping.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "collections"
+      ]
+    },
+    {
+      "title": "Run a subprocess",
+      "body": "import subprocess\n\nresult = subprocess.run([\"git\", \"status\"], capture_output=True, text=True, check=True)\nprint(result.stdout)",
+      "description": "Capture output and fail on a non-zero exit.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "subprocess"
+      ]
+    },
+    {
+      "title": "Comprehensions and f-strings",
+      "body": "squares = [x * x for x in range(10) if x % 2 == 0]\nlookup = {w: len(w) for w in [\"a\", \"bb\"]}\nx = 3.14159\nprint(f\"{x:.2f}  {42:>6}  {1234567:,}  {0.256:.1%}\")",
+      "description": "Compact loops and number formatting.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "basics"
+      ]
+    },
+    {
+      "title": "Environment variables",
+      "body": "import os\n\ndebug = os.environ.get(\"DEBUG\", \"0\") == \"1\"\ndb_url = os.environ[\"DATABASE_URL\"]     # raises KeyError if missing",
+      "description": "Read config from the environment.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "python",
+        "env"
+      ]
+    },
+    {
+      "title": "Quick static file server",
+      "body": "python -m http.server 8000",
+      "description": "Serve the current directory on port 8000.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "python",
+        "http"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "name": "Tailwind & CSS",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Install Tailwind v4 with Vite",
+      "body": "npm install tailwindcss @tailwindcss/vite\n# vite.config.ts:  import tailwindcss from \"@tailwindcss/vite\";  plugins: [tailwindcss()]\n# src/index.css:\n@import \"tailwindcss\";",
+      "description": "Plugin-based setup, then import Tailwind in your CSS.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "tailwind",
+        "setup"
+      ]
+    },
+    {
+      "title": "Center with flexbox",
+      "body": "<div class=\"flex h-screen items-center justify-center\">...</div>",
+      "description": "Center a child both ways.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "flex"
+      ]
+    },
+    {
+      "title": "Row with space between",
+      "body": "<header class=\"flex items-center justify-between gap-4 p-4\">\n  <h1 class=\"text-xl font-bold\">Logo</h1>\n  <nav class=\"flex gap-4\">...</nav>\n</header>",
+      "description": "Logo left, actions right, items vertically centred.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "flex"
+      ]
+    },
+    {
+      "title": "Responsive card grid",
+      "body": "<div class=\"grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3\">\n  <div class=\"rounded-lg border p-4 shadow-sm\">Card</div>\n</div>",
+      "description": "1 column on phones, 2 on tablets, 3 on desktops.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "grid",
+        "responsive"
+      ]
+    },
+    {
+      "title": "Breakpoints",
+      "body": "sm   640px     md  768px     lg  1024px\nxl   1280px    2xl 1536px\nExample: class=\"text-sm md:text-base lg:text-lg\"",
+      "description": "Mobile-first: unprefixed classes apply to all sizes; prefixes apply from that width up.",
+      "type": "snippet",
+      "tags": [
+        "tailwind",
+        "responsive"
+      ]
+    },
+    {
+      "title": "Centered page container",
+      "body": "<main class=\"mx-auto max-w-5xl px-4 py-8\">...</main>",
+      "description": "Max width with horizontal padding.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "layout"
+      ]
+    },
+    {
+      "title": "Sticky header and full-height layout",
+      "body": "<div class=\"flex min-h-screen flex-col\">\n  <header class=\"sticky top-0 z-10 border-b bg-white\">...</header>\n  <main class=\"flex-1\">...</main>\n  <footer class=\"border-t p-4\">...</footer>\n</div>",
+      "description": "Header stays on top; content fills the rest.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "layout"
+      ]
+    },
+    {
+      "title": "Button states",
+      "body": "<button class=\"rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition\n  hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2\n  focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50\">Save</button>",
+      "description": "Hover, focus-visible, disabled and transition.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "components"
+      ]
+    },
+    {
+      "title": "Dark mode",
+      "body": "<div class=\"bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100\">...</div>",
+      "description": "Prefix with dark: (follows the OS by default).",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "darkmode"
+      ]
+    },
+    {
+      "title": "Truncate and clamp text",
+      "body": "<p class=\"truncate\">Very long single line...</p>\n<p class=\"line-clamp-3\">Very long paragraph that stops after three lines...</p>",
+      "description": "One-line ellipsis or a fixed number of lines.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "tailwind",
+        "text"
+      ]
+    },
+    {
+      "title": "Spacing scale",
+      "body": "1 = 4px   2 = 8px   3 = 12px   4 = 16px   6 = 24px   8 = 32px   12 = 48px\np-4 padding   m-4 margin   gap-4 gap   space-y-2 vertical spacing between children\npx / py = horizontal / vertical   mx-auto = centre a block",
+      "description": "Number x 0.25rem (4px).",
+      "type": "snippet",
+      "tags": [
+        "tailwind"
+      ]
+    },
+    {
+      "title": "CSS: center with grid",
+      "body": ".center {\n  display: grid;\n  place-items: center;\n  min-height: 100vh;\n}",
+      "description": "Shortest way to centre one child.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "grid"
+      ]
+    },
+    {
+      "title": "CSS: holy grail layout (grid areas)",
+      "body": ".layout {\n  display: grid;\n  grid-template-areas:\n    \"header header\"\n    \"sidebar main\"\n    \"footer footer\";\n  grid-template-columns: 240px 1fr;\n  grid-template-rows: auto 1fr auto;\n  min-height: 100vh;\n}\n.header  { grid-area: header; }\n.sidebar { grid-area: sidebar; }\n.main    { grid-area: main; }\n.footer  { grid-area: footer; }",
+      "description": "Header, sidebar, main, footer.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "grid",
+        "layout"
+      ]
+    },
+    {
+      "title": "CSS: auto-fit responsive grid",
+      "body": ".cards {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));\n  gap: 1rem;\n}",
+      "description": "Cards that wrap without media queries.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "grid",
+        "responsive"
+      ]
+    },
+    {
+      "title": "CSS: flexbox cheatsheet",
+      "body": ".row {\n  display: flex;\n  flex-direction: row;          /* column for vertical */\n  justify-content: space-between; /* main axis */\n  align-items: center;          /* cross axis */\n  flex-wrap: wrap;\n  gap: 1rem;\n}\n.grow { flex: 1; }              /* take remaining space */",
+      "description": "Main axis vs cross axis.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "flex"
+      ]
+    },
+    {
+      "title": "CSS: variables and dark mode",
+      "body": ":root {\n  --bg: #ffffff;\n  --text: #111111;\n  --accent: #2457d6;\n}\n@media (prefers-color-scheme: dark) {\n  :root { --bg: #0e1116; --text: #e6e9ee; }\n}\nbody { background: var(--bg); color: var(--text); }",
+      "description": "Custom properties switched by media query.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "variables"
+      ]
+    },
+    {
+      "title": "CSS: media queries",
+      "body": "@media (min-width: 768px) { /* tablets and up */ }\n@media (min-width: 1024px) { /* desktops */ }\n@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }",
+      "description": "Mobile-first breakpoints.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "responsive"
+      ]
+    },
+    {
+      "title": "CSS: fluid type with clamp()",
+      "body": "h1 { font-size: clamp(1.5rem, 4vw + 1rem, 3rem); }",
+      "description": "Font size between a minimum and maximum.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "responsive"
+      ]
+    },
+    {
+      "title": "CSS: box-sizing reset",
+      "body": "*, *::before, *::after { box-sizing: border-box; }",
+      "description": "Predictable sizing for all elements.",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css"
+      ]
+    },
+    {
+      "title": "CSS: visually hidden (accessible)",
+      "body": ".sr-only {\n  position: absolute;\n  width: 1px; height: 1px;\n  padding: 0; margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}",
+      "description": "Hide from sight but keep for screen readers (Tailwind: sr-only).",
+      "type": "snippet",
+      "language": "css",
+      "tags": [
+        "css",
+        "accessibility"
+      ]
+    }
+  ]
+}

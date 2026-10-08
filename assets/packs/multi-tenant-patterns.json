@@ -1,0 +1,204 @@
+{
+  "name": "Multi-tenant patterns",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Tenant context with contextvars",
+      "body": "from contextlib import contextmanager\nfrom contextvars import ContextVar\n\n_current_tenant: ContextVar = ContextVar(\"current_tenant\", default=None)\n\n\ndef get_current_tenant():\n    return _current_tenant.get()\n\n\n@contextmanager\ndef tenant_context(tenant):\n    token = _current_tenant.set(tenant)\n    try:\n        yield tenant\n    finally:\n        _current_tenant.reset(token)",
+      "description": "Safe per-request/async-friendly current tenant (tenancy/context.py).",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "django"
+      ]
+    },
+    {
+      "title": "Tenant model",
+      "body": "class Tenant(models.Model):\n    slug = models.SlugField(unique=True)       # used as the subdomain\n    name = models.CharField(max_length=200)\n    is_active = models.BooleanField(default=True)\n    created_at = models.DateTimeField(auto_now_add=True)\n\n    def __str__(self):\n        return self.name",
+      "description": "One row per customer organisation.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "django"
+      ]
+    },
+    {
+      "title": "Tenant middleware (subdomain)",
+      "body": "from django.http import HttpResponseNotFound\n\nfrom .context import tenant_context\nfrom .models import Tenant\n\n\nclass TenantMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n\n    def __call__(self, request):\n        subdomain = request.get_host().split(\":\")[0].split(\".\")[0]\n        try:\n            tenant = Tenant.objects.get(slug=subdomain, is_active=True)\n        except Tenant.DoesNotExist:\n            return HttpResponseNotFound(\"Unknown tenant\")\n        request.tenant = tenant\n        with tenant_context(tenant):\n            return self.get_response(request)",
+      "description": "Resolve the tenant from the host and set the context for the request.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "django",
+        "middleware"
+      ]
+    },
+    {
+      "title": "Tenant from a header (API clients)",
+      "body": "slug = request.headers.get(\"X-Tenant\")\ntenant = Tenant.objects.filter(slug=slug, is_active=True).first()\nif tenant is None or not request.user.memberships.filter(tenant=tenant).exists():\n    return JsonResponse({\"detail\": \"Forbidden\"}, status=403)",
+      "description": "Alternative resolver for non-browser clients; still validate access.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "django"
+      ]
+    },
+    {
+      "title": "Scoped manager (fails closed)",
+      "body": "class TenantManager(models.Manager):\n    def get_queryset(self):\n        qs = super().get_queryset()\n        tenant = get_current_tenant()\n        if tenant is None:\n            return qs.none()\n        return qs.filter(tenant=tenant)",
+      "description": "Default queries only see the current tenant; no tenant means no rows.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "django"
+      ]
+    },
+    {
+      "title": "Abstract TenantModel base class",
+      "body": "class TenantModel(models.Model):\n    tenant = models.ForeignKey(\"tenancy.Tenant\", on_delete=models.CASCADE, editable=False)\n\n    objects = TenantManager()          # scoped, used by default\n    unscoped = models.Manager()        # deliberate escape hatch (admin, commands, tests)\n\n    class Meta:\n        abstract = True\n\n    def save(self, *args, **kwargs):\n        if self.tenant_id is None:\n            tenant = get_current_tenant()\n            if tenant is None:\n                raise RuntimeError(\"Saving a tenant model without a current tenant\")\n            self.tenant = tenant\n        super().save(*args, **kwargs)",
+      "description": "Adds the tenant FK, scoped manager and auto-assignment on save.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "django"
+      ]
+    },
+    {
+      "title": "Unique per tenant",
+      "body": "class Invoice(TenantModel):\n    number = models.CharField(max_length=30)\n\n    class Meta:\n        constraints = [\n            models.UniqueConstraint(fields=[\"tenant\", \"number\"], name=\"uniq_invoice_number_per_tenant\"),\n        ]",
+      "description": "Slugs and numbers must be unique inside a tenant, not globally.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "django"
+      ]
+    },
+    {
+      "title": "Isolation test: manager scoping",
+      "body": "import pytest\nfrom tenancy.context import tenant_context\nfrom tenancy.models import Tenant\n\n\n@pytest.fixture\ndef tenants(db):\n    return Tenant.objects.create(slug=\"a\", name=\"A\"), Tenant.objects.create(slug=\"b\", name=\"B\")\n\n\ndef test_manager_isolates_rows(tenants):\n    a, b = tenants\n    with tenant_context(a):\n        Invoice.objects.create(number=\"A-1\")\n    with tenant_context(b):\n        Invoice.objects.create(number=\"B-1\")\n        assert list(Invoice.objects.values_list(\"number\", flat=True)) == [\"B-1\"]\n    with tenant_context(a):\n        assert list(Invoice.objects.values_list(\"number\", flat=True)) == [\"A-1\"]\n\n\ndef test_no_tenant_means_no_rows(tenants):\n    with tenant_context(tenants[0]):\n        Invoice.objects.create(number=\"A-1\")\n    assert Invoice.objects.count() == 0",
+      "description": "Two tenants, same data shape; neither may see the other's rows.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "testing"
+      ]
+    },
+    {
+      "title": "Isolation test: API cannot cross tenants",
+      "body": "def test_api_isolation(tenants, api_client):\n    a, b = tenants\n    with tenant_context(a):\n        inv = Invoice.objects.create(number=\"A-1\")\n\n    # list: B sees nothing\n    r = api_client.get(\"/api/invoices/\", HTTP_HOST=\"b.example.com\")\n    assert r.status_code == 200 and r.json()[\"results\"] == []\n\n    # detail / update / delete by id: 404, not 403 (do not leak existence)\n    for method in (\"get\", \"patch\", \"delete\"):\n        r = getattr(api_client, method)(f\"/api/invoices/{inv.pk}/\", HTTP_HOST=\"b.example.com\")\n        assert r.status_code == 404\n# settings needs ALLOWED_HOSTS = [\".example.com\", \"testserver\"]",
+      "description": "Tenant B must not read, list or modify tenant A's objects.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "testing"
+      ]
+    },
+    {
+      "title": "Isolation test: unauthorised tenant switch",
+      "body": "def test_user_cannot_switch_tenant(tenants, api_client, user_in_a):\n    api_client.force_authenticate(user_in_a)\n    r = api_client.get(\"/api/invoices/\", HTTP_HOST=\"b.example.com\")\n    assert r.status_code in (403, 404)",
+      "description": "A user of tenant A must not use tenant B by changing the host or header.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "testing"
+      ]
+    },
+    {
+      "title": "Tenant isolation checklist",
+      "body": "[ ] Every tenant-owned model inherits the scoped base class\n[ ] Raw SQL and .extra() calls filter by tenant\n[ ] Admin, management commands and shell use the unscoped manager on purpose\n[ ] Cache keys include the tenant id\n[ ] File uploads are stored under a per-tenant path\n[ ] Background tasks receive the tenant id and set the context\n[ ] Search indexes and exports are filtered by tenant\n[ ] Unique constraints include the tenant column\n[ ] Users can only switch to tenants they belong to\n[ ] Logs and error reports include the tenant, never other tenants' data\n[ ] Isolation tests exist for list, detail, update and delete",
+      "description": "Places where tenant data tends to leak.",
+      "type": "checklist",
+      "tags": [
+        "multitenant",
+        "checklist"
+      ]
+    },
+    {
+      "title": "Celery/background task with tenant context",
+      "body": "@shared_task\ndef recalc_totals(tenant_id):\n    tenant = Tenant.objects.get(pk=tenant_id)\n    with tenant_context(tenant):\n        for invoice in Invoice.objects.all():\n            invoice.recalculate()\n\n# enqueue:  recalc_totals.delay(request.tenant.pk)",
+      "description": "Pass the id, not the object, and restore the context.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "celery"
+      ]
+    },
+    {
+      "title": "Tenant-aware cache keys",
+      "body": "def tenant_key(name):\n    tenant = get_current_tenant()\n    return f\"t{tenant.pk}:{name}\"\n\ncache.set(tenant_key(\"dashboard\"), data, 300)",
+      "description": "Prevent one tenant reading another tenant's cached value.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "cache"
+      ]
+    },
+    {
+      "title": "Per-tenant upload path",
+      "body": "def tenant_upload_to(instance, filename):\n    return f\"tenants/{instance.tenant_id}/{filename}\"\n\nclass Document(TenantModel):\n    file = models.FileField(upload_to=tenant_upload_to)",
+      "description": "Keep files separated on disk or in a bucket.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "files"
+      ]
+    },
+    {
+      "title": "Admin scoped to a tenant",
+      "body": "class TenantAdmin(admin.ModelAdmin):\n    def get_queryset(self, request):\n        qs = self.model.unscoped.all()\n        if request.user.is_superuser:\n            return qs\n        return qs.filter(tenant=request.tenant)",
+      "description": "Staff of one tenant only see their own rows.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "multitenant",
+        "admin"
+      ]
+    },
+    {
+      "title": "PostgreSQL row-level security",
+      "body": "ALTER TABLE invoices ENABLE ROW LEVEL SECURITY;\nALTER TABLE invoices FORCE ROW LEVEL SECURITY;      -- apply to the table owner too\nCREATE POLICY tenant_isolation ON invoices\n  USING (tenant_id = current_setting('app.tenant_id')::bigint);\n\n-- at the start of each request/transaction:\nSET LOCAL app.tenant_id = '42';",
+      "description": "Database-enforced isolation as a second line of defence.",
+      "type": "snippet",
+      "language": "sql",
+      "tags": [
+        "multitenant",
+        "postgres"
+      ]
+    },
+    {
+      "title": "Schema-per-tenant (django-tenants) basics",
+      "body": "pip install django-tenants\n# settings: DATABASES ENGINE = \"django_tenants.postgresql_backend\"\n# SHARED_APPS = [...]   TENANT_APPS = [...]\n# TENANT_MODEL = \"customers.Client\"   TENANT_DOMAIN_MODEL = \"customers.Domain\"\npython manage.py migrate_schemas --shared\npython manage.py migrate_schemas",
+      "description": "Strongest isolation; each tenant gets a PostgreSQL schema.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "multitenant",
+        "django"
+      ]
+    },
+    {
+      "title": "Row vs schema vs database per tenant",
+      "body": "Row-level (tenant_id column): simplest, cheapest, scales to many tenants; needs discipline + tests.\nSchema per tenant: stronger isolation, per-tenant restore; migrations run per schema.\nDatabase per tenant: strongest isolation and noisy-neighbour control; highest ops cost.",
+      "description": "Choosing an isolation model.",
+      "type": "snippet",
+      "tags": [
+        "multitenant",
+        "design"
+      ]
+    }
+  ]
+}

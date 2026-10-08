@@ -1,0 +1,209 @@
+{
+  "name": "FastAPI",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Install and run",
+      "body": "pip install \"fastapi[standard]\"\nfastapi dev main.py\nuvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+      "description": "Install with the standard extras and start the dev server.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "fastapi",
+        "uvicorn"
+      ]
+    },
+    {
+      "title": "Minimal app",
+      "body": "from fastapi import FastAPI\n\napp = FastAPI(title=\"My API\")\n\n\n@app.get(\"/\")\ndef root():\n    return {\"status\": \"ok\"}\n\n\n@app.get(\"/items/{item_id}\")\ndef read_item(item_id: int, q: str | None = None):\n    return {\"item_id\": item_id, \"q\": q}",
+      "description": "A single file API; docs appear at /docs.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "Routers",
+      "body": "# app/routers/items.py\nfrom fastapi import APIRouter\n\nrouter = APIRouter(prefix=\"/items\", tags=[\"items\"])\n\n\n@router.get(\"/\")\ndef list_items():\n    return []\n\n# app/main.py\nfrom fastapi import FastAPI\nfrom .routers import items\n\napp = FastAPI()\napp.include_router(items.router)",
+      "description": "Split endpoints into modules.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "router"
+      ]
+    },
+    {
+      "title": "Request and response models",
+      "body": "from pydantic import BaseModel, Field\n\n\nclass ItemIn(BaseModel):\n    name: str = Field(min_length=1, max_length=100)\n    price: float = Field(gt=0)\n\n\nclass ItemOut(ItemIn):\n    id: int\n\n\n@app.post(\"/items\", response_model=ItemOut, status_code=201)\ndef create_item(item: ItemIn):\n    return ItemOut(id=1, **item.model_dump())",
+      "description": "Pydantic validates input and filters output.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "pydantic"
+      ]
+    },
+    {
+      "title": "Query, path and header parameters",
+      "body": "from typing import Annotated\nfrom fastapi import Header, Path, Query\n\n\n@app.get(\"/users/{user_id}\")\ndef get_user(\n    user_id: Annotated[int, Path(ge=1)],\n    limit: Annotated[int, Query(le=100)] = 10,\n    x_token: Annotated[str | None, Header()] = None,\n):\n    ...",
+      "description": "Validated parameters with metadata.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "Dependency injection",
+      "body": "from typing import Annotated\nfrom fastapi import Depends\n\n\ndef pagination(skip: int = 0, limit: int = 20):\n    return {\"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items\")\ndef list_items(page: Annotated[dict, Depends(pagination)]):\n    return page",
+      "description": "Reusable pieces such as pagination, settings or the current user.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "dependencies"
+      ]
+    },
+    {
+      "title": "Database session dependency",
+      "body": "from sqlalchemy.orm import Session\n\ndef get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()\n\n\n@app.get(\"/users\")\ndef users(db: Annotated[Session, Depends(get_db)]):\n    return db.query(User).all()",
+      "description": "One SQLAlchemy session per request, always closed.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "sqlalchemy"
+      ]
+    },
+    {
+      "title": "Errors with HTTPException",
+      "body": "from fastapi import HTTPException\n\n@app.get(\"/items/{item_id}\")\ndef read_item(item_id: int):\n    if item_id not in db:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\n    return db[item_id]",
+      "description": "Return 404 or other statuses.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "Custom exception handler",
+      "body": "from fastapi import Request\nfrom fastapi.responses import JSONResponse\n\n\nclass OutOfStock(Exception):\n    pass\n\n\n@app.exception_handler(OutOfStock)\nasync def out_of_stock_handler(request: Request, exc: OutOfStock):\n    return JSONResponse(status_code=409, content={\"detail\": \"Out of stock\"})",
+      "description": "Turn a domain error into a JSON response.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "CORS middleware",
+      "body": "from fastapi.middleware.cors import CORSMiddleware\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"http://localhost:5173\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)",
+      "description": "Allow a browser front end on another origin.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "cors"
+      ]
+    },
+    {
+      "title": "OAuth2 bearer dependency skeleton",
+      "body": "from fastapi.security import OAuth2PasswordBearer\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n\nasync def current_user(token: Annotated[str, Depends(oauth2_scheme)]):\n    user = decode_and_load_user(token)      # your JWT/session logic\n    if user is None:\n        raise HTTPException(status_code=401, detail=\"Invalid token\",\n                            headers={\"WWW-Authenticate\": \"Bearer\"})\n    return user",
+      "description": "Extract the token and resolve the user.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "auth"
+      ]
+    },
+    {
+      "title": "Background task",
+      "body": "from fastapi import BackgroundTasks\n\n@app.post(\"/signup\")\ndef signup(email: str, background: BackgroundTasks):\n    background.add_task(send_welcome_email, email)\n    return {\"ok\": True}",
+      "description": "Run work after the response is sent.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "Lifespan: startup and shutdown",
+      "body": "from contextlib import asynccontextmanager\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    app.state.pool = await create_pool()\n    yield\n    await app.state.pool.close()\n\napp = FastAPI(lifespan=lifespan)",
+      "description": "Open and close shared resources.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "File upload",
+      "body": "from fastapi import File, UploadFile\n\n@app.post(\"/upload\")\nasync def upload(file: UploadFile = File(...)):\n    content = await file.read()\n    return {\"filename\": file.filename, \"size\": len(content)}",
+      "description": "Receive a multipart file (needs python-multipart, included in the standard extras).",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "Settings with pydantic-settings",
+      "body": "from pydantic_settings import BaseSettings, SettingsConfigDict\n\n\nclass Settings(BaseSettings):\n    model_config = SettingsConfigDict(env_file=\".env\")\n    database_url: str\n    debug: bool = False\n\n\nsettings = Settings()",
+      "description": "Typed configuration from environment variables and .env.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "pydantic",
+        "settings"
+      ]
+    },
+    {
+      "title": "Testing with TestClient",
+      "body": "from fastapi.testclient import TestClient\nfrom app.main import app\n\nclient = TestClient(app)\n\n\ndef test_root():\n    response = client.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"status\": \"ok\"}",
+      "description": "Call the app without running a server.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "testing"
+      ]
+    },
+    {
+      "title": "Override a dependency in tests",
+      "body": "app.dependency_overrides[get_db] = get_test_db\n# cleanup after the test:\napp.dependency_overrides.clear()",
+      "description": "Swap the database or auth for tests.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "fastapi",
+        "testing"
+      ]
+    },
+    {
+      "title": "async vs def endpoints",
+      "body": "async def: use when you await async libraries (httpx, asyncpg, async SQLAlchemy).\ndef: use for blocking code (regular SQLAlchemy, requests); FastAPI runs it in a thread pool.\nNever call blocking code inside async def: it stalls the whole event loop.",
+      "description": "Choosing the right function type.",
+      "type": "snippet",
+      "tags": [
+        "fastapi"
+      ]
+    },
+    {
+      "title": "Run with several workers",
+      "body": "fastapi run main.py --workers 4\nuvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4\ngunicorn app.main:app -k uvicorn.workers.UvicornWorker -w 4 -b 127.0.0.1:8000",
+      "description": "Production-style start without --reload.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "fastapi",
+        "uvicorn",
+        "deploy"
+      ]
+    }
+  ]
+}

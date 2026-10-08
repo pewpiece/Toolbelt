@@ -1,0 +1,225 @@
+{
+  "name": "API testing",
+  "category": "QA",
+  "version": "1",
+  "items": [
+    {
+      "title": "Postman: basic test script",
+      "body": "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\n\npm.test(\"Response time under 500 ms\", () => {\n  pm.expect(pm.response.responseTime).to.be.below(500);\n});\n\npm.test(\"Has an id\", () => {\n  const json = pm.response.json();\n  pm.expect(json).to.have.property(\"id\");\n});",
+      "description": "Add in the Tests tab of a request.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "api",
+        "postman"
+      ]
+    },
+    {
+      "title": "Postman: save a token and chain requests",
+      "body": "// Tests tab of the login request\nconst json = pm.response.json();\npm.environment.set(\"token\", json.access_token);\n\n// In later requests: Authorization header = Bearer {{token}}",
+      "description": "Store a login token for later requests.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "api",
+        "postman"
+      ]
+    },
+    {
+      "title": "Postman: validate a JSON schema",
+      "body": "const schema = {\n  type: \"object\",\n  required: [\"id\", \"name\"],\n  properties: { id: { type: \"integer\" }, name: { type: \"string\" } },\n};\npm.test(\"Schema is valid\", () => {\n  pm.response.to.have.jsonSchema(schema);\n});",
+      "description": "Assert the shape of a response.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "api",
+        "postman"
+      ]
+    },
+    {
+      "title": "Postman: pre-request script",
+      "body": "pm.variables.set(\"email\", `user${Date.now()}@example.com`);\npm.environment.set(\"timestamp\", new Date().toISOString());",
+      "description": "Generate dynamic data before sending.",
+      "type": "snippet",
+      "language": "javascript",
+      "tags": [
+        "api",
+        "postman"
+      ]
+    },
+    {
+      "title": "Run a Postman collection from the CLI (Newman)",
+      "body": "npm install -g newman\nnewman run collection.json -e environment.json --reporters cli,junit",
+      "description": "Use in CI.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "newman"
+      ]
+    },
+    {
+      "title": "curl: status code only",
+      "body": "curl -s -o /dev/null -w \"%{http_code}\\n\" https://api.example.com/health",
+      "description": "Quick assertion in a shell script.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "curl"
+      ]
+    },
+    {
+      "title": "Auth test: no token",
+      "body": "curl -i https://api.example.com/me",
+      "description": "Protected endpoints must refuse anonymous requests (expect 401).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "auth"
+      ]
+    },
+    {
+      "title": "Auth test: invalid and expired token",
+      "body": "curl -i -H \"Authorization: Bearer invalid.token.value\" https://api.example.com/me\ncurl -i -H \"Authorization: Bearer {{expired_token}}\" https://api.example.com/me",
+      "description": "Expect 401 for both; never 200 or 500.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "auth"
+      ]
+    },
+    {
+      "title": "Auth test: wrong role",
+      "body": "curl -i -H \"Authorization: Bearer {{user_token}}\" https://api.example.com/admin/users",
+      "description": "A normal user must get 403 on admin endpoints.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "auth"
+      ]
+    },
+    {
+      "title": "Auth test: access another user's object",
+      "body": "curl -i -H \"Authorization: Bearer {{token_of_user_a}}\" https://api.example.com/orders/{{order_id_of_user_b}}",
+      "description": "Change the id in the URL; expect 403 or 404 (insecure direct object reference check).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "auth",
+        "security"
+      ]
+    },
+    {
+      "title": "Negative-test checklist for an endpoint",
+      "body": "[ ] Missing required field -> 400/422 with a clear message\n[ ] Wrong type (string for number, object for array)\n[ ] Null, empty string and empty body\n[ ] Value too long / too large / out of range\n[ ] Unknown extra fields are ignored or rejected consistently\n[ ] Invalid JSON body -> 400, not 500\n[ ] Wrong Content-Type header -> 415\n[ ] Wrong HTTP method -> 405\n[ ] Non-existent id -> 404\n[ ] Duplicate create -> 409 or a clear validation error\n[ ] No/invalid/expired auth -> 401; insufficient rights -> 403\n[ ] Oversized payload is rejected\n[ ] Errors never expose stack traces or SQL",
+      "description": "What to try on every API endpoint.",
+      "type": "checklist",
+      "tags": [
+        "api",
+        "negative"
+      ]
+    },
+    {
+      "title": "Positive/happy-path checklist",
+      "body": "[ ] Correct status code (200/201/204)\n[ ] Response body matches the documented schema and types\n[ ] Required headers present (Content-Type, Location after create)\n[ ] Created resource can be fetched afterwards\n[ ] Update changes only the intended fields\n[ ] Delete removes it (subsequent GET is 404)\n[ ] Pagination, sorting and filtering return correct results\n[ ] Response time within the agreed limit",
+      "description": "Verify the correct behaviour before the edge cases.",
+      "type": "checklist",
+      "tags": [
+        "api",
+        "positive"
+      ]
+    },
+    {
+      "title": "Pagination test",
+      "body": "curl -s \"https://api.example.com/items?page=1&limit=10\" | jq '.results | length'\ncurl -s \"https://api.example.com/items?page=999&limit=10\" | jq .      # empty page, not an error\ncurl -s \"https://api.example.com/items?limit=100000\" | jq .          # limit must be capped",
+      "description": "Walk pages and check counts and no duplicates.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "pagination"
+      ]
+    },
+    {
+      "title": "Idempotency test",
+      "body": "for i in 1 2 3; do\n  curl -s -o /dev/null -w \"%{http_code} \" -X PUT -H \"Content-Type: application/json\" \\\n    -d '{\"name\":\"x\"}' https://api.example.com/items/1\ndone; echo",
+      "description": "Repeating PUT/DELETE gives the same result; repeating POST should not duplicate.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "idempotency"
+      ]
+    },
+    {
+      "title": "Rate limit test",
+      "body": "for i in $(seq 1 50); do\n  curl -s -o /dev/null -w \"%{http_code} \" https://api.example.com/login\ndone; echo",
+      "description": "Send a burst and watch for 429 and Retry-After.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "ratelimit"
+      ]
+    },
+    {
+      "title": "CORS preflight test",
+      "body": "curl -i -X OPTIONS https://api.example.com/items \\\n  -H \"Origin: https://app.example.com\" \\\n  -H \"Access-Control-Request-Method: POST\" \\\n  -H \"Access-Control-Request-Headers: content-type\"",
+      "description": "The browser sends OPTIONS first; check the response headers.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "cors"
+      ]
+    },
+    {
+      "title": "pytest + requests API test",
+      "body": "import requests\n\nBASE = \"https://api.example.com\"\n\ndef test_create_and_get_item():\n    r = requests.post(f\"{BASE}/items\", json={\"name\": \"demo\"}, timeout=10)\n    assert r.status_code == 201\n    item_id = r.json()[\"id\"]\n\n    r = requests.get(f\"{BASE}/items/{item_id}\", timeout=10)\n    assert r.status_code == 200\n    assert r.json()[\"name\"] == \"demo\"",
+      "description": "Simple automated API check.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "api",
+        "pytest"
+      ]
+    },
+    {
+      "title": "Check a response with jq",
+      "body": "curl -s https://api.example.com/items/1 | jq -e '.id == 1 and (.name | length > 0)'\n# jq -e exits non-zero if the result is false/null, so it works in CI scripts",
+      "description": "Assert fields from the shell.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "jq"
+      ]
+    },
+    {
+      "title": "Inject auth header in every request (HTTPie)",
+      "body": "http GET https://api.example.com/items \"Authorization: Bearer {{token}}\"\nhttp POST https://api.example.com/items name=demo price:=9.99",
+      "description": "Alternative to curl with readable syntax.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "api",
+        "httpie"
+      ]
+    },
+    {
+      "title": "API contract fields to document",
+      "body": "Method + path, purpose, auth required, request params/body (types, required, limits),\nsuccess response (status + schema + example), error responses (status + body),\nrate limits, pagination, versioning, idempotency.",
+      "description": "What a good endpoint spec lists.",
+      "type": "snippet",
+      "tags": [
+        "api",
+        "docs"
+      ]
+    }
+  ]
+}

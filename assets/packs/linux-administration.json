@@ -1,0 +1,252 @@
+{
+  "name": "Linux administration",
+  "category": "Infrastructure",
+  "version": "1",
+  "items": [
+    {
+      "title": "systemctl: manage services",
+      "body": "sudo systemctl status {{service}}\nsudo systemctl start {{service}}\nsudo systemctl stop {{service}}\nsudo systemctl restart {{service}}\nsudo systemctl reload {{service}}\nsudo systemctl enable --now {{service}}\nsudo systemctl disable {{service}}",
+      "description": "Start, stop, enable at boot and check status.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "systemd"
+      ]
+    },
+    {
+      "title": "systemctl: inspect",
+      "body": "systemctl --failed\nsystemctl list-units --type=service --state=running\nsystemctl is-active {{service}}\nsystemctl cat {{service}}\nsudo systemctl daemon-reload       # after editing unit files",
+      "description": "Find failed units and see what is running.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "systemd"
+      ]
+    },
+    {
+      "title": "journalctl: read logs",
+      "body": "journalctl -u {{service}} -f\njournalctl -u {{service}} --since \"1 hour ago\"\njournalctl -p err -b                 # errors since this boot\njournalctl -n 100 --no-pager\njournalctl --disk-usage\nsudo journalctl --vacuum-time=7d",
+      "description": "Filter by unit, time and priority.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "systemd",
+        "logs"
+      ]
+    },
+    {
+      "title": "Disk space checks",
+      "body": "df -h                          # per filesystem\ndf -i                          # inode usage\ndu -sh /var/* | sort -h        # biggest directories\nlsblk                          # block devices\nsudo find / -xdev -type f -size +500M 2>/dev/null",
+      "description": "Find what is using the disk.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "disk"
+      ]
+    },
+    {
+      "title": "Memory and CPU checks",
+      "body": "free -h\nuptime                         # load averages\nnproc\nvmstat 1 5\nps aux --sort=-%mem | head\nps aux --sort=-%cpu | head\ntop -o %MEM",
+      "description": "Quick health check.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "memory",
+        "cpu"
+      ]
+    },
+    {
+      "title": "Create a swap file",
+      "body": "sudo fallocate -l 2G /swapfile\nsudo chmod 600 /swapfile\nsudo mkswap /swapfile\nsudo swapon /swapfile\necho '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab\nswapon --show",
+      "description": "Add 2 GB of swap on a small server.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "memory"
+      ]
+    },
+    {
+      "title": "Add a user and give sudo",
+      "body": "sudo adduser {{username}}\nsudo usermod -aG sudo {{username}}\nid {{username}}",
+      "description": "Create an account and add it to the sudo group (Debian/Ubuntu).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "title": "Users and groups: common tasks",
+      "body": "sudo usermod -aG {{group}} {{username}}     # add to a supplementary group\nsudo passwd {{username}}\nsudo passwd -l {{username}}                 # lock\nsudo deluser --remove-home {{username}}\ngroups {{username}}\ngetent passwd {{username}}\nsudo -l                                     # what may I run with sudo?",
+      "description": "Modify, lock and remove accounts.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "users"
+      ]
+    },
+    {
+      "title": "Safe sudoers editing",
+      "body": "sudo visudo\n# or a drop-in file:  sudo visudo -f /etc/sudoers.d/deploy\n# example line:  deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart myapp",
+      "description": "Always use visudo, which validates syntax.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "users",
+        "sudo"
+      ]
+    },
+    {
+      "title": "Harden SSH",
+      "body": "PermitRootLogin no\nPasswordAuthentication no\nPubkeyAuthentication yes\n# test the config, then:\nsudo sshd -t && sudo systemctl reload ssh",
+      "description": "Edit /etc/ssh/sshd_config, then reload (keep a second session open).",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "ssh",
+        "security"
+      ]
+    },
+    {
+      "title": "ufw firewall basics",
+      "body": "sudo ufw default deny incoming\nsudo ufw default allow outgoing\nsudo ufw allow OpenSSH\nsudo ufw allow 80/tcp\nsudo ufw allow 443/tcp\nsudo ufw enable\nsudo ufw status numbered",
+      "description": "Default deny incoming, allow what you need.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "ufw",
+        "firewall"
+      ]
+    },
+    {
+      "title": "ufw: manage rules",
+      "body": "sudo ufw delete {{rule_number}}\nsudo ufw allow from 203.0.113.5 to any port 22 proto tcp\nsudo ufw deny 3306\nsudo ufw reload\nsudo ufw reset",
+      "description": "Delete rules, restrict by source and reset.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "ufw",
+        "firewall"
+      ]
+    },
+    {
+      "title": "iptables: list rules",
+      "body": "sudo iptables -L -n -v --line-numbers\nsudo iptables -t nat -L -n -v",
+      "description": "Show current rules with counters.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "iptables",
+        "firewall"
+      ]
+    },
+    {
+      "title": "iptables: basic web server rules",
+      "body": "sudo iptables -A INPUT -i lo -j ACCEPT\nsudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT\nsudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT\nsudo iptables -A INPUT -p tcp -m multiport --dports 80,443 -j ACCEPT\nsudo iptables -P INPUT DROP",
+      "description": "Allow loopback, established traffic, SSH and web; drop the rest. Run from a console, not only over SSH.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "iptables",
+        "firewall"
+      ]
+    },
+    {
+      "title": "iptables: save and delete",
+      "body": "sudo iptables -D INPUT {{rule_number}}\nsudo apt install iptables-persistent\nsudo netfilter-persistent save",
+      "description": "Persist rules and remove one by number.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "iptables",
+        "firewall"
+      ]
+    },
+    {
+      "title": "apt package management",
+      "body": "sudo apt update\nsudo apt upgrade -y\nsudo apt install {{package}}\nsudo apt remove {{package}}\nsudo apt autoremove\napt search {{keyword}}\napt list --installed | grep {{package}}\ndpkg -L {{package}}                 # files installed by a package",
+      "description": "Debian/Ubuntu.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "apt",
+        "packages"
+      ]
+    },
+    {
+      "title": "dnf package management",
+      "body": "sudo dnf check-update\nsudo dnf upgrade -y\nsudo dnf install {{package}}\nsudo dnf remove {{package}}\ndnf search {{keyword}}\ndnf provides */{{command}}",
+      "description": "Fedora/RHEL family.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "dnf",
+        "packages"
+      ]
+    },
+    {
+      "title": "Time, hostname and system info",
+      "body": "timedatectl\nsudo timedatectl set-timezone Europe/London\nhostnamectl\nuname -a\ncat /etc/os-release\nlscpu | head",
+      "description": "Identify the machine.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "system"
+      ]
+    },
+    {
+      "title": "Who is logged in and recent logins",
+      "body": "who\nw\nlast -n 20\nlastb -n 20          # failed logins (needs sudo)",
+      "description": "Auditing basics.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "users",
+        "security"
+      ]
+    },
+    {
+      "title": "Find and stop a runaway process",
+      "body": "ps aux --sort=-%cpu | head -5\nkill {{pid}}          # SIGTERM (polite)\nkill -9 {{pid}}       # SIGKILL (last resort)",
+      "description": "Identify the heavy process, then terminate it.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "process"
+      ]
+    },
+    {
+      "title": "logrotate config example",
+      "body": "/var/log/myapp/*.log {\n    daily\n    rotate 14\n    compress\n    delaycompress\n    missingok\n    notifempty\n    copytruncate\n}",
+      "description": "File: /etc/logrotate.d/myapp.",
+      "type": "snippet",
+      "language": "ini",
+      "tags": [
+        "logs",
+        "logrotate"
+      ]
+    },
+    {
+      "title": "systemd timer (cron alternative)",
+      "body": "# /etc/systemd/system/backup.service\n[Service]\nType=oneshot\nExecStart=/usr/local/bin/backup.sh\n\n# /etc/systemd/system/backup.timer\n[Timer]\nOnCalendar=*-*-* 02:00:00\nPersistent=true\n[Install]\nWantedBy=timers.target\n\n# enable: sudo systemctl enable --now backup.timer",
+      "description": "A service plus a timer unit.",
+      "type": "snippet",
+      "language": "ini",
+      "tags": [
+        "systemd",
+        "timer"
+      ]
+    },
+    {
+      "title": "File permission audit",
+      "body": "sudo find / -xdev -perm -0002 -type f 2>/dev/null       # world-writable files\nsudo find / -xdev -perm -4000 -type f 2>/dev/null       # setuid binaries\nls -ld /etc/shadow",
+      "description": "Find risky permissions.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "security",
+        "permissions"
+      ]
+    }
+  ]
+}

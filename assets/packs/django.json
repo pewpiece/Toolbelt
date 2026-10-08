@@ -1,0 +1,270 @@
+{
+  "name": "Django",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Start a project and an app",
+      "body": "django-admin startproject config .\npython manage.py startapp {{app}}",
+      "description": "Create the project in the current folder, then an app.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django",
+        "setup"
+      ]
+    },
+    {
+      "title": "Run the dev server",
+      "body": "python manage.py runserver\npython manage.py runserver 0.0.0.0:8000",
+      "description": "Start on the default port or a chosen address.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django"
+      ]
+    },
+    {
+      "title": "Migrations",
+      "body": "python manage.py makemigrations\npython manage.py migrate\npython manage.py showmigrations\npython manage.py sqlmigrate {{app}} 0001",
+      "description": "Create, apply, list and preview migrations.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django",
+        "migrations"
+      ]
+    },
+    {
+      "title": "Create a superuser",
+      "body": "python manage.py createsuperuser",
+      "description": "Admin account for /admin/.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django",
+        "admin"
+      ]
+    },
+    {
+      "title": "Django shell and dbshell",
+      "body": "python manage.py shell\npython manage.py dbshell",
+      "description": "Interactive Python with Django loaded; raw database prompt.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django",
+        "shell"
+      ]
+    },
+    {
+      "title": "Other management commands",
+      "body": "python manage.py collectstatic --noinput\npython manage.py test\npython manage.py check --deploy\npython manage.py dumpdata {{app}} --indent 2 > fixture.json\npython manage.py loaddata fixture.json",
+      "description": "Static files, tests, checks and fixtures.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django"
+      ]
+    },
+    {
+      "title": "Custom management command",
+      "body": "from django.core.management.base import BaseCommand\n\n\nclass Command(BaseCommand):\n    help = \"Print a greeting\"\n\n    def add_arguments(self, parser):\n        parser.add_argument(\"name\")\n        parser.add_argument(\"--shout\", action=\"store_true\")\n\n    def handle(self, *args, **options):\n        msg = f\"Hello, {options['name']}\"\n        self.stdout.write(self.style.SUCCESS(msg.upper() if options[\"shout\"] else msg))",
+      "description": "File: app/management/commands/greet.py (add empty __init__.py in both folders).",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "command"
+      ]
+    },
+    {
+      "title": "Model with relation and __str__",
+      "body": "from django.db import models\n\n\nclass Post(models.Model):\n    author = models.ForeignKey(\"auth.User\", on_delete=models.CASCADE, related_name=\"posts\")\n    title = models.CharField(max_length=200)\n    body = models.TextField(blank=True)\n    published = models.BooleanField(default=False)\n    created_at = models.DateTimeField(auto_now_add=True)\n\n    class Meta:\n        ordering = [\"-created_at\"]\n\n    def __str__(self):\n        return self.title",
+      "description": "Typical model with Meta options.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "models"
+      ]
+    },
+    {
+      "title": "ORM: filtering",
+      "body": "Post.objects.filter(published=True, title__icontains=\"django\")\nPost.objects.exclude(author__username=\"bob\")\nPost.objects.get(pk=1)                      # raises DoesNotExist / MultipleObjectsReturned\nPost.objects.filter(created_at__year=2024)\nPost.objects.filter(id__in=[1, 2, 3])\nPost.objects.order_by(\"-created_at\")[:10]",
+      "description": "Common QuerySet lookups.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "orm"
+      ]
+    },
+    {
+      "title": "ORM: Q and F expressions",
+      "body": "from django.db.models import Q, F\n\nPost.objects.filter(Q(published=True) | Q(author=request.user))\nPost.objects.filter(~Q(title__startswith=\"Draft\"))\nProduct.objects.update(price=F(\"price\") * 1.1)      # atomic, no race",
+      "description": "OR conditions and field-to-field operations.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "orm"
+      ]
+    },
+    {
+      "title": "ORM: aggregate and annotate",
+      "body": "from django.db.models import Count, Avg, Sum\n\nOrder.objects.aggregate(total=Sum(\"amount\"), avg=Avg(\"amount\"))\nAuthor.objects.annotate(n_posts=Count(\"posts\")).filter(n_posts__gt=5)",
+      "description": "Totals across rows and per-row counts.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "orm"
+      ]
+    },
+    {
+      "title": "ORM: create, update, delete",
+      "body": "p = Post.objects.create(title=\"Hi\", author=user)\nobj, created = Post.objects.get_or_create(title=\"Hi\", defaults={\"author\": user})\nobj, created = Post.objects.update_or_create(title=\"Hi\", defaults={\"body\": \"new\"})\nPost.objects.filter(published=False).update(published=True)\nPost.objects.bulk_create([Post(title=\"a\", author=user), Post(title=\"b\", author=user)])\nPost.objects.filter(pk=1).delete()",
+      "description": "Writes, including get_or_create and bulk operations.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "orm"
+      ]
+    },
+    {
+      "title": "ORM: values, exists, count",
+      "body": "Post.objects.values(\"id\", \"title\")\nPost.objects.values_list(\"title\", flat=True)\nPost.objects.filter(published=True).exists()\nPost.objects.count()\nPost.objects.filter(pk=1).first()",
+      "description": "Lightweight reads.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "orm"
+      ]
+    },
+    {
+      "title": "URLs",
+      "body": "# config/urls.py\nfrom django.contrib import admin\nfrom django.urls import include, path\n\nurlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"blog/\", include(\"blog.urls\")),\n]\n\n# blog/urls.py\nfrom django.urls import path\nfrom . import views\n\napp_name = \"blog\"\nurlpatterns = [\n    path(\"\", views.post_list, name=\"list\"),\n    path(\"<int:pk>/\", views.post_detail, name=\"detail\"),\n]",
+      "description": "Project and app routing.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "urls"
+      ]
+    },
+    {
+      "title": "Function and class-based views",
+      "body": "from django.shortcuts import get_object_or_404, render\nfrom django.views.generic import ListView\n\n\ndef post_detail(request, pk):\n    post = get_object_or_404(Post, pk=pk)\n    return render(request, \"blog/detail.html\", {\"post\": post})\n\n\nclass PostList(ListView):\n    model = Post\n    paginate_by = 10\n    template_name = \"blog/list.html\"",
+      "description": "A list view and a detail view.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "views"
+      ]
+    },
+    {
+      "title": "ModelForm",
+      "body": "from django import forms\nfrom django.shortcuts import redirect, render\n\n\nclass PostForm(forms.ModelForm):\n    class Meta:\n        model = Post\n        fields = [\"title\", \"body\"]\n\n\ndef create_post(request):\n    form = PostForm(request.POST or None)\n    if form.is_valid():\n        post = form.save(commit=False)\n        post.author = request.user\n        post.save()\n        return redirect(\"blog:list\")\n    return render(request, \"blog/form.html\", {\"form\": form})",
+      "description": "Form generated from a model, with a view that handles POST.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "forms"
+      ]
+    },
+    {
+      "title": "Admin registration",
+      "body": "from django.contrib import admin\n\n\n@admin.register(Post)\nclass PostAdmin(admin.ModelAdmin):\n    list_display = (\"title\", \"author\", \"published\", \"created_at\")\n    list_filter = (\"published\",)\n    search_fields = (\"title\", \"body\")",
+      "description": "Customise the list view in /admin/.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "admin"
+      ]
+    },
+    {
+      "title": "Template syntax",
+      "body": "{% load static %}\n{% for post in posts %}\n  <a href=\"{% url 'blog:detail' post.pk %}\">{{ post.title }}</a>\n{% empty %}\n  <p>No posts yet.</p>\n{% endfor %}\n{% if user.is_authenticated %}Hi {{ user.username }}{% endif %}\n<img src=\"{% static 'img/logo.png' %}\">\n<form method=\"post\">{% csrf_token %}{{ form.as_p }}</form>",
+      "description": "Loops, conditions, URLs and static files.",
+      "type": "snippet",
+      "language": "html",
+      "tags": [
+        "django",
+        "templates"
+      ]
+    },
+    {
+      "title": "DRF: install and settings",
+      "body": "pip install djangorestframework\n\n# settings.py\nINSTALLED_APPS += [\"rest_framework\"]\nREST_FRAMEWORK = {\n    \"DEFAULT_PERMISSION_CLASSES\": [\"rest_framework.permissions.IsAuthenticated\"],\n    \"DEFAULT_PAGINATION_CLASS\": \"rest_framework.pagination.PageNumberPagination\",\n    \"PAGE_SIZE\": 20,\n}",
+      "description": "Add Django REST framework.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "drf"
+      ]
+    },
+    {
+      "title": "DRF: serializer and ModelViewSet",
+      "body": "from rest_framework import serializers, viewsets\n\n\nclass PostSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Post\n        fields = [\"id\", \"title\", \"body\", \"published\", \"created_at\"]\n        read_only_fields = [\"id\", \"created_at\"]\n\n\nclass PostViewSet(viewsets.ModelViewSet):\n    queryset = Post.objects.all()\n    serializer_class = PostSerializer",
+      "description": "CRUD API in a few lines.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "drf"
+      ]
+    },
+    {
+      "title": "DRF: router",
+      "body": "from rest_framework.routers import DefaultRouter\n\nrouter = DefaultRouter()\nrouter.register(\"posts\", PostViewSet, basename=\"post\")\nurlpatterns = router.urls",
+      "description": "Register viewsets to generate URLs.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "drf"
+      ]
+    },
+    {
+      "title": "DRF: APIView and permissions",
+      "body": "from rest_framework.permissions import IsAuthenticated\nfrom rest_framework.response import Response\nfrom rest_framework.views import APIView\n\n\nclass PingView(APIView):\n    permission_classes = [IsAuthenticated]\n\n    def get(self, request):\n        return Response({\"user\": request.user.username})",
+      "description": "Explicit view with a custom response.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "drf"
+      ]
+    },
+    {
+      "title": "DRF: token auth quick test",
+      "body": "curl -H \"Authorization: Token {{token}}\" http://localhost:8000/api/posts/",
+      "description": "Call an authenticated endpoint with a token.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django",
+        "drf",
+        "curl"
+      ]
+    },
+    {
+      "title": "Django test with the client",
+      "body": "from django.test import TestCase\nfrom django.urls import reverse\n\n\nclass PostTests(TestCase):\n    def test_list_ok(self):\n        response = self.client.get(reverse(\"blog:list\"))\n        self.assertEqual(response.status_code, 200)",
+      "description": "A simple TestCase hitting a view.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "testing"
+      ]
+    }
+  ]
+}

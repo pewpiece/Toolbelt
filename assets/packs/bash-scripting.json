@@ -1,0 +1,256 @@
+{
+  "name": "Bash scripting",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "Script header with strict mode",
+      "body": "#!/usr/bin/env bash\nset -euo pipefail\nIFS=$'\\n\\t'",
+      "description": "Shebang plus fail-fast options.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash"
+      ]
+    },
+    {
+      "title": "What set -euo pipefail does",
+      "body": "set -e          # exit when a command fails\nset -u          # error on unset variables\nset -o pipefail # a pipeline fails if any command in it fails",
+      "description": "Meaning of each strict-mode flag.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash"
+      ]
+    },
+    {
+      "title": "Default values and required variables",
+      "body": "name=\"${1:-World}\"                 # default if unset or empty\n: \"${API_KEY:?API_KEY is required}\"  # abort with a message if unset",
+      "description": "Fall back to a default or abort when a variable is missing.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "variables"
+      ]
+    },
+    {
+      "title": "if with file and string tests",
+      "body": "if [[ -f \"$file\" ]]; then echo \"file exists\"\nelif [[ -d \"$file\" ]]; then echo \"directory\"\nelse echo \"missing\"; fi\n\n# -z empty string   -n non-empty   -e exists   -r readable   -x executable",
+      "description": "Common [[ ]] conditions.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "conditionals"
+      ]
+    },
+    {
+      "title": "Compare numbers and strings",
+      "body": "if (( count > 10 )); then echo \"big\"; fi\nif [[ \"$a\" == \"$b\" ]]; then echo \"equal\"; fi\nif [[ \"$name\" == prefix* ]]; then echo \"starts with prefix\"; fi\nif [[ \"$s\" =~ ^[0-9]+$ ]]; then echo \"all digits\"; fi",
+      "description": "Use (( )) for numbers and [[ ]] for strings.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "conditionals"
+      ]
+    },
+    {
+      "title": "for loop over files",
+      "body": "for f in *.txt; do\n  echo \"Processing $f\"\ndone",
+      "description": "Iterate a glob safely (quote the variable).",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "loops"
+      ]
+    },
+    {
+      "title": "for loop over a number range",
+      "body": "for i in {1..5}; do echo \"$i\"; done\n\nfor ((i = 0; i < 5; i++)); do echo \"$i\"; done",
+      "description": "Counting loops, brace and C style.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "loops"
+      ]
+    },
+    {
+      "title": "Read a file line by line",
+      "body": "while IFS= read -r line; do\n  echo \"$line\"\ndone < input.txt",
+      "description": "Preserves whitespace and backslashes.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "loops"
+      ]
+    },
+    {
+      "title": "Function with arguments and return value",
+      "body": "greet() {\n  local name=\"${1:-World}\"\n  echo \"Hello, $name\"\n}\n\nmsg=$(greet \"Ada\")   # capture output\necho \"$msg\"\nif greet >/dev/null; then echo \"ok\"; fi",
+      "description": "Arguments are $1, $2...; output via echo, status via return.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "functions"
+      ]
+    },
+    {
+      "title": "Parse short options with getopts",
+      "body": "verbose=0; file=\"\"\nwhile getopts \":f:vh\" opt; do\n  case \"$opt\" in\n    f) file=\"$OPTARG\" ;;\n    v) verbose=1 ;;\n    h) echo \"usage: $0 [-v] -f FILE\"; exit 0 ;;\n    \\?) echo \"unknown option -$OPTARG\" >&2; exit 1 ;;\n    :) echo \"-$OPTARG needs a value\" >&2; exit 1 ;;\n  esac\ndone\nshift $((OPTIND - 1))   # remaining args are in \"$@\"",
+      "description": "Handle -f value, -v and -h.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "arguments"
+      ]
+    },
+    {
+      "title": "Parse long options with a while/case loop",
+      "body": "while [[ $# -gt 0 ]]; do\n  case \"$1\" in\n    --name) name=\"$2\"; shift 2 ;;\n    --verbose) verbose=1; shift ;;\n    --) shift; break ;;\n    -*) echo \"unknown option: $1\" >&2; exit 1 ;;\n    *) break ;;\n  esac\ndone",
+      "description": "Handle --name value style flags.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "arguments"
+      ]
+    },
+    {
+      "title": "Special variables",
+      "body": "$0 script name   $1..$9 arguments   $# argument count\n\"$@\" all args (each quoted)   $? last exit status\n$$ current PID   $! last background PID",
+      "description": "Arguments, exit status and process info.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "variables"
+      ]
+    },
+    {
+      "title": "Clean up with trap",
+      "body": "tmpdir=$(mktemp -d)\ntrap 'rm -rf \"$tmpdir\"' EXIT",
+      "description": "Remove a temp dir however the script exits.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "trap"
+      ]
+    },
+    {
+      "title": "Check that a command exists",
+      "body": "command -v git >/dev/null 2>&1 || { echo \"git is required\" >&2; exit 1; }",
+      "description": "Fail early when a dependency is missing.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash"
+      ]
+    },
+    {
+      "title": "Arrays",
+      "body": "arr=(apple banana cherry)\necho \"${arr[0]}\"            # first element\necho \"${#arr[@]}\"           # length\narr+=(date)                 # append\nfor x in \"${arr[@]}\"; do echo \"$x\"; done",
+      "description": "Create, loop, count and append.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "arrays"
+      ]
+    },
+    {
+      "title": "Parameter expansion cheats",
+      "body": "f=\"/path/to/report.tar.gz\"\necho \"${f##*/}\"    # report.tar.gz  (basename)\necho \"${f%.*}\"     # /path/to/report.tar (drop last extension)\necho \"${f%%.*}\"    # /path/to/report (drop all extensions)\necho \"${#f}\"       # length\ns=\"hello\"; echo \"${s^^}\"   # HELLO",
+      "description": "Strip prefixes/suffixes and change case without external tools.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "variables"
+      ]
+    },
+    {
+      "title": "Redirection cheat sheet",
+      "body": "cmd > out.txt          # stdout to file (overwrite)\ncmd >> out.txt         # append\ncmd 2> err.txt         # stderr to file\ncmd > all.txt 2>&1     # both to one file\ncmd &> all.txt         # same, shorter (bash)\ncmd > /dev/null 2>&1   # discard everything\necho \"error\" >&2       # write to stderr",
+      "description": "Send output and errors where you need them.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "redirection"
+      ]
+    },
+    {
+      "title": "Here document",
+      "body": "cat > config.txt <<'EOF'\nline one with $literal dollar\nline two\nEOF",
+      "description": "Write multi-line text to a file; quote EOF to stop expansion.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "bash"
+      ]
+    },
+    {
+      "title": "One-liner: rename extensions",
+      "body": "for f in *.txt; do mv -- \"$f\" \"${f%.txt}.md\"; done",
+      "description": "Change every .txt file to .md.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "oneliner"
+      ]
+    },
+    {
+      "title": "One-liner: most frequent lines",
+      "body": "sort file.txt | uniq -c | sort -rn | head -10",
+      "description": "Count duplicates and show the top ten.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "oneliner"
+      ]
+    },
+    {
+      "title": "One-liner: delete old files",
+      "body": "find . -name '*.log' -mtime +7 -delete",
+      "description": "Remove .log files older than 7 days (preview without -delete first).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "oneliner"
+      ]
+    },
+    {
+      "title": "One-liner: run in parallel",
+      "body": "ls *.png | xargs -P 4 -I {} convert {} {}.jpg",
+      "description": "Process files four at a time.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "oneliner"
+      ]
+    },
+    {
+      "title": "Debug a script",
+      "body": "bash -x script.sh\n# or inside the script:\nset -x",
+      "description": "Trace every command as it runs.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "bash",
+        "debug"
+      ]
+    }
+  ]
+}

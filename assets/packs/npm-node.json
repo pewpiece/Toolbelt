@@ -1,0 +1,225 @@
+{
+  "name": "npm & Node",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "Initialise and install",
+      "body": "npm init -y\nnpm install {{package}}\nnpm install -D {{package}}      # dev dependency\nnpm uninstall {{package}}",
+      "description": "Start a project and add dependencies.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "node"
+      ]
+    },
+    {
+      "title": "Clean install from the lockfile",
+      "body": "npm ci",
+      "description": "Reproducible install for CI (deletes node_modules first).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "node"
+      ]
+    },
+    {
+      "title": "package.json scripts",
+      "body": "{\n  \"scripts\": {\n    \"start\": \"node dist/index.js\",\n    \"dev\": \"node --watch src/index.js\",\n    \"build\": \"tsc\",\n    \"test\": \"jest\",\n    \"lint\": \"eslint .\"\n  }\n}",
+      "description": "Typical script block; run with npm run <name>.",
+      "type": "snippet",
+      "language": "json",
+      "tags": [
+        "npm",
+        "node"
+      ]
+    },
+    {
+      "title": "Run scripts and pass arguments",
+      "body": "npm run build\nnpm test\nnpm run dev -- --port 3000",
+      "description": "Arguments after -- go to the script itself.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "node"
+      ]
+    },
+    {
+      "title": "npx: run a package without installing",
+      "body": "npx {{package}}\nnpx --yes create-vite@latest\nnpx tsc --version        # local binary",
+      "description": "Execute a CLI from the registry or from node_modules/.bin.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "npx"
+      ]
+    },
+    {
+      "title": "Manage Node versions with nvm",
+      "body": "nvm install --lts\nnvm install 20\nnvm use 20\nnvm ls\nnvm alias default 20\necho \"20\" > .nvmrc && nvm use     # per-project version",
+      "description": "Install and switch Node versions.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "node",
+        "nvm"
+      ]
+    },
+    {
+      "title": "Check outdated and update",
+      "body": "npm outdated\nnpm update\nnpm ls --depth=0\nnpm view {{package}} versions",
+      "description": "See what can be upgraded.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm"
+      ]
+    },
+    {
+      "title": "Audit dependencies",
+      "body": "npm audit\nnpm audit fix",
+      "description": "Report and fix known vulnerabilities.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "security"
+      ]
+    },
+    {
+      "title": "Semver ranges",
+      "body": "1.2.3     exactly 1.2.3\n^1.2.3    >=1.2.3 <2.0.0 (minor and patch updates)\n~1.2.3    >=1.2.3 <1.3.0 (patch updates only)\n>=1.2.3   at least\n*         anything",
+      "description": "What the prefixes in package.json mean.",
+      "type": "snippet",
+      "tags": [
+        "npm",
+        "semver"
+      ]
+    },
+    {
+      "title": "Bump version and tag",
+      "body": "npm version patch     # 1.0.0 -> 1.0.1\nnpm version minor     # -> 1.1.0\nnpm version major     # -> 2.0.0",
+      "description": "Update package.json, commit and create a git tag.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "version"
+      ]
+    },
+    {
+      "title": "Node one-liners",
+      "body": "node -e \"console.log(process.version)\"\nnode --watch app.js                # restart on change (Node 18.11+)\nnode --env-file=.env app.js        # load env vars (Node 20.6+)",
+      "description": "Quick checks and watch mode.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "node"
+      ]
+    },
+    {
+      "title": "Enable ES modules",
+      "body": "{\n  \"type\": \"module\"\n}\n// or name files *.mjs. CommonJS files become *.cjs",
+      "description": "Use import/export in .js files.",
+      "type": "snippet",
+      "language": "json",
+      "tags": [
+        "node",
+        "esm"
+      ]
+    },
+    {
+      "title": "Fix: EADDRINUSE (port already in use)",
+      "body": "lsof -i :3000          # note the PID\nkill {{pid}}",
+      "description": "Find and stop whatever holds the port.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "node",
+        "errors"
+      ]
+    },
+    {
+      "title": "Fix: ERESOLVE could not resolve dependency tree",
+      "body": "npm install --legacy-peer-deps",
+      "description": "Peer dependency conflict: prefer fixing versions; this is the last resort.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "errors"
+      ]
+    },
+    {
+      "title": "Fix: Cannot find module / broken node_modules",
+      "body": "rm -rf node_modules package-lock.json\nnpm install\n# or, keeping the lockfile:\nrm -rf node_modules && npm ci",
+      "description": "Start from a clean install.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "errors"
+      ]
+    },
+    {
+      "title": "Fix: EACCES on global installs",
+      "body": "npm config set prefix ~/.npm-global\nexport PATH=~/.npm-global/bin:$PATH",
+      "description": "Avoid sudo by using a version manager or a user-level prefix.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "errors"
+      ]
+    },
+    {
+      "title": "Fix: ENOSPC file watchers limit (Linux)",
+      "body": "echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf\nsudo sysctl -p",
+      "description": "Raise the inotify watch limit for dev servers.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "node",
+        "errors",
+        "linux"
+      ]
+    },
+    {
+      "title": "Fix: digital envelope routines unsupported",
+      "body": "export NODE_OPTIONS=--openssl-legacy-provider",
+      "description": "Old webpack on Node 17+; upgrade the tool, or as a stopgap:",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "node",
+        "errors"
+      ]
+    },
+    {
+      "title": "Fix: Cannot use import statement outside a module",
+      "body": "# Option 1: in package.json add  \"type\": \"module\"\n# Option 2: rename the file to .mjs\n# Option 3: use require() instead of import",
+      "description": "Mixed ESM/CommonJS: set the module type or rename the file.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "node",
+        "errors"
+      ]
+    },
+    {
+      "title": "Clear the npm cache",
+      "body": "npm cache clean --force",
+      "description": "Last resort for corrupted installs.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "npm",
+        "errors"
+      ]
+    }
+  ]
+}

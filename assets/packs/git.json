@@ -1,0 +1,286 @@
+{
+  "name": "Git",
+  "category": "Daily dev work",
+  "version": "1",
+  "items": [
+    {
+      "title": "New branch and switch to it",
+      "body": "git switch -c {{branch}}",
+      "description": "Create a branch from the current commit and check it out.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "branch"
+      ]
+    },
+    {
+      "title": "List all branches",
+      "body": "git branch -a",
+      "description": "Local and remote-tracking branches, current one marked with *.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "branch"
+      ]
+    },
+    {
+      "title": "Delete a merged branch",
+      "body": "git branch -d {{branch}}",
+      "description": "Safe delete (refuses if unmerged); use -D to force.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "branch"
+      ]
+    },
+    {
+      "title": "Pretty log graph",
+      "body": "git log --oneline --graph --decorate --all",
+      "description": "One-line history with branch graph across all branches.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "log"
+      ]
+    },
+    {
+      "title": "Unstage a file",
+      "body": "git restore --staged {{file}}",
+      "description": "Remove a file from the staging area, keeping edits.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "undo"
+      ]
+    },
+    {
+      "title": "Discard changes in a file",
+      "body": "git restore {{file}}",
+      "description": "Throw away uncommitted edits to a file (cannot be undone).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "undo"
+      ]
+    },
+    {
+      "title": "Undo last commit, keep changes staged",
+      "body": "git reset --soft HEAD~1",
+      "description": "Move HEAD back one commit; files stay staged.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "undo",
+        "reset"
+      ]
+    },
+    {
+      "title": "Undo last commit, keep changes unstaged",
+      "body": "git reset HEAD~1",
+      "description": "Mixed reset: commit is undone, edits remain in the working tree.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "undo",
+        "reset"
+      ]
+    },
+    {
+      "title": "Discard last commit and its changes",
+      "body": "git reset --hard HEAD~1",
+      "description": "Hard reset: destroys the commit and its edits.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "undo",
+        "reset"
+      ]
+    },
+    {
+      "title": "Revert a commit safely",
+      "body": "git revert {{commit}}",
+      "description": "Create a new commit that undoes an earlier one (safe for shared branches).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "undo"
+      ]
+    },
+    {
+      "title": "Amend the last commit message",
+      "body": "git commit --amend -m \"{{message}}\"",
+      "description": "Rewrite the message of the most recent commit (local only).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "commit"
+      ]
+    },
+    {
+      "title": "Add a forgotten file to the last commit",
+      "body": "git add {{file}}\ngit commit --amend --no-edit",
+      "description": "Stage the file and fold it into the previous commit.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "commit"
+      ]
+    },
+    {
+      "title": "Recover lost commits with reflog",
+      "body": "git reflog",
+      "description": "Show where HEAD has been; find a commit to reset or branch from.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "undo",
+        "reflog"
+      ]
+    },
+    {
+      "title": "Stash including untracked files",
+      "body": "git stash push -u -m \"{{message}}\"",
+      "description": "Save work in progress with a label.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "stash"
+      ]
+    },
+    {
+      "title": "Stash: list, apply, pop, drop",
+      "body": "git stash list\ngit stash apply stash@{0}   # keep the stash\ngit stash pop               # apply and remove the newest\ngit stash drop stash@{0}",
+      "description": "Common stash operations.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "stash"
+      ]
+    },
+    {
+      "title": "Interactive rebase last N commits",
+      "body": "git rebase -i HEAD~{{n}}\ngit rebase --continue    # after fixing a conflict\ngit rebase --abort       # give up and go back",
+      "description": "Squash, reword, reorder or drop recent commits.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "rebase"
+      ]
+    },
+    {
+      "title": "Rebase onto the latest main",
+      "body": "git fetch origin\ngit rebase origin/main",
+      "description": "Replay your branch on top of origin/main.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "rebase"
+      ]
+    },
+    {
+      "title": "Cherry-pick a commit",
+      "body": "git cherry-pick {{commit}}",
+      "description": "Apply a single commit from another branch onto the current one.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git"
+      ]
+    },
+    {
+      "title": "Show and change remotes",
+      "body": "git remote -v\ngit remote add origin {{url}}\ngit remote set-url origin {{url}}",
+      "description": "List remotes, add one, or change its URL.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "remote"
+      ]
+    },
+    {
+      "title": "Push: new branch and safe force push",
+      "body": "git push -u origin HEAD\ngit push --force-with-lease",
+      "description": "First push sets the upstream; --force-with-lease only overwrites if nobody else pushed.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "remote"
+      ]
+    },
+    {
+      "title": "Delete a remote branch",
+      "body": "git push origin --delete {{branch}}\ngit fetch --prune",
+      "description": "Remove a branch from origin, then prune stale tracking branches.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "remote",
+        "branch"
+      ]
+    },
+    {
+      "title": "Create and push an annotated tag",
+      "body": "git tag -a v{{version}} -m \"Release {{version}}\"\ngit push origin v{{version}}",
+      "description": "Tag a release and publish the tag.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "tag"
+      ]
+    },
+    {
+      "title": "Stop tracking a committed file",
+      "body": "git rm --cached {{file}}",
+      "description": "Remove a file from Git but keep it on disk (then add it to .gitignore).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "gitignore"
+      ]
+    },
+    {
+      "title": ".gitignore patterns",
+      "body": "# comment\nnode_modules/     # a directory anywhere\n*.log             # all .log files\n/build            # only at repo root\n!keep.log         # re-include an exception\n**/temp/          # temp dirs at any depth\n.env",
+      "description": "Common ignore-file patterns and their meaning.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "git",
+        "gitignore"
+      ]
+    },
+    {
+      "title": "Find the commit that broke something",
+      "body": "git bisect start\ngit bisect bad\ngit bisect good {{good_commit}}\n# test, then mark each step: git bisect good | git bisect bad\ngit bisect reset",
+      "description": "Binary search through history with bisect.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "git",
+        "bisect"
+      ]
+    }
+  ]
+}

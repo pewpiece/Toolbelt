@@ -1,0 +1,240 @@
+{
+  "name": "Study & Career",
+  "category": "Study & Career",
+  "version": "1",
+  "pinned": true,
+  "items": [
+    {
+      "title": "Assignment submission checklist",
+      "body": "[ ] Re-read the brief and marking rubric; every criterion is addressed\n[ ] Word count is within the limit (check whether references are included)\n[ ] Cover page: title, module code, student ID, date\n[ ] Headings and numbering are consistent\n[ ] All sources cited in-text appear in the reference list, and vice versa\n[ ] Figures and tables are numbered, captioned and referred to in the text\n[ ] Spell-check and proofread out loud (or read it backwards)\n[ ] Code and data are attached or linked if required\n[ ] Run the similarity/plagiarism check if your institution provides one\n[ ] File name and format match the instructions (usually PDF)\n[ ] Submit early and keep the confirmation receipt",
+      "description": "Run through this before you hit submit.",
+      "type": "checklist",
+      "tags": [
+        "study",
+        "assignment"
+      ]
+    },
+    {
+      "title": "Report structure",
+      "body": "1. Title page\n2. Executive summary (half a page: problem, method, key findings, recommendation)\n3. Table of contents\n4. Introduction (context, aim, objectives, scope)\n5. Methodology (what you did and why; enough detail to repeat it)\n6. Findings / Results (facts and figures only; use tables and figures)\n7. Discussion (what the results mean, limits, comparison with other work)\n8. Conclusion (answer the aim; no new information)\n9. Recommendations / Future work\n10. References\n11. Appendices",
+      "description": "Standard layout for a technical or academic report.",
+      "type": "snippet",
+      "tags": [
+        "study",
+        "report"
+      ]
+    },
+    {
+      "title": "Executive summary template",
+      "body": "Purpose: This report examines {{topic}} in order to {{aim}}.\nMethod: Data was collected by {{method}} from {{sample}}.\nKey findings: (1) {{finding_1}}; (2) {{finding_2}}; (3) {{finding_3}}.\nConclusion: {{conclusion}}.\nRecommendation: {{recommendation}}.",
+      "description": "Fill-in outline for the one-page summary at the top of a report.",
+      "type": "snippet",
+      "tags": [
+        "study",
+        "report"
+      ]
+    },
+    {
+      "title": "APA 7 in-text citations",
+      "body": "One author:        (Smith, 2020)   or   Smith (2020) found...\nTwo authors:       (Smith & Lee, 2020)   or   Smith and Lee (2020)\nThree or more:     (Smith et al., 2020)\nDirect quote:      (Smith, 2020, p. 45)   [use \"pp. 45-46\" for a range]\nNo author:         (\"Short Title,\" 2020)\nGroup author:      (World Health Organization [WHO], 2020) first time, then (WHO, 2020)\nSame author+year:  (Smith, 2020a, 2020b)\nSecondary source:  (Lee, 2015, as cited in Smith, 2020)",
+      "description": "How to cite in the body of the text.",
+      "type": "snippet",
+      "tags": [
+        "study",
+        "apa",
+        "referencing"
+      ]
+    },
+    {
+      "title": "APA 7 reference list entries",
+      "body": "Book:\nAuthor, A. A., & Author, B. B. (2020). Title of the book in sentence case (2nd ed.). Publisher.\n\nJournal article:\nAuthor, A. A., Author, B. B., & Author, C. C. (2020). Title of the article in sentence case. Journal Name in Title Case, 12(3), 45-67. https://doi.org/xx.xxxx\n\nWeb page:\nAuthor, A. A. or Group Name. (2020, March 5). Title of the page in sentence case. Site Name. https://example.com/page\n\nSoftware / GitHub repo:\nAuthor or Organisation. (2020). Name of tool (Version 1.2) [Computer software]. https://github.com/org/repo",
+      "description": "Formats for book, journal article, web page and software.",
+      "type": "snippet",
+      "tags": [
+        "study",
+        "apa",
+        "referencing"
+      ]
+    },
+    {
+      "title": "APA 7 reference list rules",
+      "body": "- Heading \"References\", bold and centred, on a new page\n- Alphabetical by first author's surname\n- Hanging indent of 0.5 inch, double-spaced\n- Journal name and volume number in italics; book/report/web page titles in italics\n- List up to 20 authors; no publisher location in the 7th edition\n- Include a DOI as a URL (https://doi.org/...) when one exists\n- \"Retrieved from\" is only needed when the content changes over time",
+      "description": "Formatting rules for the References page.",
+      "type": "snippet",
+      "tags": [
+        "study",
+        "apa",
+        "referencing"
+      ]
+    },
+    {
+      "title": "Exam-prep checklist",
+      "body": "[ ] Collect the syllabus, past papers and mark scheme\n[ ] List every topic and rate your confidence (red / amber / green)\n[ ] Build a revision timetable that starts with red topics\n[ ] Study in 25-50 minute blocks with short breaks\n[ ] Practise with past papers under timed conditions\n[ ] Write one-page summaries and flashcards for key facts\n[ ] Teach a topic out loud to test your understanding\n[ ] Confirm exam date, time, room and allowed materials\n[ ] Night before: pack bag, ID and pens; sleep rather than cram\n[ ] In the exam: read all questions first, plan time per mark, answer the easy ones first",
+      "description": "Plan for the weeks and days before an exam.",
+      "type": "checklist",
+      "tags": [
+        "study",
+        "exam"
+      ]
+    },
+    {
+      "title": "STAR answer template",
+      "body": "Situation: Set the scene in one or two sentences. Where, when, what was the context?\nTask: What was your responsibility or goal?\nAction: What did YOU do, step by step? Use \"I\", not \"we\".\nResult: What happened? Quantify it (time saved, errors reduced, grade, users) and say what you learned.\n\nAim for 60-90 seconds out loud.",
+      "description": "Structure for behavioural interview answers.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "Tell me about yourself",
+      "body": "Present: I'm a {{role}} currently {{doing_what}}, focused on {{strength}}.\nPast: Before that I {{relevant_experience}}, where I {{achievement}}.\nFuture: I'm now looking for {{next_step}}, and I'm interested in {{company}} because {{reason}}.",
+      "description": "Present, past, future structure for the classic opener.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "Interview Q&A: programming fundamentals",
+      "body": "Stack vs heap? Stack holds call frames and locals (fast, automatic); heap holds dynamically allocated objects (managed manually or by a GC).\nArray vs linked list? Arrays give O(1) index access; linked lists give O(1) insert/remove at a known node but O(n) lookup.\nWhat is Big-O? A way to describe how run time or memory grows with input size, ignoring constants.\nHash map lookup cost? O(1) on average, O(n) worst case when many keys collide.\nRecursion vs iteration? Recursion expresses self-similar problems clearly but uses stack space; iteration uses constant stack.\nWhat is a pure function? Same input always gives the same output and it has no side effects.\nProcess vs thread? A process has its own memory space; threads share the memory of their process.\nWhat is a race condition? Behaviour that depends on the unpredictable timing of concurrent operations on shared state.\nCompiled vs interpreted? Compiled code is translated to machine code ahead of time; interpreted code is executed by another program at run time.",
+      "description": "One-line answers to common core questions.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "Interview Q&A: OOP and design",
+      "body": "Four OOP pillars? Encapsulation, abstraction, inheritance, polymorphism.\nComposition vs inheritance? Prefer composition (\"has a\") for flexibility; inheritance (\"is a\") couples child to parent.\nWhat does SOLID stand for? Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion.\nWhat is dependency injection? Passing a class its dependencies instead of having it create them, which makes testing and swapping easy.\nWhat is DRY? Don't Repeat Yourself: each piece of knowledge should have one authoritative place.\nAbstract class vs interface? An abstract class can hold state and partial implementation; an interface only defines a contract.\nWhat is a design pattern? A reusable, named solution to a commonly recurring design problem (e.g. Observer, Factory).",
+      "description": "One-line answers to object-oriented and design questions.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "Interview Q&A: web and APIs",
+      "body": "GET vs POST? GET reads data and is safe and idempotent; POST creates or triggers an action and is not idempotent.\nWhat is REST? An architectural style using resources, URLs and standard HTTP methods with stateless requests.\nPUT vs PATCH? PUT replaces a whole resource; PATCH changes only the fields supplied.\n401 vs 403? 401 means not authenticated; 403 means authenticated but not allowed.\nWhat is CORS? A browser rule that blocks cross-origin requests unless the server allows them with headers.\nCookies vs localStorage? Cookies are sent with every request and can be HttpOnly; localStorage stays in the browser and is readable by scripts.\nWhat is JWT? A signed token carrying claims, so a server can verify identity without a session lookup.\nWhat happens when you type a URL? DNS lookup, TCP/TLS connection, HTTP request, server response, browser renders.",
+      "description": "One-line answers to common web questions.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "Interview Q&A: databases",
+      "body": "What is normalisation? Structuring tables to reduce redundancy and update anomalies.\nPrimary vs foreign key? A primary key uniquely identifies a row; a foreign key references a primary key in another table.\nINNER vs LEFT JOIN? INNER returns only matching rows; LEFT returns all left rows plus matches (NULL if none).\nWhat is an index? A data structure (usually a B-tree) that speeds up reads at the cost of slower writes and extra space.\nWhat does ACID mean? Atomicity, Consistency, Isolation, Durability: the guarantees of a transaction.\nSQL vs NoSQL? SQL stores structured relational data with a fixed schema; NoSQL covers flexible models like documents, key-value and graphs.\nWHERE vs HAVING? WHERE filters rows before grouping; HAVING filters groups after aggregation.\nWhat is the N+1 query problem? Running one query for a list and then one more per row; fix with joins or prefetching.",
+      "description": "One-line answers to common database questions.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "Interview Q&A: git and testing",
+      "body": "merge vs rebase? Merge keeps history and adds a merge commit; rebase replays your commits on a new base for a linear history.\nWhat is a pull request? A request to merge a branch, used for review and discussion.\nWhat is CI/CD? Continuous integration builds and tests every change; continuous delivery/deployment ships it automatically.\nUnit vs integration test? A unit test checks one piece in isolation; an integration test checks pieces working together.\nWhat is TDD? Write a failing test first, make it pass, then refactor.\nWhat is a mock? A stand-in object that replaces a real dependency so a test is fast and isolated.\nWhat is code coverage? The percentage of code executed by tests; useful as a hint, not a measure of quality.",
+      "description": "One-line answers to tooling and quality questions.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "Questions to ask the interviewer",
+      "body": "- What does success look like in this role after six months?\n- How is the team structured and who would I work with day to day?\n- What does your code review and release process look like?\n- What is the biggest technical challenge the team faces right now?\n- How do people learn and grow here (mentoring, training budget)?\n- What are the next steps and timeline?",
+      "description": "Good questions to close an interview with.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "interview"
+      ]
+    },
+    {
+      "title": "CV bullet formulas",
+      "body": "Action verb + what you did + measurable result:\n- Built {{thing}} using {{tech}}, reducing {{metric}} by {{percent}}%.\n- Led a team of {{n}} to deliver {{project}} {{timeframe}} ahead of schedule.\n\nGoogle XYZ: Accomplished [X] as measured by [Y], by doing [Z].\n- Cut page load time by 40% (from 3.2 s to 1.9 s) by lazy-loading images and caching API responses.\n\nTips: past tense, one line each, strongest bullet first, no \"responsible for\".",
+      "description": "Patterns for strong, measurable CV bullets.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "cv"
+      ]
+    },
+    {
+      "title": "Cover letter skeleton",
+      "body": "Dear {{hiring_manager}},\n\nParagraph 1: The role you're applying for, where you found it, and a one-line hook about why you fit.\nParagraph 2: Your strongest relevant achievement, with a number.\nParagraph 3: Why this company specifically (product, values, recent news) and what you'd add.\nParagraph 4: Thanks, availability, and a call to action.\n\nKind regards,\n{{your_name}}",
+      "description": "Four-paragraph structure for a tailored cover letter.",
+      "type": "snippet",
+      "tags": [
+        "career",
+        "cv"
+      ]
+    },
+    {
+      "title": "Conventional commit format",
+      "body": "{{type}}({{scope}}): {{description}}",
+      "description": "type(scope): description, with optional body and footer.",
+      "type": "snippet",
+      "tags": [
+        "git",
+        "commits"
+      ]
+    },
+    {
+      "title": "Conventional commit types",
+      "body": "feat: a new feature                       fix: a bug fix\ndocs: documentation only                  style: formatting, no code change\nrefactor: neither fix nor feature         perf: performance improvement\ntest: add or fix tests                    build: build system or dependencies\nci: CI configuration                      chore: other maintenance\nrevert: revert an earlier commit\n\nBreaking change: add \"!\" after the type (feat!: drop v1 API) or a footer line \"BREAKING CHANGE: details\".\nRules: imperative mood (\"add\", not \"added\"), no trailing full stop, subject under about 72 characters.",
+      "description": "Meaning of each commit type and the breaking-change marker.",
+      "type": "snippet",
+      "tags": [
+        "git",
+        "commits"
+      ]
+    },
+    {
+      "title": "PR description template",
+      "body": "## What\nShort summary of the change.\n\n## Why\nThe problem or issue this solves (link: Closes #123).\n\n## How\nKey implementation notes and trade-offs.\n\n## Testing\n- [ ] Unit tests added/updated\n- [ ] Manually tested: describe steps\n\n## Screenshots (if UI)\n\n## Checklist\n- [ ] Docs updated\n- [ ] No unrelated changes",
+      "description": "Markdown body for a clear pull request.",
+      "type": "snippet",
+      "language": "markdown",
+      "tags": [
+        "git",
+        "pr"
+      ]
+    },
+    {
+      "title": "Code-review checklist",
+      "body": "[ ] Does it do what the ticket/PR says, and only that?\n[ ] Is the logic correct, including edge cases and error paths?\n[ ] Are there tests, and would they fail if the code were wrong?\n[ ] Are names clear and is the code easy to follow?\n[ ] No duplicated logic or dead code left behind\n[ ] Input validated; no secrets, SQL injection or XSS risks\n[ ] Performance: no obvious N+1 queries or work inside hot loops\n[ ] Backwards compatibility and migrations considered\n[ ] Docs, comments and changelog updated where needed\n[ ] Feedback is kind, specific and separates must-fix from nit",
+      "description": "What to look at when reviewing someone else's change.",
+      "type": "checklist",
+      "tags": [
+        "git",
+        "review"
+      ]
+    },
+    {
+      "title": "Stand-up update template",
+      "body": "Yesterday: {{done}}\nToday: {{plan}}\nBlockers: {{blockers}}",
+      "description": "Three-line daily update.",
+      "type": "snippet",
+      "tags": [
+        "work"
+      ]
+    },
+    {
+      "title": "Study session plan",
+      "body": "[ ] Pick one topic and write the goal for the session (one sentence)\n[ ] Phone away, notifications off\n[ ] 25 min focus, 5 min break (x3)\n[ ] After the 4th block, take a 20 min break\n[ ] Close by writing 3 things you learned and 1 question\n[ ] Review these notes tomorrow, then in 3 days, then in a week",
+      "description": "A focused 2-hour block using the Pomodoro method.",
+      "type": "checklist",
+      "tags": [
+        "study"
+      ]
+    }
+  ]
+}

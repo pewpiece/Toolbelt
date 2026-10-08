@@ -1,0 +1,173 @@
+{
+  "name": "Jupyter & Matplotlib",
+  "category": "Data & ML",
+  "version": "1",
+  "items": [
+    {
+      "title": "Start Jupyter",
+      "body": "pip install jupyterlab\njupyter lab\njupyter notebook",
+      "description": "Launch the notebook server.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jupyter"
+      ]
+    },
+    {
+      "title": "Register a virtualenv as a kernel",
+      "body": "pip install ipykernel\npython -m ipykernel install --user --name {{env_name}} --display-name \"Python ({{env_name}})\"",
+      "description": "Use your project's environment in Jupyter.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jupyter",
+        "kernel"
+      ]
+    },
+    {
+      "title": "Notebook shortcuts",
+      "body": "Shift+Enter   run cell and move on       Ctrl+Enter   run cell\nEsc then:  A / B insert above / below   DD delete cell   M markdown   Y code\nZ undo cell delete   Shift+M merge cells   Ctrl+Shift+- split at cursor",
+      "description": "Command mode (Esc) and edit mode (Enter).",
+      "type": "snippet",
+      "tags": [
+        "jupyter",
+        "shortcut"
+      ]
+    },
+    {
+      "title": "Useful magics",
+      "body": "%matplotlib inline\n%timeit sum(range(1000))\n%load_ext autoreload\n%autoreload 2\n!pip install seaborn\n%who",
+      "description": "Timing, reloading modules and shell commands.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "jupyter",
+        "magic"
+      ]
+    },
+    {
+      "title": "Export and clean notebooks",
+      "body": "jupyter nbconvert --to html notebook.ipynb\njupyter nbconvert --to pdf notebook.ipynb\njupyter nbconvert --clear-output --inplace notebook.ipynb",
+      "description": "Convert to HTML/PDF and strip outputs before committing.",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "jupyter",
+        "export"
+      ]
+    },
+    {
+      "title": "Matplotlib: line plot",
+      "body": "import matplotlib.pyplot as plt\n\nfig, ax = plt.subplots(figsize=(8, 4))\nax.plot(x, y, label=\"series\", color=\"tab:blue\", linewidth=2)\nax.set_title(\"Title\")\nax.set_xlabel(\"x\"); ax.set_ylabel(\"y\")\nax.grid(alpha=0.3)\nax.legend()\nplt.show()",
+      "description": "Basic figure with labels, grid and legend.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib"
+      ]
+    },
+    {
+      "title": "Matplotlib: scatter plot",
+      "body": "fig, ax = plt.subplots()\nsc = ax.scatter(df[\"x\"], df[\"y\"], c=df[\"value\"], cmap=\"viridis\", alpha=0.7)\nfig.colorbar(sc, label=\"value\")\nax.set_xlabel(\"x\"); ax.set_ylabel(\"y\")",
+      "description": "Colour by a third variable.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib"
+      ]
+    },
+    {
+      "title": "Matplotlib: bar chart",
+      "body": "fig, ax = plt.subplots()\nax.bar(categories, values, color=\"tab:green\")\nax.set_ylabel(\"count\")\nax.bar_label(ax.containers[0])          # value labels\nplt.xticks(rotation=45, ha=\"right\")\nplt.tight_layout()",
+      "description": "Categories with labels.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib"
+      ]
+    },
+    {
+      "title": "Matplotlib: histogram and boxplot",
+      "body": "fig, axes = plt.subplots(1, 2, figsize=(10, 4))\naxes[0].hist(df[\"age\"], bins=20, edgecolor=\"black\")\naxes[0].set_title(\"Age distribution\")\naxes[1].boxplot([df[df.group == g][\"score\"] for g in groups])\naxes[1].set_xticks(range(1, len(groups) + 1), groups)\naxes[1].set_title(\"Score by group\")",
+      "description": "Distributions.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib"
+      ]
+    },
+    {
+      "title": "Matplotlib: subplots grid",
+      "body": "fig, axes = plt.subplots(2, 2, figsize=(10, 8), sharex=True)\nfor ax, col in zip(axes.flat, [\"a\", \"b\", \"c\", \"d\"]):\n    ax.plot(df[col]); ax.set_title(col)\nfig.suptitle(\"Overview\")\nfig.tight_layout()",
+      "description": "Several plots in one figure.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib"
+      ]
+    },
+    {
+      "title": "Matplotlib: save a figure",
+      "body": "fig.savefig(\"figure.png\", dpi=300, bbox_inches=\"tight\")\nfig.savefig(\"figure.pdf\", bbox_inches=\"tight\")      # vector for reports",
+      "description": "High resolution without clipped labels.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib",
+        "save"
+      ]
+    },
+    {
+      "title": "Matplotlib: twin axes, log scale, annotation",
+      "body": "ax2 = ax.twinx()                    # second y axis\nax.set_yscale(\"log\")\nax.annotate(\"peak\", xy=(x0, y0), xytext=(x0 + 1, y0 + 5), arrowprops={\"arrowstyle\": \"->\"})\nax.axhline(0.5, linestyle=\"--\", color=\"gray\")\nax.set_xlim(0, 10); ax.set_ylim(0, 1)",
+      "description": "Common formatting needs.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib"
+      ]
+    },
+    {
+      "title": "Matplotlib: dates on the x axis",
+      "body": "import matplotlib.dates as mdates\n\nax.xaxis.set_major_formatter(mdates.DateFormatter(\"%b %Y\"))\nax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))\nfig.autofmt_xdate()",
+      "description": "Readable date ticks.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib",
+        "dates"
+      ]
+    },
+    {
+      "title": "Confusion matrix and ROC plots",
+      "body": "from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay\n\nConfusionMatrixDisplay.from_estimator(model, X_test, y_test, normalize=\"true\")\nRocCurveDisplay.from_estimator(model, X_test, y_test)\nplt.show()",
+      "description": "scikit-learn display helpers.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "matplotlib",
+        "sklearn"
+      ]
+    },
+    {
+      "title": "Seaborn quick plots",
+      "body": "import seaborn as sns\n\nsns.heatmap(df.corr(numeric_only=True), annot=True, cmap=\"coolwarm\", center=0)\nsns.pairplot(df, hue=\"target\")\nsns.boxplot(data=df, x=\"group\", y=\"score\")\nsns.histplot(df[\"age\"], kde=True)",
+      "description": "Higher-level statistical charts (pip install seaborn).",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "seaborn"
+      ]
+    },
+    {
+      "title": "Figure tips for reports",
+      "body": "- Label axes with units; add a title or caption\n- Font size at least 10 pt at final print size (plt.rcParams[\"font.size\"] = 11)\n- Do not rely on colour alone (use markers/line styles); check greyscale\n- Start bar charts at zero\n- Save at 300 dpi or as PDF/SVG\n- Refer to every figure in the text (Figure 1 shows...)",
+      "description": "Make figures readable in a document.",
+      "type": "snippet",
+      "tags": [
+        "matplotlib",
+        "report"
+      ]
+    }
+  ]
+}

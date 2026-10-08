@@ -1,0 +1,197 @@
+{
+  "name": "Django extras",
+  "category": "My own stack",
+  "version": "1",
+  "items": [
+    {
+      "title": "Custom user model",
+      "body": "# accounts/models.py\nfrom django.contrib.auth.models import AbstractUser\nfrom django.db import models\n\n\nclass User(AbstractUser):\n    phone = models.CharField(max_length=20, blank=True)\n\n# settings.py\nAUTH_USER_MODEL = \"accounts.User\"\n\n# elsewhere: never import User directly\nfrom django.contrib.auth import get_user_model\nUser = get_user_model()",
+      "description": "Do this before the first migrate in a new project.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "auth"
+      ]
+    },
+    {
+      "title": "Signal: post_save receiver",
+      "body": "# blog/signals.py\nfrom django.db.models.signals import post_save\nfrom django.dispatch import receiver\n\n\n@receiver(post_save, sender=Post)\ndef post_saved(sender, instance, created, **kwargs):\n    if created:\n        print(f\"New post: {instance.title}\")\n\n# blog/apps.py\nclass BlogConfig(AppConfig):\n    name = \"blog\"\n\n    def ready(self):\n        from . import signals  # noqa: F401",
+      "description": "React to model saves; connect it in AppConfig.ready().",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "signals"
+      ]
+    },
+    {
+      "title": "Middleware skeleton",
+      "body": "class TimingMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n\n    def __call__(self, request):\n        # code before the view\n        response = self.get_response(request)\n        # code after the view\n        response[\"X-Handled-By\"] = \"my-app\"\n        return response",
+      "description": "Runs on every request; add the dotted path to MIDDLEWARE.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "middleware"
+      ]
+    },
+    {
+      "title": "select_related vs prefetch_related",
+      "body": "# ForeignKey / OneToOne  -> select_related (one SQL JOIN)\nposts = Post.objects.select_related(\"author\")\n\n# reverse FK / ManyToMany -> prefetch_related (second query, joined in Python)\nauthors = Author.objects.prefetch_related(\"posts\")\n\n# Prefetch with a filtered queryset\nfrom django.db.models import Prefetch\nauthors = Author.objects.prefetch_related(\n    Prefetch(\"posts\", queryset=Post.objects.filter(published=True), to_attr=\"live_posts\")\n)",
+      "description": "Avoid N+1 queries: JOIN for single-valued relations, extra query for many.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "orm",
+        "performance"
+      ]
+    },
+    {
+      "title": "Detect N+1 queries in tests",
+      "body": "def test_list_queries(self):\n    with self.assertNumQueries(2):\n        list(Author.objects.prefetch_related(\"posts\"))",
+      "description": "Assert the number of SQL queries.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "testing",
+        "performance"
+      ]
+    },
+    {
+      "title": "Per-environment settings layout",
+      "body": "config/settings/\n    __init__.py\n    base.py     # shared settings\n    dev.py      # from .base import *; DEBUG = True\n    prod.py     # from .base import *; DEBUG = False; security settings\n\n# choose one:\nexport DJANGO_SETTINGS_MODULE=config.settings.dev\npython manage.py runserver --settings=config.settings.dev",
+      "description": "Split settings into base, dev and prod modules.",
+      "type": "snippet",
+      "language": "bash",
+      "tags": [
+        "django",
+        "settings"
+      ]
+    },
+    {
+      "title": "Settings from environment variables",
+      "body": "import os\n\nSECRET_KEY = os.environ[\"DJANGO_SECRET_KEY\"]\nDEBUG = os.environ.get(\"DJANGO_DEBUG\", \"0\") == \"1\"\nALLOWED_HOSTS = os.environ.get(\"ALLOWED_HOSTS\", \"\").split(\",\")\nDATABASES = {\n    \"default\": {\n        \"ENGINE\": \"django.db.backends.postgresql\",\n        \"NAME\": os.environ.get(\"DB_NAME\", \"app\"),\n        \"USER\": os.environ.get(\"DB_USER\", \"app\"),\n        \"PASSWORD\": os.environ[\"DB_PASSWORD\"],\n        \"HOST\": os.environ.get(\"DB_HOST\", \"localhost\"),\n        \"PORT\": os.environ.get(\"DB_PORT\", \"5432\"),\n    }\n}",
+      "description": "Never hard-code secrets.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "settings"
+      ]
+    },
+    {
+      "title": "Production security settings",
+      "body": "SECURE_SSL_REDIRECT = True\nSESSION_COOKIE_SECURE = True\nCSRF_COOKIE_SECURE = True\nSECURE_HSTS_SECONDS = 31536000\nSECURE_PROXY_SSL_HEADER = (\"HTTP_X_FORWARDED_PROTO\", \"https\")\n# check with: python manage.py check --deploy",
+      "description": "Typical prod.py additions behind HTTPS.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "settings",
+        "security"
+      ]
+    },
+    {
+      "title": "Custom QuerySet and Manager",
+      "body": "class PostQuerySet(models.QuerySet):\n    def published(self):\n        return self.filter(published=True)\n\n\nclass Post(models.Model):\n    # fields ...\n    objects = PostQuerySet.as_manager()\n\n# usage: Post.objects.published().order_by(\"-created_at\")",
+      "description": "Reusable, chainable filters.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "orm"
+      ]
+    },
+    {
+      "title": "Database constraints",
+      "body": "class Meta:\n    constraints = [\n        models.UniqueConstraint(fields=[\"tenant\", \"slug\"], name=\"uniq_slug_per_tenant\"),\n        models.CheckConstraint(condition=models.Q(price__gte=0), name=\"price_non_negative\"),\n    ]\n    indexes = [models.Index(fields=[\"created_at\"])]",
+      "description": "Enforce rules in the database (CheckConstraint uses condition= in Django 5.1+, check= before).",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "models"
+      ]
+    },
+    {
+      "title": "transaction.atomic",
+      "body": "from django.db import transaction\n\nwith transaction.atomic():\n    order = Order.objects.create(user=user)\n    OrderLine.objects.bulk_create(lines)\n\n@transaction.atomic\ndef transfer(a, b, amount):\n    ...",
+      "description": "Make several writes succeed or fail together.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "transactions"
+      ]
+    },
+    {
+      "title": "Run code after commit",
+      "body": "from django.db import transaction\n\ntransaction.on_commit(lambda: send_welcome_email.delay(user.pk))",
+      "description": "Send emails or enqueue tasks only if the transaction succeeds.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "transactions"
+      ]
+    },
+    {
+      "title": "Model validation with clean()",
+      "body": "from django.core.exceptions import ValidationError\n\nclass Event(models.Model):\n    start = models.DateTimeField()\n    end = models.DateTimeField()\n\n    def clean(self):\n        if self.end <= self.start:\n            raise ValidationError(\"End must be after start.\")",
+      "description": "Cross-field checks that also run in forms and admin.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "models"
+      ]
+    },
+    {
+      "title": "Cache a view",
+      "body": "from django.views.decorators.cache import cache_page\n\n@cache_page(60 * 15)\ndef post_list(request):\n    ...",
+      "description": "Cache the rendered response for 15 minutes.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "cache"
+      ]
+    },
+    {
+      "title": "Logging configuration",
+      "body": "LOGGING = {\n    \"version\": 1,\n    \"disable_existing_loggers\": False,\n    \"handlers\": {\"console\": {\"class\": \"logging.StreamHandler\"}},\n    \"root\": {\"handlers\": [\"console\"], \"level\": \"INFO\"},\n    \"loggers\": {\"django.db.backends\": {\"level\": \"WARNING\"}},\n}",
+      "description": "Console logging for the whole project.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "logging"
+      ]
+    },
+    {
+      "title": "Permission-restricted view",
+      "body": "from django.contrib.auth.decorators import login_required, permission_required\n\n@login_required\n@permission_required(\"blog.change_post\", raise_exception=True)\ndef edit_post(request, pk):\n    ...",
+      "description": "Login and permission decorators.",
+      "type": "snippet",
+      "language": "python",
+      "tags": [
+        "django",
+        "auth"
+      ]
+    },
+    {
+      "title": "Reset a dev database quickly",
+      "body": "python manage.py flush --noinput          # empty all tables\n# or recreate the PostgreSQL database:\ndropdb {{database}} && createdb {{database}} && python manage.py migrate",
+      "description": "Drop migrations' data and start over (development only).",
+      "type": "command",
+      "language": "bash",
+      "tags": [
+        "django",
+        "database"
+      ]
+    }
+  ]
+}
