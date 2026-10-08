@@ -97,6 +97,9 @@ Decisions made while building DevCheat without asking questions, with the reason
 - Expo's prebuild template signs release builds with the debug key; the workflow therefore **aligns and re-signs with
   `apksigner`** using the keystore from secrets, then runs `apksigner verify`. The keystore file is deleted after use.
 - The job fails early with a clear message when any of the four secrets is missing.
+- CI also runs `expo export --platform android` so a broken import fails the check job, not the release.
+- **Android permissions: INTERNET only** (pack import). Storage, overlay and vibrate permissions that the Expo template adds
+  are blocked in `app.json`; the file picker and share sheet use the system UI and need no permission.
 
 ## Testing
 

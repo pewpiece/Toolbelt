@@ -135,7 +135,7 @@ It is plain text: treat it like any file containing your notes.
 
 ## Release (build the APK on GitHub)
 
-CI (`.github/workflows/ci.yml`) runs lint, typecheck and tests on every push and pull request.
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, tests and a JavaScript bundle check (`expo export`) on every push and pull request.
 When you push a tag that starts with `v`, it also runs `expo prebuild --platform android`,
 `./gradlew assembleRelease`, aligns and signs the APK with your keystore, and attaches
 `DevCheat-<tag>.apk` to a GitHub Release.
