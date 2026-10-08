@@ -12,7 +12,7 @@ describe('ItemForm', () => {
     await render(<ItemForm onSubmit={onSubmit} />);
     await fireEvent.press(screen.getByTestId('submit-item'));
     expect(screen.getByText('Title is required.')).toBeTruthy();
-    expect(repos.items.count()).toBe(0);
+    expect(repos.items.list({}, 100000).length).toBe(0);
 
     await fireEvent.changeText(screen.getByTestId('field-title'), 'Hello');
     await fireEvent.press(screen.getByTestId('submit-item'));

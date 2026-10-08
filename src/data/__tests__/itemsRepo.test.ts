@@ -1,3 +1,5 @@
+import { sql } from 'drizzle-orm';
+
 import { createTestDb } from '@/db/testing';
 
 import { createItemsRepo, toFtsQuery } from '../itemsRepo';
@@ -63,11 +65,11 @@ describe('items repository', () => {
   });
 
   it('deletes items and cascades tag links', () => {
-    const { repo } = setup();
+    const { db, repo } = setup();
     const a = repo.create({ title: 'A', body: 'one', tags: ['x'] });
     repo.remove(a.id);
     expect(repo.get(a.id)).toBeNull();
-    expect(repo.allTags()).toEqual([]);
+    expect(db.all(sql`SELECT * FROM item_tags`)).toEqual([]);
   });
 
   describe('full-text search', () => {
@@ -146,6 +148,6 @@ describe('items repository', () => {
     expect(repo.languages()).toEqual(['bash', 'python']);
     expect(repo.list({ language: 'python' }).map((i) => i.title)).toEqual(['A']);
     expect(repo.list({ tag: 'T2' }).map((i) => i.title)).toEqual(['B']);
-    expect(repo.count()).toBe(3);
+    expect(repo.list({}, 100000).length).toBe(3);
   });
 });

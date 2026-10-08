@@ -1,6 +1,6 @@
 import type { PackDef, PackItemDef } from '@/data/types';
 
-export const TLDR_CATEGORY = 'tldr pages';
+const TLDR_CATEGORY = 'tldr pages';
 
 /** True when the text looks like a tldr-pages Markdown page (`# name` heading, `- description:` + backtick command). */
 export function looksLikeTldr(text: string): boolean {
@@ -23,7 +23,7 @@ export function convertPlaceholders(command: string): string {
 }
 
 /** Small stable hash used as the version of a tldr page, so "Update" can tell when content changed. */
-export function contentVersion(text: string): string {
+function contentVersion(text: string): string {
   let h = 5381;
   for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
   return `tldr-${(h >>> 0).toString(16)}`;

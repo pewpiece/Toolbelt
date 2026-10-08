@@ -37,7 +37,7 @@ const LANG_TO_FAMILY: Record<string, keyof typeof FAMILY> = {
   css: 'css', scss: 'css',
 };
 
-export function familyFor(language: string | null | undefined) {
+function familyFor(language: string | null | undefined) {
   const key = (language ?? '').toLowerCase();
   return FAMILY[LANG_TO_FAMILY[key] ?? 'generic'];
 }

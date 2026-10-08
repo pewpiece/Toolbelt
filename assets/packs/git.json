@@ -174,7 +174,7 @@
     },
     {
       "title": "Interactive rebase last N commits",
-      "body": "git rebase -i HEAD~{{n}}",
+      "body": "git rebase -i HEAD~{{n}}\ngit rebase --continue    # after fixing a conflict\ngit rebase --abort       # give up and go back",
       "description": "Squash, reword, reorder or drop recent commits.",
       "type": "command",
       "language": "bash",
@@ -187,17 +187,6 @@
       "title": "Rebase onto the latest main",
       "body": "git fetch origin\ngit rebase origin/main",
       "description": "Replay your branch on top of origin/main.",
-      "type": "command",
-      "language": "bash",
-      "tags": [
-        "git",
-        "rebase"
-      ]
-    },
-    {
-      "title": "Abort or continue a rebase",
-      "body": "git rebase --abort\ngit rebase --continue",
-      "description": "Get out of (or finish) a rebase in progress.",
       "type": "command",
       "language": "bash",
       "tags": [
@@ -227,20 +216,9 @@
       ]
     },
     {
-      "title": "Push a new branch and set upstream",
-      "body": "git push -u origin HEAD",
-      "description": "First push of the current branch.",
-      "type": "command",
-      "language": "bash",
-      "tags": [
-        "git",
-        "remote"
-      ]
-    },
-    {
-      "title": "Force push safely",
-      "body": "git push --force-with-lease",
-      "description": "Overwrite the remote branch only if nobody else pushed meanwhile.",
+      "title": "Push: new branch and safe force push",
+      "body": "git push -u origin HEAD\ngit push --force-with-lease",
+      "description": "First push sets the upstream; --force-with-lease only overwrites if nobody else pushed.",
       "type": "command",
       "language": "bash",
       "tags": [
@@ -272,17 +250,6 @@
       ]
     },
     {
-      "title": "Delete a tag locally and remotely",
-      "body": "git tag -d {{tag}}\ngit push origin --delete {{tag}}",
-      "description": "Remove a tag everywhere.",
-      "type": "command",
-      "language": "bash",
-      "tags": [
-        "git",
-        "tag"
-      ]
-    },
-    {
       "title": "Stop tracking a committed file",
       "body": "git rm --cached {{file}}",
       "description": "Remove a file from Git but keep it on disk (then add it to .gitignore).",
@@ -298,17 +265,6 @@
       "body": "# comment\nnode_modules/     # a directory anywhere\n*.log             # all .log files\n/build            # only at repo root\n!keep.log         # re-include an exception\n**/temp/          # temp dirs at any depth\n.env",
       "description": "Common ignore-file patterns and their meaning.",
       "type": "snippet",
-      "language": "bash",
-      "tags": [
-        "git",
-        "gitignore"
-      ]
-    },
-    {
-      "title": "Explain why a file is ignored",
-      "body": "git check-ignore -v {{path}}",
-      "description": "Show which .gitignore rule matches a path.",
-      "type": "command",
       "language": "bash",
       "tags": [
         "git",

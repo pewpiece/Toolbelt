@@ -88,7 +88,12 @@ export default function Home() {
       <View style={{ flex: 1 }}>
         {addButton}
         <SectionList
-          sections={[{ title: `${data.items.length} ${data.items.length === 1 ? 'result' : 'results'}`, data: data.items }]}
+          // No sections when empty: a section header would count as content and hide ListEmptyComponent.
+          sections={
+            data.items.length
+              ? [{ title: `${data.items.length} ${data.items.length === 1 ? 'result' : 'results'}`, data: data.items }]
+              : []
+          }
           keyExtractor={(i) => String(i.id)}
           renderItem={card}
           renderSectionHeader={({ section }) => <SectionTitle text={section.title} />}

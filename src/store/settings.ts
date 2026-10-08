@@ -8,7 +8,6 @@ export const FONT_SIZES = [13, 14, 15, 16, 18, 20] as const;
 export const DEFAULT_FONT_SIZE = 15;
 
 interface SettingsState {
-  hydrated: boolean;
   themeMode: ThemeMode;
   fontSize: number;
   hydrate: () => void;
@@ -34,13 +33,11 @@ function persist(key: string, value: string) {
 }
 
 export const useSettings = create<SettingsState>((set) => ({
-  hydrated: false,
   themeMode: 'system',
   fontSize: DEFAULT_FONT_SIZE,
   hydrate: () => {
     const s = getRepos().settings;
     set({
-      hydrated: true,
       themeMode: parseThemeMode(s.get('themeMode')),
       fontSize: parseFontSize(s.get('fontSize')),
     });

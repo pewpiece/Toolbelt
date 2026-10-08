@@ -19,7 +19,7 @@ export class ValidationError extends Error {
   }
 }
 
-export interface CleanItemInput {
+interface CleanItemInput {
   title: string;
   body: string;
   description: string;
@@ -32,7 +32,7 @@ export function normalizeTag(raw: string): string {
   return raw.trim().replace(/^#/, '').toLowerCase().replace(/\s+/g, '-');
 }
 
-export function normalizeTags(raw: string[] | undefined): string[] {
+function normalizeTags(raw: string[] | undefined): string[] {
   const out: string[] = [];
   for (const t of raw ?? []) {
     const n = normalizeTag(t);

@@ -80,5 +80,3 @@ export function createCollectionsRepo(db: AppDb, now: Clock = Date.now) {
     },
   };
 }
-
-export type CollectionsRepo = ReturnType<typeof createCollectionsRepo>;

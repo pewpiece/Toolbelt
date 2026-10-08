@@ -84,7 +84,7 @@ describe('backup restore', () => {
     const second = restoreBackup(dest, json, 'merge');
     expect(second).toMatchObject({ itemsAdded: 0, itemsSkipped: 3, packsAdded: 0, collectionsAdded: 0 });
     expect(dest.items.get(keep.id)?.body).toBe('keep me');
-    expect(dest.items.count()).toBe(4);
+    expect(dest.items.list({}, 100000).length).toBe(4);
     expect(dest.collections.list()).toHaveLength(1);
     expect(dest.collections.list()[0].itemCount).toBe(2);
     expect(describeRestore(second)).toContain('3 already present');

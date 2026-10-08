@@ -7,8 +7,8 @@ export class PackFetchError extends Error {
   }
 }
 
-export const MAX_BYTES = 1_000_000;
-export const TIMEOUT_MS = 15_000;
+const MAX_BYTES = 1_000_000;
+const TIMEOUT_MS = 15_000;
 
 /** Turns a github.com "blob" page URL into the raw file URL; leaves other URLs alone. */
 export function normalizePackUrl(input: string): string {

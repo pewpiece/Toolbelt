@@ -92,8 +92,6 @@ export function createPackService(repos: Repos, fetchOptions: FetchOptions = {})
   };
 }
 
-export type PackService = ReturnType<typeof createPackService>;
-
 export function describeImportError(e: unknown): string {
   if (e instanceof PackFetchError || e instanceof PackImportError) return e.message;
   if (e instanceof Error) return e.message;

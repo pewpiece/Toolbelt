@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useRef } from 'react';
 
 import { EmptyState } from '@/features/common/ui';
 import { ItemForm } from '@/features/items/ItemForm';
@@ -13,6 +14,7 @@ export default function EditItem() {
   const router = useRouter();
   const bump = useLibrary((s) => s.bump);
   const editingId = id ? Number(id) : null;
+  const saving = useRef(false);
   const existing = editingId !== null ? getRepos().items.get(editingId) : null;
 
   if (editingId !== null && !existing) {
@@ -20,8 +22,16 @@ export default function EditItem() {
   }
 
   function save(input: ItemInput) {
+    if (saving.current) return; // ignore a second tap while the first save is navigating away
+    saving.current = true;
     const repo = getRepos().items;
-    const saved = existing ? repo.update(existing.id, input) : repo.create(input);
+    let saved;
+    try {
+      saved = existing ? repo.update(existing.id, input) : repo.create(input);
+    } catch (e) {
+      saving.current = false; // let the user fix the input and try again
+      throw e;
+    }
     bump();
     useToast.getState().show(existing ? 'Saved' : 'Added');
     if (existing) router.back();

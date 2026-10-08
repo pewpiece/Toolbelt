@@ -198,22 +198,5 @@ export function createItemsRepo(db: AppDb, now: Clock = Date.now) {
         .all()
         .map((r) => r.language as string);
     },
-
-    /** Tags that are attached to at least one item. */
-    allTags(): string[] {
-      return db
-        .selectDistinct({ name: tags.name })
-        .from(tags)
-        .innerJoin(itemTags, eq(itemTags.tagId, tags.id))
-        .orderBy(tags.name)
-        .all()
-        .map((r) => r.name);
-    },
-
-    count(): number {
-      return db.select({ n: sql<number>`count(*)` }).from(items).get()?.n ?? 0;
-    },
   };
 }
-
-export type ItemsRepo = ReturnType<typeof createItemsRepo>;

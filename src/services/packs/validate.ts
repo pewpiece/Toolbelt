@@ -3,7 +3,7 @@ import { LIMITS } from '@/data/validation';
 
 import { hasBalancedBraces } from '../template';
 
-export const MAX_PACK_ITEMS = 1000;
+const MAX_PACK_ITEMS = 1000;
 
 export type ValidationResult = { ok: true; pack: PackDef } | { ok: false; errors: string[] };
 

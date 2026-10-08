@@ -10,7 +10,7 @@ export class BackupError extends Error {
   }
 }
 
-export const MAX_BACKUP_CHARS = 20_000_000;
+const MAX_BACKUP_CHARS = 20_000_000;
 const SOURCES = ['user', 'builtin', 'tldr', 'url'];
 
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);

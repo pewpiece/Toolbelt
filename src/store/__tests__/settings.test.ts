@@ -22,11 +22,12 @@ describe('settings store', () => {
     setReposForTesting(repos);
     useSettings.getState().setThemeMode('dark');
     useSettings.getState().setFontSize(18);
-    expect(repos.settings.all()).toEqual({ themeMode: 'dark', fontSize: '18' });
+    expect(repos.settings.get('themeMode')).toBe('dark');
+    expect(repos.settings.get('fontSize')).toBe('18');
 
-    useSettings.setState({ themeMode: 'system', fontSize: DEFAULT_FONT_SIZE, hydrated: false });
+    useSettings.setState({ themeMode: 'system', fontSize: DEFAULT_FONT_SIZE });
     useSettings.getState().hydrate();
-    expect(useSettings.getState()).toMatchObject({ themeMode: 'dark', fontSize: 18, hydrated: true });
+    expect(useSettings.getState()).toMatchObject({ themeMode: 'dark', fontSize: 18 });
   });
 
   it('keeps working in memory if saving fails', () => {

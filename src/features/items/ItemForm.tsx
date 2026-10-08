@@ -55,6 +55,11 @@ export function ItemForm({
 
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      {initial && initial.source !== 'user' ? (
+        <Text style={{ color: colors.muted, fontSize: font.small }}>
+          This item comes from a pack. Saving changes makes it yours, and pack updates will no longer overwrite it.
+        </Text>
+      ) : null}
       {label('Title')}
       <TextInput testID="field-title" accessibilityLabel="Title" value={title} onChangeText={setTitle} maxLength={LIMITS.title + 50} style={inputStyle} placeholder="Undo last commit" placeholderTextColor={colors.muted} />
       {err('title')}

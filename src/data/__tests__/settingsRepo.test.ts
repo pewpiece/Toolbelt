@@ -8,5 +8,5 @@ it('stores and overwrites settings', () => {
   settings.set('theme', 'light');
   settings.set('fontSize', '18');
   expect(settings.get('theme')).toBe('light');
-  expect(settings.all()).toEqual({ theme: 'light', fontSize: '18' });
+  expect(settings.get('fontSize')).toBe('18');
 });

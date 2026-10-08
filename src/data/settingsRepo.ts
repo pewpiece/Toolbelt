@@ -14,16 +14,5 @@ export function createSettingsRepo(db: AppDb) {
         .onConflictDoUpdate({ target: settings.key, set: { value } })
         .run();
     },
-    all(): Record<string, string> {
-      return Object.fromEntries(
-        db
-          .select()
-          .from(settings)
-          .all()
-          .map((r) => [r.key, r.value]),
-      );
-    },
   };
 }
-
-export type SettingsRepo = ReturnType<typeof createSettingsRepo>;

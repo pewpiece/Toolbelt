@@ -28,8 +28,8 @@ describe('bundled starter packs', () => {
     if (!result.ok) throw new Error(`${file}:\n${result.errors.join('\n')}`);
     const { pack } = result;
     expect((BUILTIN_CATEGORIES as readonly string[]).includes(pack.category)).toBe(true);
-    expect(pack.items.length).toBeGreaterThanOrEqual(10);
-    expect(pack.items.length).toBeLessThanOrEqual(30);
+    expect(pack.items.length).toBeGreaterThanOrEqual(12);
+    expect(pack.items.length).toBeLessThanOrEqual(25);
     for (const item of pack.items) {
       expect(['snippet', 'command', 'checklist']).toContain(item.type ?? 'snippet');
       expect(hasBalancedBraces(item.body)).toBe(true);
@@ -84,7 +84,7 @@ describe('bundled starter packs', () => {
     const repos = createRepos(createTestDb());
     const result = seedBuiltinPacks(repos, BUILTIN_PACKS);
     expect(result.installed).toHaveLength(files.length);
-    expect(repos.items.count()).toBeGreaterThan(100);
+    expect(repos.items.list({}, 100000).length).toBeGreaterThan(100);
     expect(repos.items.search('rebase').length).toBeGreaterThan(0);
   });
 });

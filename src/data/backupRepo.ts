@@ -234,5 +234,3 @@ export function createBackupRepo(db: AppDb, now: Clock = Date.now) {
     },
   };
 }
-
-export type BackupRepo = ReturnType<typeof createBackupRepo>;

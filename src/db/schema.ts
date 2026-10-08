@@ -111,7 +111,5 @@ export const settings = sqliteTable('settings', {
 });
 
 export type ItemRow = typeof items.$inferSelect;
-export type PackRow = typeof packs.$inferSelect;
-export type CollectionRow = typeof collections.$inferSelect;
 
 export const schema = { packs, items, tags, itemTags, collections, collectionItems, settings };
