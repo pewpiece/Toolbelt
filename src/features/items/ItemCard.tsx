@@ -7,10 +7,12 @@ export function ItemCard({
   item,
   onOpen,
   onCopy,
+  onLongPress,
 }: {
   item: Item;
   onOpen: (item: Item) => void;
   onCopy: (item: Item) => void;
+  onLongPress?: (item: Item) => void;
 }) {
   const { colors, font } = useTheme();
   const preview = item.body.split('\n').find((l) => l.trim()) ?? '';
@@ -20,6 +22,7 @@ export function ItemCard({
       accessibilityRole="button"
       accessibilityLabel={`Open ${item.title}`}
       onPress={() => onOpen(item)}
+      onLongPress={onLongPress ? () => onLongPress(item) : undefined}
       style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
     >
       <View style={{ flex: 1 }}>

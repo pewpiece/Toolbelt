@@ -1,6 +1,8 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { CollectionPicker } from '@/features/collections/CollectionPicker';
 import { CodeBlock } from '@/features/items/CodeBlock';
 import { Button, Chip, EmptyState, ErrorState } from '@/features/common/ui';
 import { useQuery } from '@/features/common/useQuery';
@@ -29,10 +31,15 @@ export default function ItemDetail() {
   const { colors, font } = useTheme();
   const bump = useLibrary((s) => s.bump);
   const requestCopy = useCopy((s) => s.requestCopy);
-  const { data: item, error, reload } = useQuery(() => getRepos().items.get(itemId), itemId);
+  const [picking, setPicking] = useState(false);
+  const { data, error, reload } = useQuery(() => {
+    const repos = getRepos();
+    return { item: repos.items.get(itemId), collections: repos.collections.list(), memberIds: repos.collections.forItem(itemId).map((c) => c.id) };
+  }, itemId);
 
   if (error) return <ErrorState message={error} onRetry={reload} />;
-  if (item === undefined) return null;
+  if (data === undefined) return null;
+  const { item, collections, memberIds } = data;
   if (item === null) return <EmptyState title="Item not found" hint="It may have been deleted." />;
 
   function togglePin() {
@@ -90,9 +97,28 @@ export default function ItemDetail() {
 
       <View style={styles.actions}>
         <Button label={item.pinned ? 'Unpin' : 'Pin'} variant="secondary" onPress={togglePin} style={styles.action} testID="pin-button" />
+        <Button label="Collections" variant="secondary" onPress={() => setPicking(true)} style={styles.action} testID="collections-button" />
         <Button label="Edit" variant="secondary" onPress={() => router.push({ pathname: '/item/edit', params: { id: String(item.id) } })} style={styles.action} />
         <Button label="Delete" variant="danger" onPress={confirmDelete} style={styles.action} />
       </View>
+      <CollectionPicker
+        visible={picking}
+        collections={collections}
+        memberIds={memberIds}
+        onToggle={(c, isMember) => {
+          const repo = getRepos().collections;
+          if (isMember) repo.removeItem(c.id, item.id);
+          else repo.addItem(c.id, item.id);
+          bump();
+        }}
+        onCreate={(name) => {
+          const repo = getRepos().collections;
+          const c = repo.create(name);
+          repo.addItem(c.id, item.id);
+          bump();
+        }}
+        onClose={() => setPicking(false)}
+      />
     </ScrollView>
   );
 }
@@ -101,6 +127,6 @@ const styles = StyleSheet.create({
   content: { padding: 16, paddingBottom: 60 },
   meta: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
   copy: { marginVertical: 16, paddingVertical: 18 },
-  actions: { flexDirection: 'row', marginTop: 22 },
-  action: { flex: 1, marginRight: 8 },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 22 },
+  action: { flexGrow: 1, minWidth: '45%', marginRight: 8, marginBottom: 8 },
 });
