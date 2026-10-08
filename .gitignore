@@ -1,0 +1,13 @@
+node_modules/
+.expo/
+dist/
+web-build/
+android/
+ios/
+coverage/
+*.keystore
+*.jks
+keystore.b64
+*.log
+.env*
+expo-env.d.ts
